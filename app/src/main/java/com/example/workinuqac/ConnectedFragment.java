@@ -41,15 +41,35 @@ public class ConnectedFragment extends Fragment {
                 changePicture();
             }
         });
+        Button buttonUsers = (Button) view.findViewById(R.id.usersButton);
+        buttonUsers.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                searchUser();
+            }
+        });
+        Button buttonConvs = (Button) view.findViewById(R.id.conversationsButton);
+        buttonConvs.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                accessConversations();
+            }
+        });
 
     }
 
+    private void searchUser(){
+        Toast.makeText(getContext(), "Search User", Toast.LENGTH_SHORT).show();
+
+    }
+    private void accessConversations(){
+        Toast.makeText(getContext(), "Access Conversations", Toast.LENGTH_SHORT).show();
+
+    }
     private void accessEdt(){
-        Toast.makeText(getContext(), "AccessEDT", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Access EDT", Toast.LENGTH_SHORT).show();
 
     }
     private void changePicture(){
-        Toast.makeText(getContext(), "change Picture", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Change Picture", Toast.LENGTH_SHORT).show();
 
     }
 }

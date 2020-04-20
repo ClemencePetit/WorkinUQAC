@@ -8,9 +8,22 @@
         android:id="@+id/textName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/debug"
+        android:text="@string/name_profile"
+        android:textAllCaps="true"
         android:textColor="@color/colorPrimary"
-        android:textColorLink="@color/colorPrimaryDark" />
+        android:textColorLink="@color/colorPrimaryDark"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:verticalScrollbarPosition="defaultPosition" />
+
+    <TextView
+        android:id="@+id/textStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/statusText"
+        android:textColor="@color/colorPrimary"
+        android:textColorLink="@color/colorPrimaryDark"
+        android:textStyle="italic" />
 
     <ImageView
         android:id="@+id/profileImage"
@@ -33,6 +46,22 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
         android:text="@string/edtButton"
+        android:textColor="@android:color/white" />
+
+    <Button
+        android:id="@+id/usersButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:text="@string/usersButton"
+        android:textColor="@android:color/white" />
+
+    <Button
+        android:id="@+id/conversationsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:text="@string/conversationsButton"
         android:textColor="@android:color/white" />
 
 </LinearLayout>

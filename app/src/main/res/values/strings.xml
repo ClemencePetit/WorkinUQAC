@@ -4,5 +4,9 @@
     <string name="identifyProfileButton">M\'identifier</string>
     <string name="edtButton">Mon emploi du temps</string>
     <string name="pictureButton">Changer ma photo</string>
-    <string name="debug">Fallait pas s attendre à des miracles</string>
+    <string name="usersButton">Chercher un utilisateur</string>
+    <string name="conversationsButton">Mes conversations</string>
+    <string name="statusText">...purring on the blanket</string>
+    <string name="name_profile">Meow le Sublime</string>
+    <string name="debug">Fallait pas s\'attendre à des miracles</string>
 </resources>
