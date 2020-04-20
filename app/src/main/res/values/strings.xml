@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">WorkinUQAC</string>
+    <string name="createProfileButton">Créer mon profil</string>
+    <string name="identifyProfileButton">M\'identifier</string>
+    <string name="edtButton">Mon emploi du temps</string>
+    <string name="pictureButton">Changer ma photo</string>
+    <string name="debug">Fallait pas s attendre à des miracles</string>
 </resources>
