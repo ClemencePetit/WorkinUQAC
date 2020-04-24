@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
         /* check Permission READ and WRITE on external storage at runtime */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
                 requestPermissions(permissions, PERMISSION_CODE);
             }else {
                 //Permission already granted
