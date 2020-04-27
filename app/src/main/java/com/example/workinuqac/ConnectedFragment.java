@@ -29,6 +29,7 @@ public class ConnectedFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        //TODO chercher les infos dans la BDD et mettre à jour
         Button buttonEdt = (Button) view.findViewById(R.id.edtButton);
         buttonEdt.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
