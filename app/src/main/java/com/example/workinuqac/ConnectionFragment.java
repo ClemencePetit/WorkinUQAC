@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 
 public class ConnectionFragment extends Fragment {
 
+    //id fragment : 1
     public static ConnectionFragment newInstance() {
         ConnectionFragment CF = new ConnectionFragment();
         return CF;
@@ -47,12 +48,12 @@ public class ConnectionFragment extends Fragment {
 
     private void createProfil(){
         Toast.makeText(getContext(), "Creation profil", Toast.LENGTH_SHORT).show();
-        ((MainActivity)getActivity()).changeFragment();
+        ((MainActivity)getActivity()).changeFragment(2);
 
     }
 
     private void identifyProfil(){
         Toast.makeText(getContext(), "Identification profil", Toast.LENGTH_SHORT).show();
-        ((MainActivity)getActivity()).changeFragment();
+        ((MainActivity)getActivity()).changeFragment(0);
     }
 }

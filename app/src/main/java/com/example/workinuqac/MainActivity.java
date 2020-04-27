@@ -22,10 +22,23 @@ public class MainActivity extends AppCompatActivity {
 
 
     private static final int PERMISSION_CODE = 1000;
+    private int idUser = -1;//id de l'utilisateur dans la base de données - -1 = pas connecté
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState!=null)
+        {
+            idUser=savedInstanceState.getInt("id");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState)
+    {
+
+        savedInstanceState.putInt("id", idUser);
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
@@ -48,21 +61,55 @@ public class MainActivity extends AppCompatActivity {
         } else {
             //Old OS
         }
+        if(idUser!=-1)
+        {
+            ConnectedFragment newFrag = ConnectedFragment.newInstance();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.placeholder, newFrag)
+                    .commitNow();
+        }
+        else
+        {
+            ConnectionFragment newFrag = ConnectionFragment.newInstance();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.placeholder, newFrag)
+                    .commitNow();
+        }
 
-        ConnectionFragment newFrag = ConnectionFragment.newInstance();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.placeholder, newFrag)
-                .commitNow();
     }
 
-    public void changeFragment(){
-        //argument : vers quel fragment aller par la suite
+    public void changeFragment(int idFragment){
+
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft
-                .addToBackStack(null)
-                .replace(R.id.placeholder, ConnectedFragment.newInstance())
-                .commit();
+        //argument : vers quel fragment aller par la suite
+        //0 : profil
+        //1 : page connexion/inscription
+        //2 : inscription
+        switch (idFragment){
+            case 0:
+                ft
+                        .addToBackStack(null)
+                        .replace(R.id.placeholder, ConnectedFragment.newInstance())
+                        .commit();
+                break;
+            case 1:
+                ft
+                        .addToBackStack(null)
+                        .replace(R.id.placeholder, ConnectionFragment.newInstance())
+                        .commit();
+                break;
+            case 2:
+                ft
+                        .addToBackStack(null)
+                        .replace(R.id.placeholder, InscriptionFragment.newInstance())
+                        .commit();
+                break;
+            default:
+                break;
+        }
+
+
     }
 
     @Override

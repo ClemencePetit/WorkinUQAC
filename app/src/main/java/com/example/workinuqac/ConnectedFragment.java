@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 
 public class ConnectedFragment extends Fragment {
 
-
+    //id fragment : 0
     public static ConnectedFragment newInstance() {
         ConnectedFragment CF = new ConnectedFragment();
         return CF;

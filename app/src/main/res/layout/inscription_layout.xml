@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/inscriptionTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/inscription_layout"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/nameText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/inscription_name" />
+
+    <EditText
+        android:id="@+id/editNameText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoText="false"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/mailText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/inscription_email" />
+
+    <EditText
+        android:id="@+id/editMailText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress" />
+
+    <TextView
+        android:id="@+id/mdpText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/inscription_mdp" />
+
+    <EditText
+        android:id="@+id/editMdpText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/mdpConfirmText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/inscription_mdp_confirm" />
+
+    <EditText
+        android:id="@+id/editMdpConfirmText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/inscriptionButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/inscription_button" />
+</LinearLayout>
