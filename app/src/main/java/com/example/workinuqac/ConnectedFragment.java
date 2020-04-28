@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -39,7 +40,7 @@ public class ConnectedFragment extends Fragment {
         Button buttonpicture = (Button) view.findViewById(R.id.pictureButton);
         buttonpicture.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                changePicture();
+                editProfile();
             }
         });
         Button buttonUsers = (Button) view.findViewById(R.id.usersButton);
@@ -65,7 +66,6 @@ public class ConnectedFragment extends Fragment {
 
     private void searchUser(){
         Toast.makeText(getContext(), "Search User", Toast.LENGTH_SHORT).show();
-
     }
     private void accessConversations(){
         Toast.makeText(getContext(), "Access Conversations", Toast.LENGTH_SHORT).show();
@@ -75,8 +75,8 @@ public class ConnectedFragment extends Fragment {
         Toast.makeText(getContext(), "Access EDT", Toast.LENGTH_SHORT).show();
 
     }
-    private void changePicture(){
-        Toast.makeText(getContext(), "Change Picture", Toast.LENGTH_SHORT).show();
+    private void editProfile(){
+        ((MainActivity)getActivity()).changeFragment(3);
 
     }
 

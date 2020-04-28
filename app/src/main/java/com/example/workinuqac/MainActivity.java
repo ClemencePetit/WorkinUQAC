@@ -41,7 +41,10 @@ public class MainActivity extends AppCompatActivity {
             changeFragment(1);
             changeFragment(2);
         }
-        else{
+        else if(currentFragment==3){
+            changeFragment(0);
+            changeFragment(3);
+        }{
             changeFragment(currentFragment);
         }
         //Toast.makeText(this, "user : " + idUser + " frag : " + currentFragment, Toast.LENGTH_SHORT).show();
@@ -108,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
         //0 : profil
         //1 : page connexion/inscription
         //2 : inscription
+        //3 : edit profil
         switch (idFragment){
             case 0:
                 ft
@@ -127,6 +131,12 @@ public class MainActivity extends AppCompatActivity {
                 ft
                         .addToBackStack(null)
                         .replace(R.id.placeholder, InscriptionFragment.newInstance(),"2")
+                        .commit();
+                break;
+            case 3:
+                ft
+                        .addToBackStack(null)
+                        .replace(R.id.placeholder, EditFragment.newInstance(),"3")
                         .commit();
                 break;
             default:
