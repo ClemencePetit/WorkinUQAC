@@ -54,6 +54,12 @@ public class ConnectedFragment extends Fragment {
                 accessConversations();
             }
         });
+        Button buttonDeconnexion = (Button) view.findViewById(R.id.deconnectionButton);
+        buttonDeconnexion.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                deconnecter();
+            }
+        });
 
     }
 
@@ -72,5 +78,9 @@ public class ConnectedFragment extends Fragment {
     private void changePicture(){
         Toast.makeText(getContext(), "Change Picture", Toast.LENGTH_SHORT).show();
 
+    }
+
+    private void deconnecter(){
+        ((MainActivity)getActivity()).deconnecter();
     }
 }
