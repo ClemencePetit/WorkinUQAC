@@ -34,23 +34,17 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.activity_main_portrait);
         else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
             setContentView(R.layout.activity_main_land);
-        if(savedInstanceState!=null)
-        {
-            Toast.makeText(this, "Load SaveInstance", Toast.LENGTH_SHORT).show();
-            idUser=savedInstanceState.getInt("idUser",-1);
-            currentFragment=savedInstanceState.getInt("idFragment",1);
-        }
-       else{
-            /*Toast.makeText(this, "RAZ", Toast.LENGTH_SHORT).show();
-            ConnectionFragment newFrag = ConnectionFragment.newInstance();
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.placeholder, newFrag)
-                    .commitNow();*/
-            Toast.makeText(this, "Load Preferences", Toast.LENGTH_SHORT).show();
+
             loadPreferences();
+
+        if(currentFragment==2){
+            changeFragment(1);
+            changeFragment(2);
         }
-       changeFragment(currentFragment);
-        Toast.makeText(this, "user : " + idUser + " frag : " + currentFragment, Toast.LENGTH_SHORT).show();
+        else{
+            changeFragment(currentFragment);
+        }
+        //Toast.makeText(this, "user : " + idUser + " frag : " + currentFragment, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -59,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
         savedInstanceState.putInt("idUser", idUser);
         savedInstanceState.putInt("idFragment",currentFragment);
-        Toast.makeText(this, "Save Instance", Toast.LENGTH_SHORT).show();
 
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -99,9 +92,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed()
     {
-        Toast.makeText(this, "Save Preferences Back", Toast.LENGTH_SHORT).show();
-        savePreferences();
         super.onBackPressed();
+        currentFragment=Integer.parseInt(getSupportFragmentManager().findFragmentById(R.id.placeholder).getTag());
+        savePreferences();
+
     }
 
 
@@ -118,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             case 0:
                 ft
                         //.addToBackStack(null)
-                        .replace(R.id.placeholder, ConnectedFragment.newInstance())
+                        .replace(R.id.placeholder, ConnectedFragment.newInstance(),"0")
                         .commit();
                 idUser=1;
 
@@ -126,13 +120,13 @@ public class MainActivity extends AppCompatActivity {
             case 1:
                 ft
                         //.addToBackStack(null)
-                        .replace(R.id.placeholder, ConnectionFragment.newInstance())
+                        .replace(R.id.placeholder, ConnectionFragment.newInstance(),"1")
                         .commit();
                 break;
             case 2:
                 ft
                         .addToBackStack(null)
-                        .replace(R.id.placeholder, InscriptionFragment.newInstance())
+                        .replace(R.id.placeholder, InscriptionFragment.newInstance(),"2")
                         .commit();
                 break;
             default:
@@ -149,15 +143,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy(){
-        Toast.makeText(this, "Save Preferences Destroy", Toast.LENGTH_SHORT).show();
-        savePreferences();
-        super.onDestroy();
-    }
-
-    @Override
     protected void onStop(){
-        Toast.makeText(this, "Save Preferences Stop", Toast.LENGTH_SHORT).show();
         savePreferences();
         super.onStop();
     }
@@ -168,9 +154,9 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case PERMISSION_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Permission Granted...", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "Permission Granted...", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(this, "Permission Denied...", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "Permission Denied...", Toast.LENGTH_SHORT).show();
                 }
         }
     }
