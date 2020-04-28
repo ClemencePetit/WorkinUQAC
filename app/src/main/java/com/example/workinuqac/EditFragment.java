@@ -68,15 +68,49 @@ public class EditFragment extends Fragment {
         LinearLayout parentlayout=getView().findViewWithTag(parentTag);
         parentlayout.removeAllViews();
         LayoutInflater inflater=(LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View rowView = inflater.inflate(R.layout.layout,null);
+        final View rowView = inflater.inflate(R.layout.editing_edit_profile_layout,null);
         rowView.setTag(parentTag);
-        /*Button editNameButton = rowView.findViewById(R.id.infomationEditButton);
+        Button validateButton = rowView.findViewById(R.id.editingvalidateButton);
+        validateButton.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                validateInformation();
+                BackInformation(v);
+            }
+        });
+        Button cancelButton = rowView.findViewById(R.id.editingcancelButton);
+        cancelButton.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                cancelInformation();
+                BackInformation(v);
+            }
+        });
+        parentlayout.addView(rowView);
+    }
+
+    private void BackInformation(View v){
+        Toast.makeText(getContext(), "back information", Toast.LENGTH_SHORT).show();
+        String parentTag=((View)v.getParent()).getTag().toString();
+        LinearLayout parentlayout=getView().findViewWithTag(parentTag);
+        parentlayout.removeAllViews();
+        LayoutInflater inflater=(LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View rowView = inflater.inflate(R.layout.information_edit_profile_layout,null);
+        rowView.setTag(parentTag);
+        Button editNameButton = rowView.findViewById(R.id.infomationEditButton);
         editNameButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 goToEdit(v);
             }
-        });*/
+        });
         parentlayout.addView(rowView);
+
+    }
+
+    private void cancelInformation(){
+
+    }
+
+    private void validateInformation(){
+
     }
 
     private void validateEdit(){
