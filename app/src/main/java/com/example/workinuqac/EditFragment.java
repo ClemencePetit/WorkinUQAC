@@ -49,10 +49,11 @@ public class EditFragment extends Fragment {
         LinearLayout nameLayout=getView().findViewById(R.id.nameLayout);
         LayoutInflater inflater=(LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View rowView = inflater.inflate(R.layout.information_edit_profile_layout,null);
+        rowView.setTag("nameLayout");
         Button editNameButton = rowView.findViewById(R.id.infomationEditButton);
         editNameButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                goToEdit();
+                goToEdit(v);
             }
         });
         nameLayout.addView(rowView);
@@ -61,8 +62,21 @@ public class EditFragment extends Fragment {
 
     }
 
-    private void goToEdit(){
+    private void goToEdit(View v){
         Toast.makeText(getContext(), "editer cette information", Toast.LENGTH_SHORT).show();
+        String parentTag=((View)v.getParent()).getTag().toString();
+        LinearLayout parentlayout=getView().findViewWithTag(parentTag);
+        parentlayout.removeAllViews();
+        LayoutInflater inflater=(LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View rowView = inflater.inflate(R.layout.layout,null);
+        rowView.setTag(parentTag);
+        /*Button editNameButton = rowView.findViewById(R.id.infomationEditButton);
+        editNameButton.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                goToEdit(v);
+            }
+        });*/
+        parentlayout.addView(rowView);
     }
 
     private void validateEdit(){

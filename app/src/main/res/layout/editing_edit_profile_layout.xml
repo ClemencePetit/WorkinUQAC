@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/editingEditLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <!--<EditText
+        android:id="@+id/editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/validateButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:foreground="@android:drawable/ic_menu_send" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:foreground="@android:drawable/ic_menu_close_clear_cancel" />-->
+
+    <TextView
+        android:id="@+id/informationText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="TextView" />
+
+    <Button
+        android:id="@+id/infomationEditButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:foreground="@android:drawable/ic_menu_edit"/>
+
+</LinearLayout>
