@@ -23,7 +23,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:tag="nameLayout"></LinearLayout>
+        android:tag="nameLayout">
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/mailEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_email" />
+
+    <LinearLayout
+        android:id="@+id/mailLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:tag="mailLayout"></LinearLayout>
+
+    <TextView
+        android:id="@+id/statusEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_status" />
+
+    <LinearLayout
+        android:id="@+id/statusLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:tag="statusLayout"></LinearLayout>
 
     <LinearLayout
         android:id="@+id/buttonsLayout"

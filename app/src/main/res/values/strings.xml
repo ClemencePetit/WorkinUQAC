@@ -19,6 +19,7 @@
     <string name="edit_layout">INFORMATIONS</string>
     <string name="edit_name">Ton nom : </string>
     <string name="edit_email">Ton adresse-mail : </string>
+    <string name="edit_status">Ton status : </string>
     <string name="edit_mdp">Ton mot de passe : </string>
     <string name="edit_mdp_confirm">Confirmation de ton mot de passe : </string>
 

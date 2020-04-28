@@ -46,24 +46,47 @@ public class EditFragment extends Fragment {
             }
         });
 
-        LinearLayout nameLayout=getView().findViewById(R.id.nameLayout);
         LayoutInflater inflater=(LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View rowView = inflater.inflate(R.layout.information_edit_profile_layout,null);
-        rowView.setTag("nameLayout");
-        Button editNameButton = rowView.findViewById(R.id.infomationEditButton);
+
+        LinearLayout nameLayout=getView().findViewById(R.id.nameLayout);
+        final View nameView = inflater.inflate(R.layout.information_edit_profile_layout,null);
+        nameView.setTag("nameLayout");
+        Button editNameButton = nameView.findViewById(R.id.infomationEditButton);
         editNameButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 goToEdit(v);
             }
         });
-        nameLayout.addView(rowView);
+        nameLayout.addView(nameView);
+
+        LinearLayout mailLayout=getView().findViewById(R.id.mailLayout);
+        final View mailView = inflater.inflate(R.layout.information_edit_profile_layout,null);
+        mailView.setTag("mailLayout");
+        editNameButton = mailView.findViewById(R.id.infomationEditButton);
+        editNameButton.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                goToEdit(v);
+            }
+        });
+        mailLayout.addView(mailView);
+
+        LinearLayout statusLayout=getView().findViewById(R.id.statusLayout);
+        final View statusView = inflater.inflate(R.layout.information_edit_profile_layout,null);
+        statusView.setTag("statusLayout");
+        editNameButton = statusView.findViewById(R.id.infomationEditButton);
+        editNameButton.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                goToEdit(v);
+            }
+        });
+        statusLayout.addView(statusView);
 
 
 
     }
 
     private void goToEdit(View v){
-        Toast.makeText(getContext(), "editer cette information", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "editer cette information "+v.getTag()+" "+getId(), Toast.LENGTH_SHORT).show();
         String parentTag=((View)v.getParent()).getTag().toString();
         LinearLayout parentlayout=getView().findViewWithTag(parentTag);
         parentlayout.removeAllViews();
@@ -85,6 +108,7 @@ public class EditFragment extends Fragment {
             }
         });
         parentlayout.addView(rowView);
+        Toast.makeText(getContext(), parentlayout.getId()+" id parent", Toast.LENGTH_SHORT).show();
     }
 
     private void BackInformation(View v){
