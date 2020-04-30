@@ -22,6 +22,8 @@
     <string name="edit_status">Ton status : </string>
     <string name="edit_mdp">Ton mot de passe : </string>
     <string name="edit_mdp_confirm">Confirmation de ton mot de passe : </string>
+    <string name="edit_picture">Ta photo : </string>
+    <string name="edit_picture_button">Choisir un fichier</string>
 
     <string name="debug">Fallait pas s\'attendre à des miracles</string>
 </resources>

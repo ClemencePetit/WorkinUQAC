@@ -1,18 +1,28 @@
 package com.example.workinuqac;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 public class EditFragment extends Fragment {
 
+    static final int RESULT_LOAD_IMG = 1;
 
     //id fragment : 3
     public static EditFragment newInstance() {
@@ -92,8 +102,44 @@ public class EditFragment extends Fragment {
         });
         mdpLayout.addView(mdpView);
 
+        editButton=getView().findViewById(R.id.pictureButton);
+        editButton.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                choosePicture();
+            }
+        });
 
+    }
 
+    private void choosePicture(){
+        Toast.makeText(getContext(), "changer de photo", Toast.LENGTH_SHORT).show();
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent,RESULT_LOAD_IMG);
+    }
+
+    @Override
+    public void onActivityResult(int reqCode, int resultCode,Intent data){
+        super.onActivityResult(reqCode,resultCode,data);
+        if (resultCode == Activity.RESULT_OK) {
+            try {
+                 Uri imageUri = data.getData();
+                Toast.makeText(getContext(), imageUri.getPath(),Toast.LENGTH_LONG).show();
+
+                InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
+                 Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                 ImageView selectedImg=getView().findViewById(R.id.pictureEditImage);
+                 selectedImg.setImageBitmap(selectedImage);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), "Une erreur s'est produite",Toast.LENGTH_LONG).show();
+
+            }
+
+        }else {
+            Toast.makeText(getContext(),"Vous n'avez pas choisi d'image", Toast.LENGTH_LONG).show();
+
+        }
     }
 
     private void goToEdit(View v){

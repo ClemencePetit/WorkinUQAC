@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -66,6 +71,24 @@
         android:orientation="vertical"
         android:tag="mdpLayout"></LinearLayout>
 
+    <TextView
+        android:id="@+id/pictureText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_picture" />
+
+    <ImageView
+        android:id="@+id/pictureEditImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/profile_picture_default" />
+
+    <Button
+        android:id="@+id/pictureButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_picture_button" />
+
     <LinearLayout
         android:id="@+id/buttonsLayout"
         android:layout_width="match_parent"
@@ -103,3 +126,4 @@
     </LinearLayout>
 
 </LinearLayout>
+</ScrollView>
