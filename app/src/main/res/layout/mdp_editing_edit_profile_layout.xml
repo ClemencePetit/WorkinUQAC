@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/editingEditLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <EditText
+                android:id="@+id/mdpEditingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="100dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPassword" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_mdp_confirm" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <EditText
+                android:id="@+id/mdpEditingConfirmText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPassword" />
+
+            <Button
+                android:id="@+id/editingvalidateButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:foreground="@android:drawable/ic_menu_send" />
+
+            <Button
+                android:id="@+id/editingcancelButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:foreground="@android:drawable/ic_menu_close_clear_cancel" />
+        </TableRow>
+
+
+
+</TableLayout>

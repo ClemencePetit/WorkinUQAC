@@ -53,6 +53,19 @@
         android:orientation="vertical"
         android:tag="statusLayout"></LinearLayout>
 
+    <TextView
+        android:id="@+id/mdpEditTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_mdp" />
+
+    <LinearLayout
+        android:id="@+id/mdpLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:tag="mdpLayout"></LinearLayout>
+
     <LinearLayout
         android:id="@+id/buttonsLayout"
         android:layout_width="match_parent"
