@@ -17,14 +17,13 @@ public class EdtFragment extends Fragment {
         private static final String KEY_NAME="name";
         private static final String KEY_DAY="day";
         private static final String KEY_HOUR="hour";
-        private static final String KEY_ROOM="room";
 
 
         public EdtFragment() { }
 
 
         // 2 - Method that will create a new instance of PageFragment, and add data to its bundle.
-        public static EdtFragment newInstance(String name, String day, String hour, String room) {
+        public static EdtFragment newInstance(String name, String day, String hour) {
 
             // 2.1 Create new fragment
             EdtFragment EF = new EdtFragment();
@@ -34,7 +33,6 @@ public class EdtFragment extends Fragment {
             args.putString(KEY_NAME, name);
             args.putString(KEY_DAY, day);
             args.putString(KEY_HOUR, hour);
-            args.putString(KEY_ROOM, room);
             EF.setArguments(args);
 
             return(EF);
@@ -49,17 +47,14 @@ public class EdtFragment extends Fragment {
             TextView className= (TextView) result.findViewById(R.id.classNameText);
             TextView classDay= (TextView) result.findViewById(R.id.classDayText);
             TextView classHours= (TextView) result.findViewById(R.id.classHoursText);
-            TextView classRoom= (TextView) result.findViewById(R.id.classRoomText);
 
             String name= getArguments().getString(KEY_NAME,"");
             String day= getArguments().getString(KEY_DAY,"");
             String hours= getArguments().getString(KEY_HOUR,"");
-            String room= getArguments().getString(KEY_ROOM,"");
 
             className.setText(name);
             classDay.setText(day);
             classHours.setText(hours);
-            classRoom.setText(room);
 
             Button studentsButton = result.findViewById(R.id.classStudentsButton);
             studentsButton.setOnClickListener(new Button.OnClickListener() {

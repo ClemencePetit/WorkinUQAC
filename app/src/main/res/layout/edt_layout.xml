@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    android:paddingLeft="15dp"
+    android:paddingTop="10dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="10dp">
 
     <TextView
         android:id="@+id/classNameText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mobile" />
+        android:lines="1"
+        android:textSize="22sp" />
 
     <TextView
         android:id="@+id/classDayText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Jeudi" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/classHoursText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="13h- 15h45" />
-
-    <TextView
-        android:id="@+id/classRoomText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="P1 4520" />
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/classStudentsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Eleves participants au cours" />
+        android:text="@string/edt_students_button" />
 </LinearLayout>

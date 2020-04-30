@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 public class ConnectedFragment extends Fragment {
@@ -36,19 +35,13 @@ public class ConnectedFragment extends Fragment {
         Button buttonEdt = (Button) view.findViewById(R.id.edtButton);
         buttonEdt.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                accessEdt();
+                editEdt();
             }
         });
         Button buttonpicture = (Button) view.findViewById(R.id.pictureButton);
         buttonpicture.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 editProfile();
-            }
-        });
-        Button buttonUsers = (Button) view.findViewById(R.id.usersButton);
-        buttonUsers.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                searchUser();
             }
         });
         Button buttonDeconnexion = (Button) view.findViewById(R.id.deconnectionButton);
@@ -71,8 +64,8 @@ public class ConnectedFragment extends Fragment {
         Toast.makeText(getContext(), "Search User", Toast.LENGTH_SHORT).show();
     }
 
-    private void accessEdt(){
-        Toast.makeText(getContext(), "Access EDT", Toast.LENGTH_SHORT).show();
+    private void editEdt(){
+        Toast.makeText(getContext(), "Edit EDT", Toast.LENGTH_SHORT).show();
 
     }
     private void editProfile(){
