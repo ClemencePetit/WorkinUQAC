@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+<LinearLayout
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <SearchView
+        android:id="@+id/usersSearchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <ImageView
         android:id="@+id/profileImage"
@@ -72,13 +81,10 @@
         android:text="@string/usersButton"
         android:textColor="@android:color/white" />
 
-    <Button
-        android:id="@+id/conversationsButton"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/edtViewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        android:text="@string/conversationsButton"
-        android:textColor="@android:color/white" />
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/deconnectionButton"
@@ -87,3 +93,4 @@
         android:text="@string/deconnectionButton" />
 
 </LinearLayout>
+</ScrollView>
