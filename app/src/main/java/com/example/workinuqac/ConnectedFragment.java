@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 public class ConnectedFragment extends Fragment {
 
@@ -49,12 +51,6 @@ public class ConnectedFragment extends Fragment {
                 searchUser();
             }
         });
-        Button buttonConvs = (Button) view.findViewById(R.id.conversationsButton);
-        buttonConvs.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                accessConversations();
-            }
-        });
         Button buttonDeconnexion = (Button) view.findViewById(R.id.deconnectionButton);
         buttonDeconnexion.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
@@ -62,15 +58,19 @@ public class ConnectedFragment extends Fragment {
             }
         });
 
+
+        ViewPager2 pager = (ViewPager2)view.findViewById(R.id.edtViewPager);
+        //TODO parametres : tableaux des Cours du user
+        pager.setAdapter(new EdtAdapter(getActivity(), null) {
+        });
+        Toast.makeText(getContext(), "creation faite", Toast.LENGTH_SHORT).show();
+
     }
 
     private void searchUser(){
         Toast.makeText(getContext(), "Search User", Toast.LENGTH_SHORT).show();
     }
-    private void accessConversations(){
-        Toast.makeText(getContext(), "Access Conversations", Toast.LENGTH_SHORT).show();
 
-    }
     private void accessEdt(){
         Toast.makeText(getContext(), "Access EDT", Toast.LENGTH_SHORT).show();
 

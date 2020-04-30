@@ -81,7 +81,7 @@
         android:text="@string/usersButton"
         android:textColor="@android:color/white" />
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/edtViewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

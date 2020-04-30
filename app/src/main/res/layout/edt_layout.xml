@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/classNameText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mobile" />
+
+    <TextView
+        android:id="@+id/classDayText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Jeudi" />
+
+    <TextView
+        android:id="@+id/classHoursText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="13h- 15h45" />
+
+    <TextView
+        android:id="@+id/classRoomText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="P1 4520" />
+
+    <Button
+        android:id="@+id/classStudentsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Eleves participants au cours" />
+</LinearLayout>
