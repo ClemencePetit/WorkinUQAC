@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "420860189575",
+    "firebase_url": "https://workinuqac.firebaseio.com",
+    "project_id": "workinuqac",
+    "storage_bucket": "workinuqac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:420860189575:android:c7fcead878f610ba5b9122",
+        "android_client_info": {
+          "package_name": "com.example.workinuqac"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "420860189575-57sokrth04q0tv9oju880bjos0i9aq0j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.workinuqac",
+            "certificate_hash": "5a1d43e0d935f0b8b69969f31c0a90b5fd0843c0"
+          }
+        },
+        {
+          "client_id": "420860189575-emat5lpjrsaq9olg7mukt4l9k9e4jura.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAySHCoG_uzb7RD0UWvr1FwGy2dKPq0BM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "420860189575-emat5lpjrsaq9olg7mukt4l9k9e4jura.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
