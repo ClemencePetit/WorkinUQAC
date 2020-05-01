@@ -6,56 +6,58 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import java.io.Console;
 
 public class MainActivity extends AppCompatActivity {
-
+    enum FRAGMENT {
+        USER_PROFILE, // 0
+        LOGIN, // 1
+        INSCRIPTION, // 2
+        PROFILE_EDIT, // 3
+        SEARCH // 4
+    }
 
     private static final int PERMISSION_CODE = 1000;
     private int idUser = -1;//id de l'utilisateur dans la base de données - -1 = pas connecté
-    private int currentFragment =1;
+    private FRAGMENT currentFragment = FRAGMENT.LOGIN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
             setContentView(R.layout.activity_main_portrait);
         else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
             setContentView(R.layout.activity_main_land);
 
-            loadPreferences();
+        loadPreferences();
 
-        if(currentFragment==2){
-            changeFragment(1);
-            changeFragment(2);
+        // Define previous fragment(s)
+        FRAGMENT fragmentToLoad = currentFragment;
+        switch (currentFragment) {
+            case INSCRIPTION:
+                changeFragment(FRAGMENT.LOGIN);
+                break;
+            case PROFILE_EDIT:
+            case SEARCH:
+                changeFragment(FRAGMENT.USER_PROFILE);
+                break;
         }
-        else if(currentFragment==3){
-            changeFragment(0);
-            changeFragment(3);
-        }{
-            changeFragment(currentFragment);
-        }
-        //Toast.makeText(this, "user : " + idUser + " frag : " + currentFragment, Toast.LENGTH_SHORT).show();
+        changeFragment(fragmentToLoad);
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState)
-    {
+    public void onSaveInstanceState(Bundle savedInstanceState) {
 
         savedInstanceState.putInt("idUser", idUser);
-        savedInstanceState.putInt("idFragment",currentFragment);
+        savedInstanceState.putString("fragment", currentFragment.toString());
 
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                 String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
                 requestPermissions(permissions, PERMISSION_CODE);
-            }else {
+            } else {
                 //Permission already granted
             }
         } else {
@@ -78,32 +80,29 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void savePreferences(){
+    public void savePreferences() {
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("idUser",idUser);
-        editor.putInt("idFragment",currentFragment);
+        editor.putInt("idUser", idUser);
+        editor.putString("fragment", currentFragment.name());
         editor.commit();
     }
 
-    public void loadPreferences(){
+    public void loadPreferences() {
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        idUser=sharedPreferences.getInt("idUser",-1);
-        currentFragment=sharedPreferences.getInt("idFragment",1);
+        idUser = sharedPreferences.getInt("idUser", -1);
+        currentFragment = FRAGMENT.valueOf(sharedPreferences.getString("fragment", FRAGMENT.LOGIN.name()));
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         super.onBackPressed();
-        currentFragment=Integer.parseInt(getSupportFragmentManager().findFragmentById(R.id.placeholder).getTag());
+        currentFragment = FRAGMENT.valueOf(getSupportFragmentManager().findFragmentById(R.id.placeholder).getTag());
         savePreferences();
-
     }
 
 
-
-    public void changeFragment(int idFragment){
+    public void changeFragment(FRAGMENT fragment) {
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -112,48 +111,53 @@ public class MainActivity extends AppCompatActivity {
         //1 : page connexion/inscription
         //2 : inscription
         //3 : edit profil
-        switch (idFragment){
-            case 0:
+        switch (fragment) {
+            case USER_PROFILE:
                 ft
                         //.addToBackStack(null)
-                        .replace(R.id.placeholder, ConnectedFragment.newInstance(),"0")
+                        .replace(R.id.placeholder, ConnectedFragment.newInstance(), fragment.name())
                         .commit();
-                idUser=1;
+                idUser = 1;
 
                 break;
-            case 1:
+            case LOGIN:
                 ft
                         //.addToBackStack(null)
-                        .replace(R.id.placeholder, ConnectionFragment.newInstance(),"1")
+                        .replace(R.id.placeholder, ConnectionFragment.newInstance(), fragment.name())
                         .commit();
                 break;
-            case 2:
+            case INSCRIPTION:
                 ft
                         .addToBackStack(null)
-                        .replace(R.id.placeholder, InscriptionFragment.newInstance(),"2")
+                        .replace(R.id.placeholder, InscriptionFragment.newInstance(), fragment.name())
                         .commit();
                 break;
-            case 3:
+            case PROFILE_EDIT:
                 ft
                         .addToBackStack(null)
-                        .replace(R.id.placeholder, EditFragment.newInstance(),"3")
+                        .replace(R.id.placeholder, EditFragment.newInstance(), fragment.name())
                         .commit();
+                break;
+            case SEARCH:
+                /*ft
+                        .addToBackStack(null)
+                        .replace(R.id.placeholder, SearchFragment.newInstance(), fragment.name())
+                        .commit();*/
                 break;
             default:
                 break;
         }
-        currentFragment=idFragment;
 
-
+        currentFragment = fragment;
     }
 
-    public void deconnecter(){
-        idUser=-1;
-        changeFragment(1);
+    public void deconnecter() {
+        idUser = -1;
+        changeFragment(FRAGMENT.LOGIN);
     }
 
     @Override
-    protected void onStop(){
+    protected void onStop() {
         savePreferences();
         super.onStop();
     }

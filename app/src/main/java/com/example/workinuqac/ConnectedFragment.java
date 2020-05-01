@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -52,15 +52,30 @@ public class ConnectedFragment extends Fragment {
         });
 
 
+        SearchView userSearch = view.findViewById(R.id.usersSearchView);
+        userSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchUserOrClass(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return true;
+            }
+        });
+
+
         ViewPager2 pager = (ViewPager2)view.findViewById(R.id.edtViewPager);
         //TODO parametres : tableaux des Cours du user
         pager.setAdapter(new EdtAdapter(getActivity(), null) {
         });
-        Toast.makeText(getContext(), "creation faite", Toast.LENGTH_SHORT).show();
-
+        //Toast.makeText(getContext(), "creation faite", Toast.LENGTH_SHORT).show();
     }
 
-    private void searchUser(){
+    private void searchUserOrClass(String user){
+        ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.SEARCH);
         Toast.makeText(getContext(), "Search User", Toast.LENGTH_SHORT).show();
     }
 
@@ -69,7 +84,7 @@ public class ConnectedFragment extends Fragment {
 
     }
     private void editProfile(){
-        ((MainActivity)getActivity()).changeFragment(3);
+        ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.PROFILE_EDIT);
 
     }
 

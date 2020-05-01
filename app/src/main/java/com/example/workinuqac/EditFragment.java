@@ -300,10 +300,10 @@ public class EditFragment extends Fragment {
     //QUITTER LA PAGE EDIT = SAVE LES DATAS DANS LA BDD
     private void validateEdit(){
         //TODO ajouter enregistrement des modifications dans la BDD
-        ((MainActivity)getActivity()).changeFragment(0);
+        ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
     }
     private void cancelEdit(){
-        ((MainActivity)getActivity()).changeFragment(0);
+        ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
     }
 
 }

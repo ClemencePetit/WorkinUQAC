@@ -56,7 +56,7 @@ public class InscriptionFragment extends Fragment {
                         if(mdpTxt.getText().toString().equals(mdpConfirmTxt.getText().toString()))
                         {
                             Toast.makeText(getContext(), "Profil créé", Toast.LENGTH_SHORT).show();
-                            ((MainActivity)getActivity()).changeFragment(0);
+                            ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
                             //TODO création row dans BDD + transmettre valeurs au profil
                         }
                         else
