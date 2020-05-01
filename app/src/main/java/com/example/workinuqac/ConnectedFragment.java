@@ -52,7 +52,7 @@ public class ConnectedFragment extends Fragment {
         });
 
 
-        SearchView userSearch = view.findViewById(R.id.usersSearchView);
+        SearchView userSearch = view.findViewById(R.id.searchView);
         userSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -74,7 +74,8 @@ public class ConnectedFragment extends Fragment {
         //Toast.makeText(getContext(), "creation faite", Toast.LENGTH_SHORT).show();
     }
 
-    private void searchUserOrClass(String user){
+    private void searchUserOrClass(String query){
+        SearchFragment.currentQuery = query;
         ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.SEARCH);
         Toast.makeText(getContext(), "Search User", Toast.LENGTH_SHORT).show();
     }

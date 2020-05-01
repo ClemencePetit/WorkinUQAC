@@ -10,12 +10,12 @@
         android:orientation="vertical">
 
         <SearchView
-            android:id="@+id/usersSearchView"
+            android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:iconifiedByDefault="false"
             android:padding="5dp"
-            android:queryHint="Chercher un étudiant, un cours..." />
+            android:queryHint="@string/searchSentence" />
 
         <ImageView
             android:id="@+id/profileImage"

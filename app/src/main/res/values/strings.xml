@@ -29,4 +29,5 @@
     <string name="edt_students_button">Liste des participants</string>
 
     <string name="debug">Fallait pas s\'attendre à des miracles</string>
+    <string name="searchSentence">Chercher un étudiant, un cours...</string>
 </resources>

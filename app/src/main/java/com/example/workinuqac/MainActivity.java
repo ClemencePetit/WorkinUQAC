@@ -106,11 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        //argument : vers quel fragment aller par la suite
-        //0 : profil
-        //1 : page connexion/inscription
-        //2 : inscription
-        //3 : edit profil
+        // Argument : vers quel fragment aller par la suite
         switch (fragment) {
             case USER_PROFILE:
                 ft
@@ -139,10 +135,10 @@ public class MainActivity extends AppCompatActivity {
                         .commit();
                 break;
             case SEARCH:
-                /*ft
+                ft
                         .addToBackStack(null)
                         .replace(R.id.placeholder, SearchFragment.newInstance(), fragment.name())
-                        .commit();*/
+                        .commit();
                 break;
             default:
                 break;
