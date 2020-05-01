@@ -30,4 +30,6 @@
 
     <string name="debug">Fallait pas s\'attendre à des miracles</string>
     <string name="searchSentence">Chercher un étudiant, un cours...</string>
+    <string name="contactText">Contact</string>
+    <string name="studentEdtText">Cours</string>
 </resources>

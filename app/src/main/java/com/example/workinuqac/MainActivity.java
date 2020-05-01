@@ -17,15 +17,16 @@ import java.io.Console;
 
 public class MainActivity extends AppCompatActivity {
     enum FRAGMENT {
-        USER_PROFILE, // 0
-        LOGIN, // 1
-        INSCRIPTION, // 2
-        PROFILE_EDIT, // 3
-        SEARCH // 4
+        USER_PROFILE,   // 0
+        LOGIN,          // 1
+        INSCRIPTION,    // 2
+        PROFILE_EDIT,   // 3
+        SEARCH,         // 4
+        STUDENT_PROFILE // 5
     }
 
     private static final int PERMISSION_CODE = 1000;
-    private int idUser = -1;//id de l'utilisateur dans la base de données - -1 = pas connecté
+    private int idUser = -1; // ID de l'utilisateur dans la base de données - -1 = pas connecté
     private FRAGMENT currentFragment = FRAGMENT.LOGIN;
 
     @Override
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
             case SEARCH:
                 changeFragment(FRAGMENT.USER_PROFILE);
                 break;
+            case STUDENT_PROFILE:
+                changeFragment(FRAGMENT.SEARCH);
         }
         changeFragment(fragmentToLoad);
     }
@@ -138,6 +141,12 @@ public class MainActivity extends AppCompatActivity {
                 ft
                         .addToBackStack(null)
                         .replace(R.id.placeholder, SearchFragment.newInstance(), fragment.name())
+                        .commit();
+                break;
+            case STUDENT_PROFILE:
+                ft
+                        .addToBackStack(null)
+                        .replace(R.id.placeholder, ProfileFragment.newInstance(), fragment.name())
                         .commit();
                 break;
             default:

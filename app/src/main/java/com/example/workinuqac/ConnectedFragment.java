@@ -21,7 +21,7 @@ public class ConnectedFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.profile_layout, parent, false);
+        return inflater.inflate(R.layout.user_profile_layout, parent, false);
     }
 
     @Override
@@ -52,11 +52,12 @@ public class ConnectedFragment extends Fragment {
         });
 
 
-        SearchView userSearch = view.findViewById(R.id.searchView);
+        final SearchView userSearch = view.findViewById(R.id.searchView);
         userSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchUserOrClass(query);
+                userSearch.setQuery("", false);
                 return true;
             }
 
