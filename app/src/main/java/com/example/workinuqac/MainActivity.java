@@ -13,6 +13,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.io.Console;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private int idUser = -1;//id de l'utilisateur dans la base de données - -1 = pas connecté
     private FRAGMENT currentFragment = FRAGMENT.LOGIN;
 
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -38,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.activity_main_land);
 
         loadPreferences();
+        mAuth = FirebaseAuth.getInstance();
 
         // Define previous fragment(s)
         FRAGMENT fragmentToLoad = currentFragment;
@@ -77,7 +83,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             //Old OS
         }
-
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        //updateUI(currentUser);
     }
 
     public void savePreferences() {
