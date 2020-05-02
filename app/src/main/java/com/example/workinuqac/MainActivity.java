@@ -31,13 +31,7 @@ import java.io.FileDescriptor;
 import java.io.PrintWriter;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
-    private GoogleApiClient mGoogleApiClient;
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
+public class MainActivity extends AppCompatActivity {
 
     enum FRAGMENT {
         USER_PROFILE, // 0
@@ -51,8 +45,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private int idUser = -1;//id de l'utilisateur dans la base de données - -1 = pas connecté
     private FRAGMENT currentFragment = FRAGMENT.LOGIN;
 
-    private FirebaseAuth mAuth;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -63,15 +55,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             setContentView(R.layout.activity_main_land);
 
         loadPreferences();
-        mAuth = FirebaseAuth.getInstance();
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this,this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
 
 
         // Define previous fragment(s)
@@ -112,8 +95,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         } else {
             //Old OS
         }
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
     }
 
     public void savePreferences() {

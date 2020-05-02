@@ -12,15 +12,24 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.GoogleApi;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.auth.FirebaseAuth;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class ConnectionFragment extends Fragment {
+public class ConnectionFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener{
 
     private static final int RC_SIGN_IN = 1000;
+    private GoogleApiClient mGoogleApiClient;
 
     //id fragment : 1
     public static ConnectionFragment newInstance() {
@@ -37,6 +46,16 @@ public class ConnectionFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+                    .enableAutoManage(getActivity(), this)
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                    .build();
+        }
     }
 
     @Override
@@ -76,5 +95,31 @@ public class ConnectionFragment extends Fragment {
     private void identifyProfil(){
         Toast.makeText(getContext(), "Identification profil", Toast.LENGTH_SHORT).show();
         ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast.makeText(getContext(),"Google SignIn failed", Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
+    }
+
+    private void handleSignInResult(GoogleSignInResult result) {
+        if(result.isSuccess()) {
+            GoogleSignInAccount acct = result.getSignInAccount();
+            Toast.makeText(getContext(), "Hello" + acct.getDisplayName(), Toast.LENGTH_SHORT);
+            ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
+        }
+        else {
+            //Connection Failed
+        }
     }
 }

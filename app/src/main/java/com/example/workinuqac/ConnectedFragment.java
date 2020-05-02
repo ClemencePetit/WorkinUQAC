@@ -47,7 +47,7 @@ public class ConnectedFragment extends Fragment {
         Button buttonDeconnexion = (Button) view.findViewById(R.id.deconnectionButton);
         buttonDeconnexion.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                deconnecter();
+                signOut();
             }
         });
 
@@ -89,7 +89,7 @@ public class ConnectedFragment extends Fragment {
 
     }
 
-    private void deconnecter(){
+    private void signOut(){
         ((MainActivity)getActivity()).signOut();
     }
 }
