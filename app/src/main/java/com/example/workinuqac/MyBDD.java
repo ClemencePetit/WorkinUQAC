@@ -144,4 +144,25 @@ public class MyBDD {
             }
         });
     }
+
+    //TODO
+    /*
+    PARTIE FIREBASE
+    -créer la table de cours
+    -sortir de la phase de tests (règles d'authentification, cf tuto)
+
+    PARTIE USER
+    -supprimer un user
+    -ajouter un cours à un user
+    -supprimer un cours
+
+    PARTIE BDD
+    -lire la liste des étudiants inscrits à un cours
+    -lire la liste des cours?
+    -rajouter un cours (unused normally)
+    -supprimer un cours (unused normally)
+    -ajouter un élève à un cours
+    -supprimer un élève d'un cours
+    -Gérer les profs & sessions
+     */
 }
