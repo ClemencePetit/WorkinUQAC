@@ -24,7 +24,6 @@ import java.io.InputStream;
 public class EditFragment extends Fragment {
 
     private int RESULT_LOAD_IMG = 1;
-    private String pathNouvelleImage;
 
     //id fragment : 3
     public static EditFragment newInstance() {
@@ -135,8 +134,7 @@ public class EditFragment extends Fragment {
         if (resultCode == Activity.RESULT_OK) {
             try {
                  Uri imageUri = data.getData();
-                 pathNouvelleImage=imageUri.getPath();
-                InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
+                 InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
                  Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                  ImageView selectedImg=getView().findViewById(R.id.pictureEditImage);
                  selectedImg.setImageBitmap(selectedImage);
@@ -154,9 +152,9 @@ public class EditFragment extends Fragment {
     //passer de l'affichage de l'information actuelle à l'édition de cette dernière
     private void goToEdit(View v){
         String parentTag=((View)v.getParent()).getTag().toString();
-        LinearLayout parentlayout=getView().findViewWithTag(parentTag);
+        LinearLayout parentLayout=getView().findViewWithTag(parentTag);
 
-        parentlayout.removeAllViews();
+        parentLayout.removeAllViews();
 
         LayoutInflater inflater=(LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.editing_edit_profile_layout,null);
@@ -178,15 +176,15 @@ public class EditFragment extends Fragment {
             }
         });
 
-        parentlayout.addView(rowView);
+        parentLayout.addView(rowView);
     }
 
     //passer de l'affichage de l'information actuelle à l'édition de cette dernière pour le mdp
     private void goToMdpEdit(View v){
         String parentTag=((View)v.getParent()).getTag().toString();
-        LinearLayout parentlayout=getView().findViewWithTag(parentTag);
+        LinearLayout parentLayout=getView().findViewWithTag(parentTag);
 
-        parentlayout.removeAllViews();
+        parentLayout.removeAllViews();
 
         LayoutInflater inflater=(LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.mdp_editing_edit_profile_layout,null);
@@ -211,15 +209,15 @@ public class EditFragment extends Fragment {
             }
         });
 
-        parentlayout.addView(rowView);
+        parentLayout.addView(rowView);
     }
 
     //passer de l'édition de l'information actuelle à l'affichage de cette dernière
     private void BackInformation(View v){
         String parentTag=((View)v.getParent()).getTag().toString();
-        LinearLayout parentlayout=getView().findViewWithTag(parentTag);
+        LinearLayout parentLayout=getView().findViewWithTag(parentTag);
 
-        parentlayout.removeAllViews();
+        parentLayout.removeAllViews();
 
         LayoutInflater inflater=(LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.information_edit_profile_layout,null);
@@ -232,15 +230,15 @@ public class EditFragment extends Fragment {
             }
         });
 
-        parentlayout.addView(rowView);
+        parentLayout.addView(rowView);
 
     }
     //passer de l'édition de l'information actuelle à l'affichage de cette dernière pour le mdp
     private void mdpBackInformation(View v){
         String parentTag=((View)((View)v.getParent()).getParent()).getTag().toString();
-        LinearLayout parentlayout=getView().findViewWithTag(parentTag);
+        LinearLayout parentLayout=getView().findViewWithTag(parentTag);
 
-        parentlayout.removeAllViews();
+        parentLayout.removeAllViews();
 
         LayoutInflater inflater=(LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.mdp_info_edit_profile_layout,null);
@@ -253,7 +251,7 @@ public class EditFragment extends Fragment {
             }
         });
 
-        parentlayout.addView(rowView);
+        parentLayout.addView(rowView);
 
     }
 
