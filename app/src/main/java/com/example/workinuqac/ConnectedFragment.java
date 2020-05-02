@@ -90,6 +90,6 @@ public class ConnectedFragment extends Fragment {
     }
 
     private void deconnecter(){
-        ((MainActivity)getActivity()).deconnecter();
+        ((MainActivity)getActivity()).signOut();
     }
 }
