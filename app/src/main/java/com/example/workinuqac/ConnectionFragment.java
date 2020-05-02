@@ -26,7 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class ConnectionFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener{
+public class ConnectionFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks{
 
     private static final int RC_SIGN_IN = 1000;
     private GoogleApiClient mGoogleApiClient;
@@ -53,6 +53,7 @@ public class ConnectionFragment extends Fragment implements GoogleApiClient.OnCo
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(getContext())
                     .enableAutoManage(getActivity(), this)
+                    .addConnectionCallbacks(this)
                     .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                     .build();
         }
@@ -121,5 +122,22 @@ public class ConnectionFragment extends Fragment implements GoogleApiClient.OnCo
         else {
             //Connection Failed
         }
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mGoogleApiClient.stopAutoManage(getActivity());
+        mGoogleApiClient.disconnect();
     }
 }
