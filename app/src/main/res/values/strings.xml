@@ -32,4 +32,6 @@
     <string name="searchSentence">Chercher un étudiant, un cours...</string>
     <string name="contactText">Contact</string>
     <string name="studentEdtText">Cours</string>
+
+    <string name="dialogName">Entre ton nom</string>
 </resources>

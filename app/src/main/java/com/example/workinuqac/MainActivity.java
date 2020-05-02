@@ -3,6 +3,7 @@ package com.example.workinuqac;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -23,6 +24,8 @@ import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.ResultCallbacks;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     enum FRAGMENT {
         USER_PROFILE,   // 0
         LOGIN,          // 1
+        AUTHENTIFICATION,
         INSCRIPTION,    // 2
         PROFILE_EDIT,   // 3
         SEARCH,         // 4
@@ -176,6 +180,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         .addToBackStack(null)
                         .replace(R.id.placeholder, ProfileFragment.newInstance(), fragment.name())
                         .commit();
+                break;
+            case AUTHENTIFICATION:
+                ft
+                        .addToBackStack(null);
+                DialogFragment dialogFragment = new DialogFragmentAuthentification();
+                dialogFragment.show(ft, "dialog");
                 break;
             default:
                 break;
