@@ -8,14 +8,13 @@ public class User {
     private String identifiant;
     private String name;
     private String email;
-    private String status;
     private Bitmap photo;
 
     public User(){
 
     }
     public User(String identifiant, Context ctx){
-        this.status="vient de s\'inscrire";
+        this.identifiant=identifiant;
         this.photo= BitmapFactory.decodeResource(ctx.getResources(),
                 R.drawable.profile_picture_default);
     }
@@ -24,9 +23,15 @@ public class User {
         this.identifiant=identifiant;
         this.name=name;
         this.email=email;
-        this.status="vient de s\'inscrire";
         this.photo= BitmapFactory.decodeResource(ctx.getResources(),
                 R.drawable.profile_picture_default);
+    }
+
+    public User(String identifiant, String name, String email, Bitmap photo){
+        this.identifiant=identifiant;
+        this.name=name;
+        this.email=email;
+        this.photo= photo;
     }
 
     public String getIdentifiant(){
@@ -39,10 +44,6 @@ public class User {
 
     public String getEmail(){
         return email;
-    }
-
-    public String getStatus(){
-        return status;
     }
 
     public Bitmap getPhoto(){
@@ -61,11 +62,12 @@ public class User {
         this.name = name;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public void setPhoto(Bitmap photo) {
         this.photo = photo;
+    }
+
+
+    public User clone() {
+        return new User(identifiant,name,email,photo);
     }
 }

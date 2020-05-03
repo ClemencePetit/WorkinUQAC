@@ -55,8 +55,6 @@ public class ConnectedFragment extends Fragment {
 
         TextView nameTxt=view.findViewById(R.id.textName);
         nameTxt.setText(((MainActivity)getActivity()).currentUser.getName());
-        TextView statusTxt=view.findViewById(R.id.textStatus);
-        statusTxt.setText(((MainActivity)getActivity()).currentUser.getStatus());
 
         ImageView photo=view.findViewById(R.id.profileImage);
         photo.setImageBitmap(((MainActivity)getActivity()).currentUser.getPhoto());

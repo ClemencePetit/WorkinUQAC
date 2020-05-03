@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private static final int PERMISSION_CODE = 1000;
-    public String idUser = ""; // ID de l'utilisateur dans la base de données - -1 = pas connecté
+    public String idUser = ""; // ID de l'utilisateur dans la base de données - vide = pas connecté
     public User currentUser;
     private FRAGMENT currentFragment = FRAGMENT.LOGIN;
 
