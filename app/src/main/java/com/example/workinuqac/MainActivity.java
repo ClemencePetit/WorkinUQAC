@@ -145,7 +145,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     public void connection(){
         currentUser=new User(idUser,getApplicationContext());
-        boolean fini=true;
         MyBDD.readUserEmail(idUser, new MyBDD.OnDataReadEventListener() {
             @Override
             public void onEvent() {
@@ -185,7 +184,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         //.addToBackStack(null)
                         .replace(R.id.placeholder, ConnectedFragment.newInstance(), fragment.name())
                         .commit();
-                //TODO CHANGE THAT TO PROPER VALUE OF idUser = 1;
 
                 break;
             case LOGIN:
@@ -241,6 +239,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onStop() {
         savePreferences();
         super.onStop();
+    }
+
+    public void createProfileBDD(){
+        MyBDD.writeNewUser(currentUser.getIdentifiant(),currentUser.getEmail(), currentUser.getName(),null);
     }
 
 

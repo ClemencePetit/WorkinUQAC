@@ -41,50 +41,41 @@ public class InscriptionFragment extends Fragment {
     private void createProfil(){
         //verifications
         View v=getView();
-        EditText nameTxt = v.findViewById(R.id.editNameText);
-        if(!nameTxt.getText().toString().isEmpty())
-        {
-            EditText mailTxt = v.findViewById(R.id.editMailText);
-            if(!mailTxt.getText().toString().isEmpty())
-            {
-                EditText mdpTxt = v.findViewById(R.id.editMdpText);
-                if(!mdpTxt.getText().toString().isEmpty())
-                {
-                    EditText mdpConfirmTxt = v.findViewById(R.id.editMdpConfirmText);
-                    if(!mdpConfirmTxt.getText().toString().isEmpty())
-                    {
-                        if(mdpTxt.getText().toString().equals(mdpConfirmTxt.getText().toString()))
-                        {
-                            Toast.makeText(getContext(), "Profil créé", Toast.LENGTH_SHORT).show();
-                            ((MainActivity)getActivity()).currentUser=new User("DEFAULT",nameTxt.getText().toString(),mailTxt.getText().toString(),getContext());
-                            ((MainActivity)getActivity()).idUser="DEFAULT";
-                            //TODO repasser les valeurs en privés + faire fonction pour les set/get
-                            ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
-                            //TODO création row dans BDD + transmettre valeurs au profil
+        EditText codeTxt = v.findViewById(R.id.editCodePermanentText);
+        if(!codeTxt.getText().toString().isEmpty()) {
+            EditText nameTxt = v.findViewById(R.id.editNameText);
+            if (!nameTxt.getText().toString().isEmpty()) {
+                EditText mailTxt = v.findViewById(R.id.editMailText);
+                if (!mailTxt.getText().toString().isEmpty()) {
+                    EditText mdpTxt = v.findViewById(R.id.editMdpText);
+                    if (!mdpTxt.getText().toString().isEmpty()) {
+                        EditText mdpConfirmTxt = v.findViewById(R.id.editMdpConfirmText);
+                        if (!mdpConfirmTxt.getText().toString().isEmpty()) {
+                            if (mdpTxt.getText().toString().equals(mdpConfirmTxt.getText().toString())) {
+                                Toast.makeText(getContext(), "Profil créé", Toast.LENGTH_SHORT).show();
+                                ((MainActivity) getActivity()).currentUser = new User(codeTxt.getText().toString(), nameTxt.getText().toString(), mailTxt.getText().toString(), getContext());
+                                ((MainActivity) getActivity()).idUser = ((MainActivity) getActivity()).currentUser.getIdentifiant();
+                                ((MainActivity) getActivity()).createProfileBDD();
+                                //TODO repasser les valeurs en privés + faire fonction pour les set/get
+                                ((MainActivity) getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
+                                //TODO création row dans BDD
+                            } else {
+                                Toast.makeText(getContext(), "Les mots de passe ne sont pas identiques", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(getContext(), "Confirme ton mot de passe", Toast.LENGTH_SHORT).show();
                         }
-                        else
-                        {
-                            Toast.makeText(getContext(), "Les mots de passe ne sont pas identiques", Toast.LENGTH_SHORT).show();
-                        }
+                    } else {
+                        Toast.makeText(getContext(), "Remplis ton mot de passe", Toast.LENGTH_SHORT).show();
                     }
-                    else
-                    {
-                        Toast.makeText(getContext(), "Confirme ton mot de passe", Toast.LENGTH_SHORT).show();
-                    }
+                } else {
+                    Toast.makeText(getContext(), "Remplis ton mail", Toast.LENGTH_SHORT).show();
                 }
-                else
-                {
-                    Toast.makeText(getContext(), "Remplis ton mot de passe", Toast.LENGTH_SHORT).show();
-                }
+            } else {
+                Toast.makeText(getContext(), "Remplis ton nom", Toast.LENGTH_SHORT).show();
             }
-            else
-            {
-                Toast.makeText(getContext(), "Remplis ton mail", Toast.LENGTH_SHORT).show();
-            }
-        }
-        else
-        {
-            Toast.makeText(getContext(), "Remplis ton nom", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(), "Remplis ton code permanent", Toast.LENGTH_SHORT).show();
         }
 
 
