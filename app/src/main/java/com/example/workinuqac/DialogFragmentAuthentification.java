@@ -38,7 +38,11 @@ public class DialogFragmentAuthentification extends DialogFragment {
             @Override
             public void onClick(View view) {
                 //Todo : Comparer le mot de passe dans la BDD par rapport au nom entré
+                //Todo : mettre le bon id user : pour le moment, juste pour tester avec une valeur existante
+                ((MainActivity)getActivity()).idUser="BOUL26619706";
+                ((MainActivity)getActivity()).connection();
                 ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
+
                 dismiss();
             }
         });

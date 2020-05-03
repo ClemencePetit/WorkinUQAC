@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -37,6 +38,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks{
 
+
     @Override
     public void onConnected(@Nullable Bundle bundle) {
 
@@ -58,7 +60,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private static final int PERMISSION_CODE = 1000;
-    private int idUser = -1; // ID de l'utilisateur dans la base de données - -1 = pas connecté
+    public String idUser = ""; // ID de l'utilisateur dans la base de données - -1 = pas connecté
+    public User currentUser;
     private FRAGMENT currentFragment = FRAGMENT.LOGIN;
 
     @Override
@@ -72,6 +75,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         loadPreferences();
 
+        //on était déjà identifié quand on a fermé l'appli
+        if(!idUser.isEmpty()){
+            connection();
+        }
 
         // Define previous fragment(s)
         FRAGMENT fragmentToLoad = currentFragment;
@@ -92,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
 
-        savedInstanceState.putInt("idUser", idUser);
+        savedInstanceState.putString("idUser", idUser);
         savedInstanceState.putString("fragment", currentFragment.toString());
 
         super.onSaveInstanceState(savedInstanceState);
@@ -118,14 +125,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public void savePreferences() {
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("idUser", idUser);
+        editor.putString("idUser", idUser);
         editor.putString("fragment", currentFragment.name());
         editor.commit();
     }
 
     public void loadPreferences() {
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        idUser = sharedPreferences.getInt("idUser", -1);
+        idUser = sharedPreferences.getString("idUser", "");
         currentFragment = FRAGMENT.valueOf(sharedPreferences.getString("fragment", FRAGMENT.LOGIN.name()));
     }
 
@@ -136,6 +143,36 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         savePreferences();
     }
 
+    public void connection(){
+        currentUser=new User(idUser,getApplicationContext());
+        boolean fini=true;
+        MyBDD.readUserEmail(idUser, new MyBDD.OnDataReadEventListener() {
+            @Override
+            public void onEvent() {
+                currentUser.setEmail(MyBDD.getCurrentEmail());
+                reloadInterface();
+            }
+        });
+
+        MyBDD.readUserName(idUser, new MyBDD.OnDataReadEventListener() {
+            @Override
+            public void onEvent() {
+                currentUser.setName( MyBDD.getCurrentUsername());
+                reloadInterface();
+            }
+        });
+
+    }
+
+    public void reloadInterface(){
+        Toast.makeText(this, "info recuperee", Toast.LENGTH_SHORT).show();
+        Fragment frg = null;
+        frg = getSupportFragmentManager().findFragmentByTag(currentFragment.name());
+        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.detach(frg);
+        ft.attach(frg);
+        ft.commit();
+    }
 
     public void changeFragment(FRAGMENT fragment) {
 
@@ -148,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         //.addToBackStack(null)
                         .replace(R.id.placeholder, ConnectedFragment.newInstance(), fragment.name())
                         .commit();
-                idUser = 1;
+                //TODO CHANGE THAT TO PROPER VALUE OF idUser = 1;
 
                 break;
             case LOGIN:
@@ -195,7 +232,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     public void signOut() {
-        idUser = -1;
+        idUser = "";
+        currentUser=null;
         changeFragment(FRAGMENT.LOGIN);
     }
 

@@ -5,7 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -51,6 +53,13 @@ public class ConnectedFragment extends Fragment {
             }
         });
 
+        TextView nameTxt=view.findViewById(R.id.textName);
+        nameTxt.setText(((MainActivity)getActivity()).currentUser.getName());
+        TextView statusTxt=view.findViewById(R.id.textStatus);
+        statusTxt.setText(((MainActivity)getActivity()).currentUser.getStatus());
+
+        ImageView photo=view.findViewById(R.id.profileImage);
+        photo.setImageBitmap(((MainActivity)getActivity()).currentUser.getPhoto());
 
         final SearchView userSearch = view.findViewById(R.id.searchView);
         userSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
