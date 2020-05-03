@@ -95,7 +95,7 @@ public class ConnectionFragment extends Fragment implements GoogleApiClient.OnCo
 
     private void identifyProfil(){
         Toast.makeText(getContext(), "Identification profil", Toast.LENGTH_SHORT).show();
-        ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
+        ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.AUTHENTIFICATION);
     }
 
     @Override

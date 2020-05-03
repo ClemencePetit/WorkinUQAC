@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -24,7 +25,7 @@ import java.io.InputStream;
 public class EditFragment extends Fragment {
 
     private int RESULT_LOAD_IMG = 1;
-    private String pathNouvelleImage;
+    private User tempUser;
 
     //id fragment : 3
     public static EditFragment newInstance() {
@@ -43,6 +44,8 @@ public class EditFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
+        tempUser=((MainActivity)getActivity()).currentUser.clone();
 
         //Boutons pour quitter la page d'édition en validant/annulant les modifications
         Button buttonValidate = (Button) view.findViewById(R.id.validateEditButton);
@@ -72,7 +75,11 @@ public class EditFragment extends Fragment {
                 goToEdit(v);
             }
         });
+        TextView infoText = nameView.findViewById(R.id.informationText);
+        infoText.setText(((MainActivity)getActivity()).currentUser.getName());
         nameLayout.addView(nameView);
+
+
 
         //mail
         LinearLayout mailLayout=getView().findViewById(R.id.mailLayout);
@@ -84,19 +91,9 @@ public class EditFragment extends Fragment {
                 goToEdit(v);
             }
         });
+        infoText = mailView.findViewById(R.id.informationText);
+        infoText.setText(((MainActivity)getActivity()).currentUser.getEmail());
         mailLayout.addView(mailView);
-
-        //status
-        LinearLayout statusLayout=getView().findViewById(R.id.statusLayout);
-        View statusView = inflater.inflate(R.layout.information_edit_profile_layout,null);
-        statusView.setTag("statusLayout");
-        editButton = statusView.findViewById(R.id.infomationEditButton);
-        editButton.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                goToEdit(v);
-            }
-        });
-        statusLayout.addView(statusView);
 
         //mdp
         LinearLayout mdpLayout=getView().findViewById(R.id.mdpLayout);
@@ -117,6 +114,8 @@ public class EditFragment extends Fragment {
                 choosePicture();
             }
         });
+        ImageView photoView=getView().findViewById(R.id.pictureEditImage);
+        photoView.setImageBitmap(((MainActivity)getActivity()).currentUser.getPhoto());
 
     }
 
@@ -135,9 +134,9 @@ public class EditFragment extends Fragment {
         if (resultCode == Activity.RESULT_OK) {
             try {
                  Uri imageUri = data.getData();
-                 pathNouvelleImage=imageUri.getPath();
-                InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
+                 InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
                  Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                 tempUser.setPhoto(selectedImage);
                  ImageView selectedImg=getView().findViewById(R.id.pictureEditImage);
                  selectedImg.setImageBitmap(selectedImage);
             } catch (FileNotFoundException e) {
@@ -154,39 +153,45 @@ public class EditFragment extends Fragment {
     //passer de l'affichage de l'information actuelle à l'édition de cette dernière
     private void goToEdit(View v){
         String parentTag=((View)v.getParent()).getTag().toString();
-        LinearLayout parentlayout=getView().findViewWithTag(parentTag);
+        LinearLayout parentLayout=getView().findViewWithTag(parentTag);
 
-        parentlayout.removeAllViews();
+        TextView infoText=((View)v.getParent()).findViewById(R.id.informationText);
+        String info = infoText.getText().toString();
+
+        parentLayout.removeAllViews();
 
         LayoutInflater inflater=(LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.editing_edit_profile_layout,null);
         rowView.setTag(parentTag);
 
+        EditText editInfo = rowView.findViewById(R.id.informationEditText);
+        editInfo.setText(info);
+
         Button validateButton = rowView.findViewById(R.id.editingvalidateButton);
         validateButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                validateInformation();
-                BackInformation(v);
+
+                BackInformation(v,true);
             }
         });
 
         Button cancelButton = rowView.findViewById(R.id.editingcancelButton);
         cancelButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                cancelInformation();
-                BackInformation(v);
+
+                BackInformation(v,false);
             }
         });
 
-        parentlayout.addView(rowView);
+        parentLayout.addView(rowView);
     }
 
     //passer de l'affichage de l'information actuelle à l'édition de cette dernière pour le mdp
     private void goToMdpEdit(View v){
         String parentTag=((View)v.getParent()).getTag().toString();
-        LinearLayout parentlayout=getView().findViewWithTag(parentTag);
+        LinearLayout parentLayout=getView().findViewWithTag(parentTag);
 
-        parentlayout.removeAllViews();
+        parentLayout.removeAllViews();
 
         LayoutInflater inflater=(LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.mdp_editing_edit_profile_layout,null);
@@ -196,8 +201,8 @@ public class EditFragment extends Fragment {
         validateButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 if(checkMdp()){
-                    validateInformation();
-                    mdpBackInformation(v);
+
+                    mdpBackInformation(v,true);
                 }
 
             }
@@ -206,20 +211,48 @@ public class EditFragment extends Fragment {
         Button cancelButton = rowView.findViewById(R.id.editingcancelButton);
         cancelButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                cancelInformation();
-                mdpBackInformation(v);
+
+                mdpBackInformation(v,false);
             }
         });
 
-        parentlayout.addView(rowView);
+        parentLayout.addView(rowView);
     }
 
     //passer de l'édition de l'information actuelle à l'affichage de cette dernière
-    private void BackInformation(View v){
+    private void BackInformation(View v,boolean validateInfo){
         String parentTag=((View)v.getParent()).getTag().toString();
-        LinearLayout parentlayout=getView().findViewWithTag(parentTag);
+        LinearLayout parentLayout=getView().findViewWithTag(parentTag);
 
-        parentlayout.removeAllViews();
+        EditText editInfo = ((View)v.getParent()).findViewById(R.id.informationEditText);
+        String info = editInfo.getText().toString();
+        if(validateInfo){
+            switch (parentTag){
+                case "nameLayout":
+                    tempUser.setName(info);
+                    break;
+                case "mailLayout":
+                    tempUser.setEmail(info);
+                    break;
+                default:
+                    break;
+            }
+            //tempUser prend la valeur
+        }else{
+            switch (parentTag){
+                case "nameLayout":
+                    info = tempUser.getName();
+                    break;
+                case "mailLayout":
+                    info = tempUser.getEmail();
+                    break;
+                default:
+                    break;
+            }
+            //on remet la valeur de temp user
+        }
+
+        parentLayout.removeAllViews();
 
         LayoutInflater inflater=(LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.information_edit_profile_layout,null);
@@ -232,15 +265,22 @@ public class EditFragment extends Fragment {
             }
         });
 
-        parentlayout.addView(rowView);
+        TextView infoText=rowView.findViewById(R.id.informationText);
+        infoText.setText(info);
+
+        parentLayout.addView(rowView);
 
     }
     //passer de l'édition de l'information actuelle à l'affichage de cette dernière pour le mdp
-    private void mdpBackInformation(View v){
+    private void mdpBackInformation(View v, boolean validateinfo){
         String parentTag=((View)((View)v.getParent()).getParent()).getTag().toString();
-        LinearLayout parentlayout=getView().findViewWithTag(parentTag);
+        LinearLayout parentLayout=getView().findViewWithTag(parentTag);
 
-        parentlayout.removeAllViews();
+        if(validateinfo){
+            //on sauve le nouveau mdp
+        }//sinon on garde l'ancien
+
+        parentLayout.removeAllViews();
 
         LayoutInflater inflater=(LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.mdp_info_edit_profile_layout,null);
@@ -253,7 +293,7 @@ public class EditFragment extends Fragment {
             }
         });
 
-        parentlayout.addView(rowView);
+        parentLayout.addView(rowView);
 
     }
 
@@ -287,19 +327,10 @@ public class EditFragment extends Fragment {
         return confirmed;
     }
 
-    //FAIRE DE CETTE VALEUR LA NOUVELLE VALEUR DANS LA PAGE EDIT
-    private void cancelInformation(){
-
-    }
-
-    //REVENIR A LA VALEUR PRESENTE DANS LA BDD DANS L'AFFICHAGE
-    private void validateInformation(){
-
-    }
-
     //QUITTER LA PAGE EDIT = SAVE LES DATAS DANS LA BDD
     private void validateEdit(){
         //TODO ajouter enregistrement des modifications dans la BDD
+        ((MainActivity)getActivity()).currentUser=tempUser.clone();
         ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
     }
     private void cancelEdit(){

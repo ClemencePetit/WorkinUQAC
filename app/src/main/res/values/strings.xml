@@ -10,6 +10,7 @@
     <string name="statusText">...purring on the blanket</string>
     <string name="name_profile">Meow le Sublime</string>
     <string name="inscription_layout">INSCRIPTION</string>
+    <string name="inscription_code">Ton code permanent (ton identifiant de connection) : </string>
     <string name="inscription_name">Ton nom : </string>
     <string name="inscription_email">Ton adresse-mail : </string>
     <string name="inscription_mdp">Ton mot de passe : </string>
@@ -32,4 +33,7 @@
     <string name="searchSentence">Chercher un étudiant, un cours...</string>
     <string name="contactText">Contact</string>
     <string name="studentEdtText">Cours</string>
+
+    <string name="dialogName">Entre ton code permanent</string>
+    <string name="dialogMdp">Entre ton mot de passe</string>
 </resources>
