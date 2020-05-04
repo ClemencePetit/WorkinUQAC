@@ -82,7 +82,7 @@ public class ClassSearchFragment extends Fragment {
             results.add(new User("0", "Clémence", "", c));
             results.add(new User("1","Laura", "", c));
             results.add(new User("2","Louis", "", c));
-            results.add(new User("3","Yoann", "", c));
+            results.add(new User("3","Yoann", "yoyo@mail.net", c));
             results.add(new User("5","Clément Second", "", c));
             results.add(new User("8","Laure Rattu", "", c));
             results.add(new User("13","Lou Ysianne", "", c));

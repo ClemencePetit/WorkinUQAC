@@ -23,7 +23,7 @@ public class ConnectedFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.user_profile_layout, parent, false);
+        return inflater.inflate(R.layout.connected_profile_layout, parent, false);
     }
 
     @Override

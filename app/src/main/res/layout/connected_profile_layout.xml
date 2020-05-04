@@ -6,8 +6,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:iconifiedByDefault="false"
+            android:padding="5dp"
+            android:queryHint="@string/searchSentence" />
 
         <ImageView
             android:id="@+id/profileImage"
@@ -16,7 +24,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
             android:adjustViewBounds="false"
-            android:layout_margin="15dp"
             android:clickable="false"
             android:cropToPadding="false"
             android:scaleType="centerCrop"
@@ -34,7 +41,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="@string/name_profile"
+                android:paddingLeft="50dp"
                 android:textAllCaps="true"
                 android:textColor="@color/colorPrimary"
                 android:textColorLink="@color/colorPrimaryDark"
@@ -42,37 +49,11 @@
                 android:textStyle="bold"
                 android:verticalScrollbarPosition="defaultPosition" />
 
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/textStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:gravity="center_horizontal"
-            android:text="@string/statusText"
-            android:textColor="@color/colorPrimary"
-            android:textColorLink="@color/colorPrimaryDark"
-            android:textSize="18sp"
-            android:textStyle="italic" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textContact"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:gravity="center_horizontal|center_vertical"
-                android:padding="5dp"
-                android:text="@string/contactText"
-                android:textAllCaps="true"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+            <Button
+                android:id="@+id/pictureButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@android:drawable/ic_menu_edit" />
 
         </LinearLayout>
 
@@ -88,12 +69,19 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:gravity="center_horizontal|center_vertical"
-                android:padding="5dp"
-                android:text="@string/studentEdtText"
+                android:paddingLeft="50dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="@string/edtText"
                 android:textAllCaps="true"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
+            <Button
+                android:id="@+id/edtButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@android:drawable/ic_menu_edit" />
         </LinearLayout>
 
         <androidx.viewpager2.widget.ViewPager2
@@ -104,6 +92,14 @@
             android:paddingTop="3dp"
             android:paddingRight="10dp"
             android:paddingBottom="10dp" />
+
+        <Button
+            android:id="@+id/deconnectionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:text="@string/deconnectionButton" />
 
     </LinearLayout>
 </ScrollView>
