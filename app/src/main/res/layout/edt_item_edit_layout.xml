@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    android:paddingLeft="15dp"
+    android:paddingTop="10dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="10dp">
+
+    <Spinner
+        android:id="@+id/classSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:textSize="22sp" />
+
+    <Spinner
+        android:id="@+id/scheduleSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/removeClassButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/edt_remove_button" />
+</LinearLayout>

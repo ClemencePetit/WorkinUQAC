@@ -36,4 +36,6 @@
 
     <string name="dialogName">Entre ton code permanent</string>
     <string name="dialogMdp">Entre ton mot de passe</string>
+    <string name="edt_remove_button">Supprimer cours</string>
+    <string name="addClassButton">Ajouter un cours</string>
 </resources>

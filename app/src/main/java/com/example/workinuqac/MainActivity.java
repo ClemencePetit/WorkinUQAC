@@ -38,7 +38,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         INSCRIPTION,
         PROFILE_EDIT,
         CLASS_SEARCH,
-        USER_PROFILE
+        USER_PROFILE,
+        EDT_EDIT
     }
 
     private static final int PERMISSION_CODE = 1000;
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     break;
                 case PROFILE_EDIT:
                 case CLASS_SEARCH:
+                case EDT_EDIT:
                     changeFragment(FRAGMENT.CONNECTED_PROFILE);
                     break;
                 case USER_PROFILE:
@@ -205,6 +207,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         .addToBackStack(null);
                 DialogFragment dialogFragment = new DialogFragmentAuthentification();
                 dialogFragment.show(ft, "dialog");
+                break;
+            case EDT_EDIT:
+                ft
+                        .addToBackStack(null)
+                        .replace(R.id.placeholder, EdtEditFragment.newInstance(), fragment.name())
+                        .commit();
                 break;
             default:
                 break;
