@@ -132,6 +132,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     public void loadPreferences() {
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.commit();
         idUser = sharedPreferences.getString("idUser", "");
         currentFragment = FRAGMENT.valueOf(sharedPreferences.getString("fragment", FRAGMENT.LOGIN.name()));
     }
