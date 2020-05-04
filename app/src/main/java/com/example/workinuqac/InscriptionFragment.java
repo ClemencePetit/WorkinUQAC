@@ -57,7 +57,7 @@ public class InscriptionFragment extends Fragment {
                                 ((MainActivity) getActivity()).idUser = ((MainActivity) getActivity()).currentUser.getIdentifiant();
                                 ((MainActivity) getActivity()).createProfileBDD();
                                 //TODO repasser les valeurs en privés + faire fonction pour les set/get
-                                ((MainActivity) getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
+                                ((MainActivity) getActivity()).changeFragment(MainActivity.FRAGMENT.CONNECTED_PROFILE);
                                 //TODO création row dans BDD
                             } else {
                                 Toast.makeText(getContext(), "Les mots de passe ne sont pas identiques", Toast.LENGTH_SHORT).show();

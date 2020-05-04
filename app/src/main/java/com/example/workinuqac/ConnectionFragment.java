@@ -2,13 +2,10 @@ package com.example.workinuqac;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -17,8 +14,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.Api;
-import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -102,7 +97,7 @@ public class ConnectionFragment extends Fragment implements GoogleApiClient.OnCo
 
     private void identifyProfil(){
         Toast.makeText(getContext(), "Identification profil", Toast.LENGTH_SHORT).show();
-        ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.AUTHENTIFICATION);
+        ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.AUTHENTICATION);
     }
 
     @Override
@@ -123,7 +118,8 @@ public class ConnectionFragment extends Fragment implements GoogleApiClient.OnCo
     private void handleSignInResult(GoogleSignInResult result) {
         if(result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
-            ((MainActivity) getActivity()).changeFragment(MainActivity.FRAGMENT.CODE);
+            Toast.makeText(getContext(), "Hello" + acct.getDisplayName(), Toast.LENGTH_SHORT);
+            ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.CONNECTED_PROFILE);
         }
         else {
             //Connection Failed
