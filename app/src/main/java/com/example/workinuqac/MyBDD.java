@@ -22,6 +22,7 @@ public class MyBDD {
 
     static private String currentEmail;
     static private String currentUsername;
+    static private String currentCodePermanent;
     static private HashMap<String,String> currentUserCoursesList;
     static private ArrayList<String> allCoursesCodeWithSchedule;
     static private ArrayList<String> allCoursesCode;
@@ -35,6 +36,10 @@ public class MyBDD {
 
     static public String getCurrentUsername(){
         return currentUsername;
+    }
+
+    static public String getCurrentCodePermanent(){
+        return currentCodePermanent;
     }
 
     static public HashMap<String,String> getCurrentUserCoursesList(){
@@ -65,11 +70,13 @@ public class MyBDD {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("users");
+        DatabaseReference emailRef = database.getReference("emailUsers");
         //on rajoute ou update le nom associé au code permanent
 
         myRef.child(codePermanent).child("name").setValue(name);
         myRef.child(codePermanent).child("courses").setValue(cours);
         myRef.child(codePermanent).child("email").setValue(email);
+        emailRef.child(email.replace(".",",")).setValue(codePermanent);
 
         Log.d("BDD","User updated");
     }
@@ -85,6 +92,8 @@ public class MyBDD {
         Log.d("BDD","User updated");
     }
 
+    /*
+    deprecated
     static public void updateUserEmail(String codePermanent, String Email){
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -93,7 +102,7 @@ public class MyBDD {
         myRef.child(codePermanent).child("email").setValue(Email);
 
         Log.d("BDD","User updated");
-    }
+    }*/
 
     static public void updateUserCourses(String codePermanent, HashMap<String,String> coursSchedule){
 
@@ -260,34 +269,27 @@ public class MyBDD {
         coursesRef.addListenerForSingleValueEvent(studentListener);
     }
 
-    static public void querryStudentsFromCourse(String codeCours, final OnDataReadEventListener oc){
+    static public void querryCodeFromEmail(String rawEmail, final OnDataReadEventListener oc){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference coursesRef = database.getReference("courses/"+codeCours);
-        //courses/codeCours/schedule/{liste}
-        //Adding Listener on students list
-        ValueEventListener studentListener = new ValueEventListener() {
+        DatabaseReference codesRef = database.getReference("emailUsers/"+rawEmail.replace(".",","));
+        ValueEventListener listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                queryResultStudentsFromCourse = new ArrayList<String>();
-                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
-                    for(DataSnapshot postSnapshotChild : postSnapshot.getChildren()){
-                        queryResultStudentsFromCourse.add(postSnapshotChild.getKey());
-                    }
-                }
+                currentCodePermanent = dataSnapshot.getValue(String.class);
+                Log.d("BDD","Value : " + dataSnapshot.getValue(String.class));
                 oc.onEvent();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w("BDD", "loadName:onCancelled",databaseError.toException());
+                Log.w("BDD", "loadCodePermanent:onCancelled",databaseError.toException());
             }
         };
-        coursesRef.addListenerForSingleValueEvent(studentListener);
+        codesRef.addListenerForSingleValueEvent(listener);
     }
+
     //TODO
     /*
-    PARTIE FIREBASE
-    -sortir de la phase de tests (règles d'authentification, cf tuto)
 
     PARTIE USER
     -supprimer un user
