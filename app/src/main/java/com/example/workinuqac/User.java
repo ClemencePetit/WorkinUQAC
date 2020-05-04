@@ -5,11 +5,16 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class User {
     private String identifiant;
     private String name;
     private String email;
     private Bitmap photo;
+    //TODO changer pour le bon format
+    private ArrayList<String> courses;
 
     public User(){
 
@@ -17,6 +22,9 @@ public class User {
     public User(String identifiant, Context ctx){
         this.identifiant=identifiant;
         this.photo= photo=decodeSampledBitmapFromResource(ctx.getResources(),R.drawable.profile_picture_default, 250, 250);
+
+        this.name="";
+        this.email="";
     }
 
     public User(String identifiant, String name, String email, Context ctx){
@@ -24,13 +32,20 @@ public class User {
         this.name=name;
         this.email=email;
         this.photo= photo=decodeSampledBitmapFromResource(ctx.getResources(),R.drawable.profile_picture_default, 250, 250);
+
     }
 
-    public User(String identifiant, String name, String email, Bitmap photo){
+    public User(String identifiant, String name, String email, Bitmap photo, ArrayList<String> courses){
         this.identifiant=identifiant;
         this.name=name;
         this.email=email;
         this.photo= photo;
+        if(courses==null){
+            this.courses=null;
+        }
+        else {
+            this.courses = (ArrayList<String>) courses.clone();
+        }
     }
 
     public String getIdentifiant(){
@@ -65,17 +80,23 @@ public class User {
         this.photo = photo;
     }
 
+    public void setCourses(ArrayList<String> courses){
+        this.courses=(ArrayList<String>) courses.clone();
+    }
+
+    public ArrayList<String> getCourses() {
+        return courses;
+    }
 
     public User clone() {
-        return new User(identifiant,name,email,photo);
+        return new User(identifiant,name,email,photo,courses);
     }
 
     public void clear(String identifiant, Context ctx){
         this.identifiant=identifiant;
         name="";
         email="";
-        photo=(BitmapFactory.decodeResource(ctx.getResources(),
-                R.drawable.profile_picture_default));
+        courses=null;
         photo=decodeSampledBitmapFromResource(ctx.getResources(),R.drawable.profile_picture_default, 250, 250);
     }
 

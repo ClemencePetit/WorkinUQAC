@@ -71,9 +71,7 @@ public class ProfileFragment extends Fragment {
 
         ViewPager2 pager = (ViewPager2)view.findViewById(R.id.edtViewPager);
         //TODO parametres : tableaux des Cours du user
-        pager.setAdapter(new EdtAdapter(getActivity(), new ArrayList<String>(Arrays.asList("Cours 1",
-                "Cours 2",
-                "Cours 3"))) {
+        pager.setAdapter(new EdtAdapter(getActivity(), new ArrayList<String>(Arrays.asList("Loading"))) {
         });
 
         Toast.makeText(getContext(), "Etudiant #" + CURRENT_STUDENT_ID, Toast.LENGTH_SHORT).show();
@@ -82,6 +80,20 @@ public class ProfileFragment extends Fragment {
     public void reloadName(){
         TextView nameTxt=getView().findViewById(R.id.textName);
         nameTxt.setText(((MainActivity)getActivity()).searchedUser.getName());
+
+    }
+
+    public void reloadMail(){
+        TextView mailTxt=getView().findViewById(R.id.textContact);
+        mailTxt.setText(((MainActivity)getActivity()).searchedUser.getEmail());
+    }
+
+    public void reloadPhoto(){
+        ImageView photo=getView().findViewById(R.id.profileImage);
+        photo.setImageBitmap(((MainActivity)getActivity()).searchedUser.getPhoto());
+    }
+
+    public void reloadCourses(){
         ViewPager2 pager = (ViewPager2)getView().findViewById(R.id.edtViewPager);
         //TODO parametres : tableaux des Cours du user
         pager.setAdapter(new EdtAdapter(getActivity(), new ArrayList<String>(Arrays.asList("Mon vrai cours 1",
@@ -103,20 +115,6 @@ public class ProfileFragment extends Fragment {
                 "Mon vrai cours 17",
                 "Mon vrai cours 18"))) {
         });
-    }
-
-    public void reloadMail(){
-        TextView mailTxt=getView().findViewById(R.id.textContact);
-        mailTxt.setText(((MainActivity)getActivity()).searchedUser.getEmail());
-    }
-
-    public void reloadPhoto(){
-        ImageView photo=getView().findViewById(R.id.profileImage);
-        photo.setImageBitmap(((MainActivity)getActivity()).searchedUser.getPhoto());
-    }
-
-    public void reloadCourses(){
-
     }
 
 

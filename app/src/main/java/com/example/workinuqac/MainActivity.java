@@ -151,11 +151,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     public void connection(){
         currentUser=new User(idUser,getApplicationContext());
-        MyBDD.readUserEmail(idUser, new MyBDD.OnDataReadEventListener() {
+       /* MyBDD.readUserEmail(idUser, new MyBDD.OnDataReadEventListener() {
             @Override
             public void onEvent() {
                 currentUser.setEmail(MyBDD.getCurrentEmail());
-                reloadInterface();
+
             }
         });
 
@@ -163,11 +163,21 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             @Override
             public void onEvent() {
                 currentUser.setName( MyBDD.getCurrentUsername());
-                reloadInterface();
+
             }
         });
+        MyBDD.readUserCourses(idUser, new MyBDD.OnDataReadEventListener() {
+            @Override
+            public void onEvent() {
+                currentUser.setCourses( MyBDD.getCurrentCoursesList());
+
+            }
+        });*/
+        //TODO recupérer photo
 
     }
+
+
 
     public void reloadInterface(){
         Toast.makeText(this, "info recuperee", Toast.LENGTH_SHORT).show();

@@ -57,10 +57,37 @@ public class ConnectedFragment extends Fragment {
         });
 
         TextView nameTxt=view.findViewById(R.id.textName);
-        nameTxt.setText(((MainActivity)getActivity()).currentUser.getName());
+
+        if(((MainActivity)getActivity()).currentUser.getName().isEmpty()){
+            MyBDD.readUserName(((MainActivity)getActivity()).currentUser.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
+                @Override
+                public void onEvent() {
+                    ((MainActivity)getActivity()).currentUser.setName( MyBDD.getCurrentUsername());
+                    reloadName();
+                }
+            });
+            nameTxt.setText("Loading...");
+        }
+        else
+        {
+            nameTxt.setText(((MainActivity)getActivity()).currentUser.getName());
+        }
 
         ImageView photo=view.findViewById(R.id.profileImage);
-        photo.setImageBitmap(((MainActivity)getActivity()).currentUser.getPhoto());
+        /*if(((MainActivity)getActivity()).currentUser.getPhoto().is)){
+            MyBDD.readUserName(((MainActivity)getActivity()).currentUser.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
+                @Override
+                public void onEvent() {
+                    ((MainActivity)getActivity()).currentUser.setName( MyBDD.getCurrentUsername());
+                    reloadName();
+                }
+            });
+        }
+        else
+        {*/
+            photo.setImageBitmap(((MainActivity)getActivity()).currentUser.getPhoto());
+        //}
+
 
         final SearchView userSearch = view.findViewById(R.id.searchView);
         userSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -80,10 +107,23 @@ public class ConnectedFragment extends Fragment {
 
         ViewPager2 pager = (ViewPager2)view.findViewById(R.id.edtViewPager);
         //TODO parametres : tableaux des Cours du user
-        pager.setAdapter(new EdtAdapter(getActivity(), new ArrayList<String>(Arrays.asList("Cours 1",
-                "Cours 2",
-                "Cours 3"))) {
-        });
+        if(((MainActivity)getActivity()).currentUser.getCourses()!=null)
+        {
+            pager.setAdapter(new EdtAdapter(getActivity(), ((MainActivity)getActivity()).currentUser.getCourses()) {
+            });
+        }
+        else
+        {
+            pager.setAdapter(new EdtAdapter(getActivity(), new ArrayList<String>(Arrays.asList("Loading"))) {
+            });
+            MyBDD.readUserCourses(((MainActivity)getActivity()).currentUser.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
+                @Override
+                public void onEvent() {
+                    ((MainActivity)getActivity()).currentUser.setCourses( MyBDD.getCurrentCoursesList());
+                    reloadCourses();
+                }
+            });
+        }
         //Toast.makeText(getContext(), "creation faite", Toast.LENGTH_SHORT).show();
     }
 
@@ -104,5 +144,26 @@ public class ConnectedFragment extends Fragment {
 
     private void signOut(){
         ((MainActivity)getActivity()).signOut();
+    }
+
+    public void reloadName(){
+        //TODO tester si la view n'est pas nulle
+        TextView nameTxt=getView().findViewById(R.id.textName);
+        nameTxt.setText(((MainActivity)getActivity()).currentUser.getName());
+
+    }
+
+    public void reloadPhoto(){
+        //TODO tester si la view n'est pas nulle
+        ImageView photo=getView().findViewById(R.id.profileImage);
+        photo.setImageBitmap(((MainActivity)getActivity()).currentUser.getPhoto());
+    }
+
+    public void reloadCourses(){
+        //TODO tester si la view n'est pas nulle
+        ViewPager2 pager = (ViewPager2)getView().findViewById(R.id.edtViewPager);
+        //TODO parametres : tableaux des Cours du user
+        pager.setAdapter(new EdtAdapter(getActivity(), ((MainActivity)getActivity()).currentUser.getCourses()) {
+        });
     }
 }
