@@ -31,6 +31,9 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        if(CURRENT_USER == null)
+            return;
+
         //TODO chercher les infos dans la BDD et mettre à jour à partir de CURRENT_USER
         TextView name = view.findViewById(R.id.textName);
         name.setText(CURRENT_USER.getName());
