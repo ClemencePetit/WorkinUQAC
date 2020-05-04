@@ -52,17 +52,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     enum FRAGMENT {
         USER_PROFILE,   // 0
         LOGIN,          // 1
-        AUTHENTIFICATION,
         INSCRIPTION,    // 2
         PROFILE_EDIT,   // 3
         SEARCH,         // 4
-        STUDENT_PROFILE // 5
+        STUDENT_PROFILE, // 5
+        AUTHENTIFICATION,
+        CODE
     }
 
     private static final int PERMISSION_CODE = 1000;
     public String idUser = ""; // ID de l'utilisateur dans la base de données - vide = pas connecté
     public User currentUser;
     private FRAGMENT currentFragment = FRAGMENT.LOGIN;
+    public FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,11 +76,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             setContentView(R.layout.activity_main_land);
 
         loadPreferences();
-
-        //on était déjà identifié quand on a fermé l'appli
-        if(!idUser.isEmpty()){
-            connection();
-        }
+        mAuth = FirebaseAuth.getInstance();
         if(savedInstanceState==null) {
             // Define previous fragment(s)
             FRAGMENT fragmentToLoad = currentFragment;
@@ -120,6 +118,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         } else {
             //Old OS
+        }
+        mAuth = FirebaseAuth.getInstance();
+        //on était déjà identifié quand on a fermé l'appli
+        if(!idUser.isEmpty()){
+            connection();
         }
     }
 
@@ -223,6 +226,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 DialogFragment dialogFragment = new DialogFragmentAuthentification();
                 dialogFragment.show(ft, "dialog");
                 break;
+
+            case CODE:
+                ft
+                        .addToBackStack(null);
+                DialogFragment dialogFragmentCode = new DialogFragmentCodePermanent();
+                dialogFragmentCode.show(ft, "dialog");
+                break;
             default:
                 break;
         }
@@ -234,6 +244,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         idUser = "";
         currentUser=null;
         changeFragment(FRAGMENT.LOGIN);
+        mAuth.signOut();
     }
 
     @Override
