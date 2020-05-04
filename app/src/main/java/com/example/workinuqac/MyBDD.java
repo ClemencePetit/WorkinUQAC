@@ -10,16 +10,24 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MyBDD {
 
     static private String currentEmail;
     static private String currentUsername;
-    static private ArrayList<String> currentCoursesList;
+    static private String currentCodePermanent;
+    static private HashMap<String,String> currentUserCoursesList;
+    static private ArrayList<String> allCoursesCodeWithSchedule;
+    static private ArrayList<String> allCoursesCode;
+    static private ArrayList<String> queryResultStudentsFromCourse;
+    static private ArrayList<String> queryResultStudentsFromCourseWithSchedule;
 
     //GETTERS
     static public String getCurrentEmail(){
@@ -30,20 +38,45 @@ public class MyBDD {
         return currentUsername;
     }
 
-    static public ArrayList<String> getCurrentCoursesList(){
-        return currentCoursesList;
+    static public String getCurrentCodePermanent(){
+        return currentCodePermanent;
+    }
+
+    static public HashMap<String,String> getCurrentUserCoursesList(){
+        return currentUserCoursesList;
+    }
+
+    static public ArrayList<String> getAllCoursesCode(){
+        return allCoursesCode;
+    }
+
+    static public ArrayList<String> getAllCoursesCodeWithSchedule() {return allCoursesCodeWithSchedule;}
+
+    static public String translate(String scheduleCode){
+        String translation = scheduleCode.replace("MO","Monday ")
+        .replace("TU","Tuesday ")
+        .replace("WE","Wednesday ")
+        .replace("TH","Thursday ")
+        .replace("FR","Friday ")
+        .replace("SA","Saturday ")
+        .replace("SU","Sunday ");
+        return translation;
     }
 
     //WRITING IN DB METHODS
+
+    //USERS
     static public void writeNewUser(String codePermanent, String email,String name, List<String> cours){
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("users");
+        DatabaseReference emailRef = database.getReference("emailUsers");
         //on rajoute ou update le nom associé au code permanent
 
         myRef.child(codePermanent).child("name").setValue(name);
         myRef.child(codePermanent).child("courses").setValue(cours);
         myRef.child(codePermanent).child("email").setValue(email);
+        emailRef.child(email.replace(".",",")).setValue(codePermanent);
 
         Log.d("BDD","User updated");
     }
@@ -59,7 +92,9 @@ public class MyBDD {
         Log.d("BDD","User updated");
     }
 
-    static public void updateEmail(String codePermanent, String Email){
+    /*
+    deprecated
+    static public void updateUserEmail(String codePermanent, String Email){
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("users");
@@ -67,16 +102,55 @@ public class MyBDD {
         myRef.child(codePermanent).child("email").setValue(Email);
 
         Log.d("BDD","User updated");
-    }
+    }*/
 
-    static public void updateCourses(String codePermanent, List<String> cours){
+    static public void updateUserCourses(String codePermanent, HashMap<String,String> coursSchedule){
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("users");
+        DatabaseReference usersRef = database.getReference("users");
+        DatabaseReference coursesRef = database.getReference("courses");
         //on rajoute ou update le nom associé au code permanent
-        myRef.child(codePermanent).child("courses").setValue(cours);
+        usersRef.child(codePermanent).child("courses").setValue(coursSchedule);
 
         Log.d("BDD","User updated");
+
+        //On inscrit l'étudiant aux cours
+        for(Map.Entry<String,String> entry : coursSchedule.entrySet()){
+            String codeCours = entry.getKey();
+            String scheduleCours = entry.getValue();
+            coursesRef.child(codeCours).child(scheduleCours).child(codePermanent).setValue(true);
+        }
+
+        Log.d("BDD","Courses updated");
+
+    }
+
+    static public void addUserCourse(String codePermanent, String codeCours, String schedule){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference usersRef = database.getReference("users");
+        DatabaseReference coursesRef = database.getReference("courses");
+        //on rajoute ou update le nom associé au code permanent
+        usersRef.child(codePermanent).child("courses").child(codeCours).setValue(schedule);
+        coursesRef.child(codeCours).child(schedule).child(codePermanent).setValue(true);
+    }
+
+    static public void removeUserCourse(final String codePermanent, final String codeCours, final OnDataReadEventListener oc){
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference userRef = database.getReference("users/"+codePermanent+"/courses/"+codeCours);
+        ValueEventListener nameListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                database.getReference("courses/"+codeCours+"/"+dataSnapshot.getValue()+"/"+codePermanent).removeValue();
+                userRef.removeValue();
+                oc.onEvent();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("BDD", "loadName:onCancelled",databaseError.toException());
+            }
+        };
+        userRef.addListenerForSingleValueEvent(nameListener);
     }
 
     //READING DB METHODS
@@ -131,9 +205,9 @@ public class MyBDD {
         coursRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                currentCoursesList = new ArrayList<String>();
+                currentUserCoursesList = new HashMap<String,String>();
                 for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
-                    currentCoursesList.add(postSnapshot.getValue().toString());
+                    currentUserCoursesList.put(postSnapshot.getKey().toString(),postSnapshot.getValue().toString());
                 }
                 oc.onEvent();
             }
@@ -145,24 +219,80 @@ public class MyBDD {
         });
     }
 
+    //read all the courses in BDD. Result stored in allCoursesCode and allCoursesCodeWithSchedule. Execute oc when data loaded
+    static public void updateCoursesLists(final OnDataReadEventListener oc){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference coursRef = database.getReference("courses");
+        //Adding Listener on courses
+        coursRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                allCoursesCode = new ArrayList<String>();
+                allCoursesCodeWithSchedule = new ArrayList<String>();
+                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                    allCoursesCode.add(postSnapshot.getKey());
+                    for(DataSnapshot postSnapshotChild : postSnapshot.getChildren() ){
+                        if(!postSnapshotChild.getKey().equals("title"))
+                            allCoursesCodeWithSchedule.add(postSnapshot.getKey() + "," + postSnapshotChild.getKey());
+                    }
+                }
+                oc.onEvent();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("BDD","loadCourses:onCancelled",databaseError.toException());
+            }
+        });
+    }
+
+    static public void querryStudentsFromCourse(String codeCours, String schedule, final OnDataReadEventListener oc){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference coursesRef = database.getReference("courses/"+codeCours+"/"+schedule);
+        //Adding Listener on students list
+        Log.d("BDD","Starting request");
+        ValueEventListener studentListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                queryResultStudentsFromCourseWithSchedule = new ArrayList<String>();
+                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                    queryResultStudentsFromCourseWithSchedule.add(postSnapshot.getKey());
+                }
+                oc.onEvent();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("BDD", "loadName:onCancelled",databaseError.toException());
+            }
+        };
+        coursesRef.addListenerForSingleValueEvent(studentListener);
+    }
+
+    static public void querryCodeFromEmail(String rawEmail, final OnDataReadEventListener oc){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference codesRef = database.getReference("emailUsers/"+rawEmail.replace(".",","));
+        ValueEventListener listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                currentCodePermanent = dataSnapshot.getValue(String.class);
+                Log.d("BDD","Value : " + dataSnapshot.getValue(String.class));
+                oc.onEvent();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("BDD", "loadCodePermanent:onCancelled",databaseError.toException());
+            }
+        };
+        codesRef.addListenerForSingleValueEvent(listener);
+    }
+
     //TODO
     /*
-    PARTIE FIREBASE
-    -créer la table de cours
-    -sortir de la phase de tests (règles d'authentification, cf tuto)
 
     PARTIE USER
     -supprimer un user
-    -ajouter un cours à un user
-    -supprimer un cours
 
-    PARTIE BDD
-    -lire la liste des étudiants inscrits à un cours
-    -lire la liste des cours?
-    -rajouter un cours (unused normally)
-    -supprimer un cours (unused normally)
-    -ajouter un élève à un cours
-    -supprimer un élève d'un cours
-    -Gérer les profs & sessions
      */
 }
