@@ -4,13 +4,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 public class ProfileFragment extends Fragment {
-    static int CURRENT_STUDENT_ID = 0;
+    static String CURRENT_STUDENT_ID = "";
+    //private User searchedUser;
 
     static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -28,7 +32,39 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        if(((MainActivity)getActivity()).searchedUser==null){
+            ((MainActivity)getActivity()).searchedUser=new User(CURRENT_STUDENT_ID,getContext());
+        }
+        else
+        {
+            ((MainActivity)getActivity()).searchedUser.clear(CURRENT_STUDENT_ID,getContext());
+        }
+
+        MyBDD.readUserEmail(CURRENT_STUDENT_ID, new MyBDD.OnDataReadEventListener() {
+            @Override
+            public void onEvent() {
+                ((MainActivity)getActivity()).searchedUser.setEmail(MyBDD.getCurrentEmail());
+                reloadMail();
+            }
+        });
+
+        MyBDD.readUserName(CURRENT_STUDENT_ID, new MyBDD.OnDataReadEventListener() {
+            @Override
+            public void onEvent() {
+                ((MainActivity)getActivity()).searchedUser.setName( MyBDD.getCurrentUsername());
+                reloadName();
+            }
+        });
         //TODO chercher les infos dans la BDD et mettre à jour à partir de CURRENT_STUDENT_ID
+        TextView nameTxt=view.findViewById(R.id.textName);
+        nameTxt.setText(((MainActivity)getActivity()).searchedUser.getName());
+
+        TextView mailTxt=view.findViewById(R.id.textContact);
+        mailTxt.setText(((MainActivity)getActivity()).searchedUser.getEmail());
+
+        ImageView photo=view.findViewById(R.id.profileImage);
+        photo.setImageBitmap(((MainActivity)getActivity()).searchedUser.getPhoto());
+
 
         ViewPager2 pager = (ViewPager2)view.findViewById(R.id.edtViewPager);
         //TODO parametres : tableaux des Cours du user
@@ -37,4 +73,25 @@ public class ProfileFragment extends Fragment {
 
         Toast.makeText(getContext(), "Etudiant #" + CURRENT_STUDENT_ID, Toast.LENGTH_SHORT).show();
     }
+
+    public void reloadName(){
+        TextView nameTxt=getView().findViewById(R.id.textName);
+        nameTxt.setText(((MainActivity)getActivity()).searchedUser.getName());
+    }
+
+    public void reloadMail(){
+        TextView mailTxt=getView().findViewById(R.id.textContact);
+        mailTxt.setText(((MainActivity)getActivity()).searchedUser.getEmail());
+    }
+
+    public void reloadPhoto(){
+        ImageView photo=getView().findViewById(R.id.profileImage);
+        photo.setImageBitmap(((MainActivity)getActivity()).searchedUser.getPhoto());
+    }
+
+    public void reloadCourses(){
+
+    }
+
+
 }

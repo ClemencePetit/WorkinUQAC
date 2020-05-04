@@ -13,6 +13,8 @@ import android.Manifest;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private static final int PERMISSION_CODE = 1000;
     public String idUser = ""; // ID de l'utilisateur dans la base de données - vide = pas connecté
     public User currentUser;
+    public User searchedUser;
     private FRAGMENT currentFragment = FRAGMENT.LOGIN;
 
     @Override
@@ -74,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             setContentView(R.layout.activity_main_land);
 
         loadPreferences();
+
 
         //on était déjà identifié quand on a fermé l'appli
         if(!idUser.isEmpty()){
@@ -91,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     changeFragment(FRAGMENT.USER_PROFILE);
                     break;
                 case STUDENT_PROFILE:
+                    changeFragment(FRAGMENT.USER_PROFILE);
                     changeFragment(FRAGMENT.SEARCH);
             }
             changeFragment(fragmentToLoad);

@@ -22,10 +22,10 @@ public class SearchFragment extends Fragment {
     private ListView resultsView;
 
     private static class Student {
-        private final int id;
+        private final String id;
         private final String name;
 
-        Student(int id, String name) {
+        Student(String id, String name) {
             this.id = id;
             this.name = name;
         }
@@ -91,18 +91,18 @@ public class SearchFragment extends Fragment {
             //***** todo remplacer avec la bonne requete BDD
             // - attribuer results
             // - remplir stringResults
-            results.add(new Student(0, "Clémence"));
-            results.add(new Student(1,"Laura"));
-            results.add(new Student(2,"Louis"));
-            results.add(new Student(3,"Yoann"));
-            results.add(new Student(5,"Clément Second"));
-            results.add(new Student(8,"Laure Rattu"));
-            results.add(new Student(13,"Lou Ysianne"));
-            results.add(new Student(16,"Yohan Malaicri"));
-            results.add(new Student(21,"Philippe Etchebest"));
-            results.add(new Student(22,"Justin Bridou"));
-            results.add(new Student(23,"Valérie Damidot"));
-            results.add(new Student(25,"Cyril Féraud"));
+            results.add(new Student("PETC25629800", "Clémence"));
+            results.add(new Student("BOUL26619706","Laura"));
+            results.add(new Student("2","Louis"));
+            results.add(new Student("TEST","Yoann"));
+            results.add(new Student("5","Clément Second"));
+            results.add(new Student("8","Laure Rattu"));
+            results.add(new Student("13","Lou Ysianne"));
+            results.add(new Student("16","Yohan Malaicri"));
+            results.add(new Student("21","Philippe Etchebest"));
+            results.add(new Student("22","Justin Bridou"));
+            results.add(new Student("23","Valérie Damidot"));
+            results.add(new Student("25","Cyril Féraud"));
             for (int i = results.size() - 1; i >= 0; --i) {
                 if (!results.get(i).name.contains(query))
                     results.remove(i);
