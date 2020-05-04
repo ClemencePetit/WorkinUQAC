@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks{
 

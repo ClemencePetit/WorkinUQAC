@@ -119,7 +119,7 @@ public class ConnectionFragment extends Fragment implements GoogleApiClient.OnCo
         if(result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
             Toast.makeText(getContext(), "Hello" + acct.getDisplayName(), Toast.LENGTH_SHORT);
-            ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.CONNECTED_PROFILE);
+            ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.CODE);
         }
         else {
             //Connection Failed
