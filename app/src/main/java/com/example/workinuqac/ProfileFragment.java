@@ -12,6 +12,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class ProfileFragment extends Fragment {
     static String CURRENT_STUDENT_ID = "";
     //private User searchedUser;
@@ -68,7 +71,9 @@ public class ProfileFragment extends Fragment {
 
         ViewPager2 pager = (ViewPager2)view.findViewById(R.id.edtViewPager);
         //TODO parametres : tableaux des Cours du user
-        pager.setAdapter(new EdtAdapter(getActivity(), null) {
+        pager.setAdapter(new EdtAdapter(getActivity(), new ArrayList<String>(Arrays.asList("Cours 1",
+                "Cours 2",
+                "Cours 3"))) {
         });
 
         Toast.makeText(getContext(), "Etudiant #" + CURRENT_STUDENT_ID, Toast.LENGTH_SHORT).show();
@@ -77,6 +82,27 @@ public class ProfileFragment extends Fragment {
     public void reloadName(){
         TextView nameTxt=getView().findViewById(R.id.textName);
         nameTxt.setText(((MainActivity)getActivity()).searchedUser.getName());
+        ViewPager2 pager = (ViewPager2)getView().findViewById(R.id.edtViewPager);
+        //TODO parametres : tableaux des Cours du user
+        pager.setAdapter(new EdtAdapter(getActivity(), new ArrayList<String>(Arrays.asList("Mon vrai cours 1",
+                "Mon vrai cours 2",
+                "Mon vrai cours 3",
+                "Mon vrai cours 4",
+                "Mon vrai cours 5",
+                "Mon vrai cours 6",
+                "Mon vrai cours 7",
+                "Mon vrai cours 8",
+                "Mon vrai cours 9",
+                "Mon vrai cours 10",
+                "Mon vrai cours 11",
+                "Mon vrai cours 12",
+                "Mon vrai cours 13",
+                "Mon vrai cours 14",
+                "Mon vrai cours 15",
+                "Mon vrai cours 16",
+                "Mon vrai cours 17",
+                "Mon vrai cours 18"))) {
+        });
     }
 
     public void reloadMail(){

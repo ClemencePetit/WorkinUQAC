@@ -22,12 +22,12 @@ public class EdtAdapter extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         //TODO taille du tableau
-        return(5);
+        return(cours.size());
     }
 
     @Override
     public Fragment createFragment(int position) {
         //TODO envoyer le cours present a la position donne du tableau cours de Cours
-        return(EdtFragment.newInstance("nom du cours n"+position,"jour du cours","horaires du cours"));
+        return(EdtFragment.newInstance(cours.get(position),"jour du cours","horaires du cours"));
     }
 }

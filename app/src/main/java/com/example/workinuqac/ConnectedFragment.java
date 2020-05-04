@@ -13,6 +13,9 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class ConnectedFragment extends Fragment {
 
     //id fragment : 0
@@ -77,7 +80,9 @@ public class ConnectedFragment extends Fragment {
 
         ViewPager2 pager = (ViewPager2)view.findViewById(R.id.edtViewPager);
         //TODO parametres : tableaux des Cours du user
-        pager.setAdapter(new EdtAdapter(getActivity(), null) {
+        pager.setAdapter(new EdtAdapter(getActivity(), new ArrayList<String>(Arrays.asList("Cours 1",
+                "Cours 2",
+                "Cours 3"))) {
         });
         //Toast.makeText(getContext(), "creation faite", Toast.LENGTH_SHORT).show();
     }
