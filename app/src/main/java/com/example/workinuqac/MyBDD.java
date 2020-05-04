@@ -52,6 +52,10 @@ public class MyBDD {
 
     static public ArrayList<String> getAllCoursesCodeWithSchedule() {return allCoursesCodeWithSchedule;}
 
+    static public ArrayList<String> getQueryResultStudentsFromCourse(){return queryResultStudentsFromCourse;}
+
+    static public ArrayList<String> getQueryResultStudentsFromCourseWithSchedule() {return queryResultStudentsFromCourseWithSchedule;}
+
     static public String translate(String scheduleCode){
         String translation = scheduleCode.replace("MO","Monday ")
         .replace("TU","Tuesday ")
@@ -257,6 +261,33 @@ public class MyBDD {
                 queryResultStudentsFromCourseWithSchedule = new ArrayList<String>();
                 for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
                     queryResultStudentsFromCourseWithSchedule.add(postSnapshot.getKey());
+                }
+                oc.onEvent();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("BDD", "loadName:onCancelled",databaseError.toException());
+            }
+        };
+        coursesRef.addListenerForSingleValueEvent(studentListener);
+    }
+
+    static public void querryStudentsFromCourse(String codeCours, final OnDataReadEventListener oc){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference coursesRef = database.getReference("courses/"+codeCours);
+        //Adding Listener on students list
+        Log.d("BDD","Starting request");
+        ValueEventListener studentListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                queryResultStudentsFromCourse = new ArrayList<String>();
+                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                    if(!postSnapshot.getKey().equals("title")){
+                        for(DataSnapshot postSnapshotChild : postSnapshot.getChildren()){
+                            queryResultStudentsFromCourse.add(postSnapshotChild.getKey());
+                        }
+                    }
                 }
                 oc.onEvent();
             }
