@@ -79,21 +79,22 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         if(!idUser.isEmpty()){
             connection();
         }
-
-        // Define previous fragment(s)
-        FRAGMENT fragmentToLoad = currentFragment;
-        switch (currentFragment) {
-            case INSCRIPTION:
-                changeFragment(FRAGMENT.LOGIN);
-                break;
-            case PROFILE_EDIT:
-            case SEARCH:
-                changeFragment(FRAGMENT.USER_PROFILE);
-                break;
-            case STUDENT_PROFILE:
-                changeFragment(FRAGMENT.SEARCH);
+        if(savedInstanceState==null) {
+            // Define previous fragment(s)
+            FRAGMENT fragmentToLoad = currentFragment;
+            switch (currentFragment) {
+                case INSCRIPTION:
+                    changeFragment(FRAGMENT.LOGIN);
+                    break;
+                case PROFILE_EDIT:
+                case SEARCH:
+                    changeFragment(FRAGMENT.USER_PROFILE);
+                    break;
+                case STUDENT_PROFILE:
+                    changeFragment(FRAGMENT.SEARCH);
+            }
+            changeFragment(fragmentToLoad);
         }
-        changeFragment(fragmentToLoad);
     }
 
     @Override
