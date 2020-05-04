@@ -52,7 +52,7 @@ public class DialogFragmentAuthentification extends DialogFragment {
                 String code=codeTxt.getText().toString();
                 ((MainActivity)getActivity()).idUser=code;
                 ((MainActivity)getActivity()).connection();
-                ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
+                ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.CONNECTED_PROFILE);
 
                 dismiss();
             }

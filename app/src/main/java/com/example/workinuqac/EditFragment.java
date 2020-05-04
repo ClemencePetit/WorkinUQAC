@@ -331,10 +331,10 @@ public class EditFragment extends Fragment {
     private void validateEdit(){
         //TODO ajouter enregistrement des modifications dans la BDD
         ((MainActivity)getActivity()).currentUser=tempUser.clone();
-        ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
+        ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.CONNECTED_PROFILE);
     }
     private void cancelEdit(){
-        ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
+        ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.CONNECTED_PROFILE);
     }
 
 }

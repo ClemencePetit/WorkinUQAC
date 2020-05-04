@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 public class ProfileFragment extends Fragment {
-    static int CURRENT_STUDENT_ID = 0;
+    static User CURRENT_USER = null;
 
     static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -35,6 +35,6 @@ public class ProfileFragment extends Fragment {
         pager.setAdapter(new EdtAdapter(getActivity(), null) {
         });
 
-        Toast.makeText(getContext(), "Etudiant #" + CURRENT_STUDENT_ID, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Etudiant #" + CURRENT_USER.getIdentifiant(), Toast.LENGTH_SHORT).show();
     }
 }

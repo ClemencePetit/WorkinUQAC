@@ -1,6 +1,7 @@
 package com.example.workinuqac;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,6 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import java.util.ArrayList;
 
@@ -21,18 +21,8 @@ public class SearchFragment extends Fragment {
 
     private ListView resultsView;
 
-    private static class Student {
-        private final int id;
-        private final String name;
-
-        Student(int id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-    }
-
     static String currentQuery = "";
-    private ArrayList<Student> results = new ArrayList<>();
+    private ArrayList<User> results = new ArrayList<>();
     ;
 
     static SearchFragment newInstance() {
@@ -57,7 +47,7 @@ public class SearchFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // reload search
-                searchUserOrClassroom(currentQuery = query);
+                searchUsersForClassroom(currentQuery = query);
                 hideKeyboard(getActivity());
                 searchBar.clearFocus();
                 return true;
@@ -74,45 +64,40 @@ public class SearchFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Display student TODO
-                ProfileFragment.CURRENT_STUDENT_ID = results.get(position).id;
-                ((MainActivity) getActivity()).changeFragment(MainActivity.FRAGMENT.STUDENT_PROFILE);
+                ProfileFragment.CURRENT_USER = results.get(position);
+                ((MainActivity) getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
             }
         });
 
-        searchUserOrClassroom(currentQuery);
+        searchUsersForClassroom(currentQuery);
     }
 
-    private void searchUserOrClassroom(final String query) {
+    private void searchUsersForClassroom(final String classCode) {
         ArrayList<String> stringResults = new ArrayList<>();
         results.clear();
 
-        if (!query.isEmpty()) {
+        if (!classCode.isEmpty()) {
 
-            //***** todo remplacer avec la bonne requete BDD
-            // - attribuer results
-            // - remplir stringResults
-            results.add(new Student(0, "Clémence"));
-            results.add(new Student(1,"Laura"));
-            results.add(new Student(2,"Louis"));
-            results.add(new Student(3,"Yoann"));
-            results.add(new Student(5,"Clément Second"));
-            results.add(new Student(8,"Laure Rattu"));
-            results.add(new Student(13,"Lou Ysianne"));
-            results.add(new Student(16,"Yohan Malaicri"));
-            results.add(new Student(21,"Philippe Etchebest"));
-            results.add(new Student(22,"Justin Bridou"));
-            results.add(new Student(23,"Valérie Damidot"));
-            results.add(new Student(25,"Cyril Féraud"));
-            for (int i = results.size() - 1; i >= 0; --i) {
-                if (!results.get(i).name.contains(query))
-                    results.remove(i);
-                else
-                    stringResults.add(0, results.get(i).name);
-            }
+            //***** todo requete des étudiants dans un cours donné
+            Context c = getContext();
+            results.add(new User("0", "Clémence", "", c));
+            results.add(new User("1","Laura", "", c));
+            results.add(new User("2","Louis", "", c));
+            results.add(new User("3","Yoann", "", c));
+            results.add(new User("5","Clément Second", "", c));
+            results.add(new User("8","Laure Rattu", "", c));
+            results.add(new User("13","Lou Ysianne", "", c));
+            results.add(new User("16","Yohan Malaicri", "", c));
+            results.add(new User("21","Philippe Etchebest", "", c));
+            results.add(new User("22","Justin Bridou", "", c));
+            results.add(new User("23","Valérie Damidot", "", c));
+            results.add(new User("25","Cyril Féraud", "", c));
             //**********************************************
+
+            for (User user : results) stringResults.add(user.getName());
         }
 
-        if (results.isEmpty()) {
+        if (results.isEmpty()) { // unlikely to happen
             Toast.makeText(getContext(), "Aucun résultat correspondant", Toast.LENGTH_SHORT).show();
         }
 
