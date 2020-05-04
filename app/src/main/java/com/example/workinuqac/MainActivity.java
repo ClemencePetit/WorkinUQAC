@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         AUTHENTICATION,
         INSCRIPTION,
         PROFILE_EDIT,
-        SEARCH,
+        CLASS_SEARCH,
         USER_PROFILE
     }
 
@@ -69,11 +69,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 changeFragment(FRAGMENT.LOGIN);
                 break;
             case PROFILE_EDIT:
-            case SEARCH:
+            case CLASS_SEARCH:
                 changeFragment(FRAGMENT.CONNECTED_PROFILE);
                 break;
             case USER_PROFILE:
-                changeFragment(FRAGMENT.SEARCH);
+                changeFragment(FRAGMENT.CLASS_SEARCH);
         }
         changeFragment(fragmentToLoad);
     }
@@ -186,10 +186,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         .replace(R.id.placeholder, EditFragment.newInstance(), fragment.name())
                         .commit();
                 break;
-            case SEARCH:
+            case CLASS_SEARCH:
                 ft
                         .addToBackStack(null)
-                        .replace(R.id.placeholder, SearchFragment.newInstance(), fragment.name())
+                        .replace(R.id.placeholder, ClassSearchFragment.newInstance(), fragment.name())
                         .commit();
                 break;
             case USER_PROFILE:

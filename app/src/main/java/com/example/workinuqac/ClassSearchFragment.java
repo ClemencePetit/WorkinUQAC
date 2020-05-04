@@ -17,16 +17,15 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
-public class SearchFragment extends Fragment {
+public class ClassSearchFragment extends Fragment {
 
     private ListView resultsView;
 
     static String currentQuery = "";
     private ArrayList<User> results = new ArrayList<>();
-    ;
 
-    static SearchFragment newInstance() {
-        return new SearchFragment();
+    static ClassSearchFragment newInstance() {
+        return new ClassSearchFragment();
     }
 
     @Override

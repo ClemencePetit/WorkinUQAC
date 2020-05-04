@@ -28,6 +28,6 @@ public class EdtAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         //TODO envoyer le cours present a la position donne du tableau cours de Cours
-        return(EdtFragment.newInstance("nom du cours n"+position,"jour du cours","horaires du cours"));
+        return(EdtFragment.newInstance("8INF123", "nom du cours","jour du cours","horaires du cours"));
     }
 }

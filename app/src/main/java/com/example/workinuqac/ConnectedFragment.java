@@ -63,7 +63,7 @@ public class ConnectedFragment extends Fragment {
         userSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                SearchFragment.hideKeyboard(getActivity());
+                ClassSearchFragment.hideKeyboard(getActivity());
                 searchUser(query);
                 return true;
             }
