@@ -23,7 +23,7 @@ public class ConnectedFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.user_profile_layout, parent, false);
+        return inflater.inflate(R.layout.connected_profile_layout, parent, false);
     }
 
     @Override
@@ -63,8 +63,8 @@ public class ConnectedFragment extends Fragment {
         userSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchUserOrClass(query);
-                userSearch.setQuery("", false);
+                ClassSearchFragment.hideKeyboard(getActivity());
+                searchUser(query);
                 return true;
             }
 
@@ -82,10 +82,18 @@ public class ConnectedFragment extends Fragment {
         //Toast.makeText(getContext(), "creation faite", Toast.LENGTH_SHORT).show();
     }
 
-    private void searchUserOrClass(String query){
-        SearchFragment.currentQuery = query;
-        ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.SEARCH);
-        Toast.makeText(getContext(), "Search User", Toast.LENGTH_SHORT).show();
+    private void searchUser(String codePermanent){
+        /* TODO requete de recherche user par code permanent. Au callback, executer:
+
+                if(resultat != null) {
+                    userSearch.setQuery("", false);
+                    ProfileFragment.CURRENT_USER = resultat;
+                    ((MainActivity) getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
+                } else {
+                    Toast.makeText(getContext(), "Utilisateur introuvable", Toast.LENGTH_SHORT);
+                }
+
+        */
     }
 
     private void editEdt(){

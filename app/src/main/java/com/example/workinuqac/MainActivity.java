@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -17,24 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.Api;
-import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.ResultCallbacks;
-import com.google.android.gms.common.api.Status;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import java.io.Console;
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
-import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks{
 
@@ -50,13 +32,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     enum FRAGMENT {
-        USER_PROFILE,   // 0
-        LOGIN,          // 1
-        AUTHENTIFICATION,
-        INSCRIPTION,    // 2
-        PROFILE_EDIT,   // 3
-        SEARCH,         // 4
-        STUDENT_PROFILE // 5
+        CONNECTED_PROFILE,
+        LOGIN,
+        AUTHENTICATION,
+        INSCRIPTION,
+        PROFILE_EDIT,
+        CLASS_SEARCH,
+        USER_PROFILE
     }
 
     private static final int PERMISSION_CODE = 1000;
@@ -80,20 +62,22 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             connection();
         }
 
-        // Define previous fragment(s)
-        FRAGMENT fragmentToLoad = currentFragment;
-        switch (currentFragment) {
-            case INSCRIPTION:
-                changeFragment(FRAGMENT.LOGIN);
-                break;
-            case PROFILE_EDIT:
-            case SEARCH:
-                changeFragment(FRAGMENT.USER_PROFILE);
-                break;
-            case STUDENT_PROFILE:
-                changeFragment(FRAGMENT.SEARCH);
+        if(savedInstanceState==null) {
+            // Define previous fragment(s)
+            FRAGMENT fragmentToLoad = currentFragment;
+            switch (currentFragment) {
+                case INSCRIPTION:
+                    changeFragment(FRAGMENT.LOGIN);
+                    break;
+                case PROFILE_EDIT:
+                case CLASS_SEARCH:
+                    changeFragment(FRAGMENT.CONNECTED_PROFILE);
+                    break;
+                case USER_PROFILE:
+                    changeFragment(FRAGMENT.CLASS_SEARCH);
+            }
+            changeFragment(fragmentToLoad);
         }
-        changeFragment(fragmentToLoad);
     }
 
     @Override
@@ -179,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         FragmentTransaction ft = fm.beginTransaction();
         // Argument : vers quel fragment aller par la suite
         switch (fragment) {
-            case USER_PROFILE:
+            case CONNECTED_PROFILE:
                 ft
                         //.addToBackStack(null)
                         .replace(R.id.placeholder, ConnectedFragment.newInstance(), fragment.name())
@@ -204,19 +188,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         .replace(R.id.placeholder, EditFragment.newInstance(), fragment.name())
                         .commit();
                 break;
-            case SEARCH:
+            case CLASS_SEARCH:
                 ft
                         .addToBackStack(null)
-                        .replace(R.id.placeholder, SearchFragment.newInstance(), fragment.name())
+                        .replace(R.id.placeholder, ClassSearchFragment.newInstance(), fragment.name())
                         .commit();
                 break;
-            case STUDENT_PROFILE:
+            case USER_PROFILE:
                 ft
                         .addToBackStack(null)
                         .replace(R.id.placeholder, ProfileFragment.newInstance(), fragment.name())
                         .commit();
                 break;
-            case AUTHENTIFICATION:
+            case AUTHENTICATION:
                 ft
                         .addToBackStack(null);
                 DialogFragment dialogFragment = new DialogFragmentAuthentification();
