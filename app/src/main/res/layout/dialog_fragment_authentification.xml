@@ -12,9 +12,9 @@
         android:hint="@string/dialogName"
         android:inputType="textPersonName"
         android:paddingLeft="8dp"
-        android:paddingTop="8dp"
+        android:paddingTop="16dp"
         android:paddingRight="8dp"
-        android:paddingBottom="8dp" />
+        android:paddingBottom="16dp" />
 
     <EditText
         android:id="@+id/DialogPassword"
@@ -23,9 +23,9 @@
         android:ems="10"
         android:hint="@string/dialogMdp"
         android:inputType="textPassword"
-        android:paddingLeft="16dp"
+        android:paddingLeft="8dp"
         android:paddingTop="16dp"
-        android:paddingRight="16dp"
+        android:paddingRight="8dp"
         android:paddingBottom="16dp" />
 
     <LinearLayout
