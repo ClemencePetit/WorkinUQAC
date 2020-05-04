@@ -15,6 +15,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,6 +49,7 @@ public class ConnectionFragment extends Fragment implements GoogleApiClient.OnCo
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .build();
 
         if (mGoogleApiClient == null) {
@@ -111,7 +119,7 @@ public class ConnectionFragment extends Fragment implements GoogleApiClient.OnCo
         if(result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
             Toast.makeText(getContext(), "Hello" + acct.getDisplayName(), Toast.LENGTH_SHORT);
-            ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.CONNECTED_PROFILE);
+            ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.CODE);
         }
         else {
             //Connection Failed
