@@ -18,6 +18,8 @@ import java.util.Arrays;
 
 public class ConnectedFragment extends Fragment {
 
+    private SearchView userSearch;
+
     //id fragment : 0
     public static ConnectedFragment newInstance() {
         ConnectedFragment CF = new ConnectedFragment();
@@ -91,7 +93,7 @@ public class ConnectedFragment extends Fragment {
         }
 
 
-        final SearchView userSearch = view.findViewById(R.id.searchView);
+        userSearch = view.findViewById(R.id.searchView);
         userSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -130,20 +132,19 @@ public class ConnectedFragment extends Fragment {
     }
 
     private void searchUser(String codePermanent){
-        /* TODO requete de recherche user par code permanent. Au callback, executer:
-
-                if(resultat != null) {
+        MyBDD.queryStudentFromCode(codePermanent, new MyBDD.OnDataReadEventListener() {
+            @Override
+            public void onEvent() {
+                User result = MyBDD.getQueryResultStudentFromCode();
+                if(result.isDefined()) {
                     userSearch.setQuery("", false);
-                    ProfileFragment.CURRENT_USER = resultat;
+                    ProfileFragment.CURRENT_USER = result;
                     ((MainActivity) getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
                 } else {
-                    Toast.makeText(getContext(), "Utilisateur introuvable", Toast.LENGTH_SHORT);
+                    Toast.makeText(getContext(), "Utilisateur introuvable", Toast.LENGTH_SHORT).show();
                 }
-
-        */
-        ClassSearchFragment.currentQuery = codePermanent;
-        ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.CLASS_SEARCH);
-        Toast.makeText(getContext(), "Search User", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void editEdt(){
