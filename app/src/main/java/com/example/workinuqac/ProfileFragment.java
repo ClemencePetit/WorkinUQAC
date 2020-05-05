@@ -78,43 +78,51 @@ public class ProfileFragment extends Fragment {
     }
 
     public void reloadName(){
-        TextView nameTxt=getView().findViewById(R.id.textName);
-        nameTxt.setText(((MainActivity)getActivity()).searchedUser.getName());
+        if(getView()!=null) {
+            TextView nameTxt = getView().findViewById(R.id.textName);
+            nameTxt.setText(((MainActivity) getActivity()).searchedUser.getName());
+        }
 
     }
 
     public void reloadMail(){
-        TextView mailTxt=getView().findViewById(R.id.textContact);
-        mailTxt.setText(((MainActivity)getActivity()).searchedUser.getEmail());
+        if(getView()!=null) {
+            TextView mailTxt = getView().findViewById(R.id.textContact);
+            mailTxt.setText(((MainActivity) getActivity()).searchedUser.getEmail());
+        }
     }
 
     public void reloadPhoto(){
-        ImageView photo=getView().findViewById(R.id.profileImage);
-        photo.setImageBitmap(((MainActivity)getActivity()).searchedUser.getPhoto());
+        if (getView() != null){
+            ImageView photo = getView().findViewById(R.id.profileImage);
+            photo.setImageBitmap(((MainActivity) getActivity()).searchedUser.getPhoto());
+        }
     }
 
     public void reloadCourses(){
-        ViewPager2 pager = (ViewPager2)getView().findViewById(R.id.edtViewPager);
-        //TODO parametres : tableaux des Cours du user
-        pager.setAdapter(new EdtAdapter(getActivity(), new ArrayList<String>(Arrays.asList("Mon vrai cours 1",
-                "Mon vrai cours 2",
-                "Mon vrai cours 3",
-                "Mon vrai cours 4",
-                "Mon vrai cours 5",
-                "Mon vrai cours 6",
-                "Mon vrai cours 7",
-                "Mon vrai cours 8",
-                "Mon vrai cours 9",
-                "Mon vrai cours 10",
-                "Mon vrai cours 11",
-                "Mon vrai cours 12",
-                "Mon vrai cours 13",
-                "Mon vrai cours 14",
-                "Mon vrai cours 15",
-                "Mon vrai cours 16",
-                "Mon vrai cours 17",
-                "Mon vrai cours 18"))) {
-        });
+        if(getView()!=null) {
+            ViewPager2 pager = (ViewPager2) getView().findViewById(R.id.edtViewPager);
+            //TODO parametres : tableaux des Cours du user
+            pager.setAdapter(new EdtAdapter(getActivity(), new ArrayList<String>(Arrays.asList("Mon vrai cours 1",
+                    "Mon vrai cours 2",
+                    "Mon vrai cours 3",
+                    "Mon vrai cours 4",
+                    "Mon vrai cours 5",
+                    "Mon vrai cours 6",
+                    "Mon vrai cours 7",
+                    "Mon vrai cours 8",
+                    "Mon vrai cours 9",
+                    "Mon vrai cours 10",
+                    "Mon vrai cours 11",
+                    "Mon vrai cours 12",
+                    "Mon vrai cours 13",
+                    "Mon vrai cours 14",
+                    "Mon vrai cours 15",
+                    "Mon vrai cours 16",
+                    "Mon vrai cours 17",
+                    "Mon vrai cours 18"))) {
+            });
+        }
     }
 
 

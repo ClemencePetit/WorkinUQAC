@@ -148,22 +148,28 @@ public class ConnectedFragment extends Fragment {
 
     public void reloadName(){
         //TODO tester si la view n'est pas nulle
-        TextView nameTxt=getView().findViewById(R.id.textName);
-        nameTxt.setText(((MainActivity)getActivity()).currentUser.getName());
+        if(getView()!=null) {
+            TextView nameTxt = getView().findViewById(R.id.textName);
+            nameTxt.setText(((MainActivity) getActivity()).currentUser.getName());
+        }
 
     }
 
     public void reloadPhoto(){
         //TODO tester si la view n'est pas nulle
-        ImageView photo=getView().findViewById(R.id.profileImage);
-        photo.setImageBitmap(((MainActivity)getActivity()).currentUser.getPhoto());
+        if(getView()!=null) {
+            ImageView photo = getView().findViewById(R.id.profileImage);
+            photo.setImageBitmap(((MainActivity) getActivity()).currentUser.getPhoto());
+        }
     }
 
     public void reloadCourses(){
         //TODO tester si la view n'est pas nulle
-        ViewPager2 pager = (ViewPager2)getView().findViewById(R.id.edtViewPager);
-        //TODO parametres : tableaux des Cours du user
-        pager.setAdapter(new EdtAdapter(getActivity(), ((MainActivity)getActivity()).currentUser.getCourses()) {
-        });
+        if(getView()!=null) {
+            ViewPager2 pager = (ViewPager2) getView().findViewById(R.id.edtViewPager);
+            //TODO parametres : tableaux des Cours du user
+            pager.setAdapter(new EdtAdapter(getActivity(), ((MainActivity) getActivity()).currentUser.getCourses()) {
+            });
+        }
     }
 }

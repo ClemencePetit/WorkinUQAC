@@ -372,23 +372,29 @@ public class EditFragment extends Fragment {
     //TODO chercher le bon layout puis la ligne d'info
     public void reloadName(){
         View v = getView().findViewById(R.id.nameLayout);
-        TextView nameTxt=v.findViewById(R.id.textName);
-        nameTxt.setText(((MainActivity)getActivity()).currentUser.getName());
+        if(v!=null) {
+            TextView nameTxt = v.findViewById(R.id.informationText);
+            nameTxt.setText(((MainActivity) getActivity()).currentUser.getName());
+        }
         tempUser.setName(((MainActivity)getActivity()).currentUser.getName());
 
     }
 
     public void reloadMail(){
         View v = getView().findViewById(R.id.mailLayout);
-        TextView mailTxt=v.findViewById(R.id.textContact);
-        mailTxt.setText(((MainActivity)getActivity()).searchedUser.getEmail());
-        tempUser.setEmail(((MainActivity)getActivity()).searchedUser.getEmail());
+        if(v!=null) {
+            TextView mailTxt = v.findViewById(R.id.informationText);
+            mailTxt.setText(((MainActivity) getActivity()).currentUser.getEmail());
+        }
+        tempUser.setEmail(((MainActivity)getActivity()).currentUser.getEmail());
     }
 
     public void reloadPhoto(){
-        ImageView photo=getView().findViewById(R.id.profileImage);
-        photo.setImageBitmap(((MainActivity)getActivity()).searchedUser.getPhoto());
-        tempUser.setPhoto(((MainActivity)getActivity()).searchedUser.getPhoto());
+        if(getView()!=null) {
+            ImageView photo = getView().findViewById(R.id.pictureEditImage);
+            photo.setImageBitmap(((MainActivity) getActivity()).currentUser.getPhoto());
+            tempUser.setPhoto(((MainActivity) getActivity()).currentUser.getPhoto());
+        }
     }
 
 }
