@@ -74,19 +74,21 @@ public class ConnectedFragment extends Fragment {
         }
 
         ImageView photo=view.findViewById(R.id.profileImage);
-        /*if(((MainActivity)getActivity()).currentUser.getPhoto().is)){
-            MyBDD.readUserName(((MainActivity)getActivity()).currentUser.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
+        //TODO changer avec la photo
+        if(((MainActivity)getActivity()).currentUser.getPhoto()==null){
+            /*MyBDD.readUserName(((MainActivity)getActivity()).currentUser.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
                 @Override
                 public void onEvent() {
                     ((MainActivity)getActivity()).currentUser.setName( MyBDD.getCurrentUsername());
-                    reloadName();
+                    reloadPhoto();
                 }
-            });
+            });*/
+            photo.setImageBitmap(((MainActivity)getActivity()).defaultProfileImage);
         }
         else
-        {*/
+        {
             photo.setImageBitmap(((MainActivity)getActivity()).currentUser.getPhoto());
-        //}
+        }
 
 
         final SearchView userSearch = view.findViewById(R.id.searchView);
@@ -157,7 +159,7 @@ public class ConnectedFragment extends Fragment {
 
     public void reloadPhoto(){
         //TODO tester si la view n'est pas nulle
-        if(getView()!=null) {
+        if(getView()!=null && ((MainActivity) getActivity()).currentUser.getPhoto()!=null) {
             ImageView photo = getView().findViewById(R.id.profileImage);
             photo.setImageBitmap(((MainActivity) getActivity()).currentUser.getPhoto());
         }

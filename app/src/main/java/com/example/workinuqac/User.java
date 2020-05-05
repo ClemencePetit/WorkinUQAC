@@ -21,8 +21,7 @@ public class User {
     }
     public User(String identifiant, Context ctx){
         this.identifiant=identifiant;
-        this.photo= photo=decodeSampledBitmapFromResource(ctx.getResources(),R.drawable.profile_picture_default, 250, 250);
-
+        this.photo= null;
         this.name="";
         this.email="";
     }
@@ -31,8 +30,7 @@ public class User {
         this.identifiant=identifiant;
         this.name=name;
         this.email=email;
-        this.photo= photo=decodeSampledBitmapFromResource(ctx.getResources(),R.drawable.profile_picture_default, 250, 250);
-
+        this.photo= null;
     }
 
     public User(String identifiant, String name, String email, Bitmap photo, ArrayList<String> courses){
@@ -97,7 +95,7 @@ public class User {
         name="";
         email="";
         courses=null;
-        photo=decodeSampledBitmapFromResource(ctx.getResources(),R.drawable.profile_picture_default, 250, 250);
+        photo=null;
     }
 
     public static int calculateInSampleSize(

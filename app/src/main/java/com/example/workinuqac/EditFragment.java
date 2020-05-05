@@ -147,7 +147,21 @@ public class EditFragment extends Fragment {
             }
         });
         ImageView photoView=getView().findViewById(R.id.pictureEditImage);
-        photoView.setImageBitmap(((MainActivity)getActivity()).currentUser.getPhoto());
+
+        if(((MainActivity)getActivity()).currentUser.getPhoto()==null){
+            /*MyBDD.readUserName(((MainActivity)getActivity()).currentUser.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
+                @Override
+                public void onEvent() {
+                    ((MainActivity)getActivity()).currentUser.setName( MyBDD.getCurrentUsername());
+                    reloadPhoto();
+                }
+            });*/
+            photoView.setImageBitmap(((MainActivity)getActivity()).defaultProfileImage);
+        }
+        else
+        {
+            photoView.setImageBitmap(((MainActivity)getActivity()).currentUser.getPhoto());
+        }
 
     }
 
@@ -390,7 +404,7 @@ public class EditFragment extends Fragment {
     }
 
     public void reloadPhoto(){
-        if(getView()!=null) {
+        if(getView()!=null && ((MainActivity) getActivity()).currentUser.getPhoto()!=null) {
             ImageView photo = getView().findViewById(R.id.pictureEditImage);
             photo.setImageBitmap(((MainActivity) getActivity()).currentUser.getPhoto());
             tempUser.setPhoto(((MainActivity) getActivity()).currentUser.getPhoto());

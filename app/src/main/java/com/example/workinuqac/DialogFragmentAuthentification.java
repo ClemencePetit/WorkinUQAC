@@ -51,7 +51,7 @@ public class DialogFragmentAuthentification extends DialogFragment {
                 EditText codeTxt=((View)((View)view.getParent()).getParent()).findViewById(R.id.DialogName);
                 String code=codeTxt.getText().toString();
                 ((MainActivity)getActivity()).idUser=code;
-                //((MainActivity)getActivity()).connection();
+                ((MainActivity)getActivity()).connection();
                 ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
 
                 dismiss();

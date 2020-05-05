@@ -58,6 +58,9 @@ public class ProfileFragment extends Fragment {
                 reloadName();
             }
         });
+
+        //TODO chercher la photo comme les infos précédentes
+
         //TODO chercher les infos dans la BDD et mettre à jour à partir de CURRENT_STUDENT_ID
         TextView nameTxt=view.findViewById(R.id.textName);
         nameTxt.setText(((MainActivity)getActivity()).searchedUser.getName());
@@ -66,7 +69,7 @@ public class ProfileFragment extends Fragment {
         mailTxt.setText(((MainActivity)getActivity()).searchedUser.getEmail());
 
         ImageView photo=view.findViewById(R.id.profileImage);
-        photo.setImageBitmap(((MainActivity)getActivity()).searchedUser.getPhoto());
+        photo.setImageBitmap(((MainActivity)getActivity()).defaultProfileImage);
 
 
         ViewPager2 pager = (ViewPager2)view.findViewById(R.id.edtViewPager);
@@ -93,7 +96,7 @@ public class ProfileFragment extends Fragment {
     }
 
     public void reloadPhoto(){
-        if (getView() != null){
+        if (getView() != null && ((MainActivity) getActivity()).searchedUser.getPhoto()!=null){
             ImageView photo = getView().findViewById(R.id.profileImage);
             photo.setImageBitmap(((MainActivity) getActivity()).searchedUser.getPhoto());
         }

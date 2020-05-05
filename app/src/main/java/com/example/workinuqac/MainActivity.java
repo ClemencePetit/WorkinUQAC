@@ -38,6 +38,8 @@ import java.io.FileDescriptor;
 import java.io.PrintWriter;
 import java.util.concurrent.TimeUnit;
 
+import static com.example.workinuqac.User.decodeSampledBitmapFromResource;
+
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks{
 
 
@@ -67,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public User searchedUser;
     private FRAGMENT currentFragment = FRAGMENT.LOGIN;
 
+    public Bitmap defaultProfileImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -77,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             setContentView(R.layout.activity_main_land);
 
         loadPreferences();
+        defaultProfileImage= decodeSampledBitmapFromResource(getApplicationContext().getResources(),R.drawable.profile_picture_default, 250, 250);
 
 
         //on était déjà identifié quand on a fermé l'appli
