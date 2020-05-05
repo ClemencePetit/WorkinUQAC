@@ -75,8 +75,10 @@ public class ClassSearchFragment extends Fragment {
     }
 
     private void searchUsersForClassroom(final String classCode, final String schedule) {
+        results.clear();
+        resultsView.setAdapter(null);
+
         if (!classCode.isEmpty()) {
-            results.clear();
 
             MyBDD.querryStudentsFromCourse(classCode, schedule, new MyBDD.OnDataReadEventListener() {
                 @Override
@@ -84,7 +86,7 @@ public class ClassSearchFragment extends Fragment {
                     results = MyBDD.getQueryResultStudentsFromCourseWithSchedule();
 
                     if (results.isEmpty()) { // unlikely to happen
-                        Toast.makeText(getContext(), "Aucun résultat correspondant", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Aucun autre étudiant ne se trouve dans ce cours", Toast.LENGTH_SHORT).show();
                     }
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, results);

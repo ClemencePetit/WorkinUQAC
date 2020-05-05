@@ -69,11 +69,9 @@ public class EdtFragment extends Fragment {
     }
 
     private void accessClassStudents() {
-        Toast.makeText(getContext(), "Liste des eleves du cours", Toast.LENGTH_LONG).show();
-
         ClassSearchFragment.currentClass = getArguments().getString(KEY_CODE, "");
-        ClassSearchFragment.currentSchedule = getArguments().getString(KEY_DAY, "")
-                + getArguments().getString(KEY_HOUR, "");
+        ClassSearchFragment.currentSchedule = MyBDD.encode(getArguments().getString(KEY_DAY, "")
+                + getArguments().getString(KEY_HOUR, ""));
 
         ((MainActivity) getActivity()).changeFragment(MainActivity.FRAGMENT.CLASS_SEARCH);
     }

@@ -68,14 +68,23 @@ public class MyBDD {
     static public User getQueryResultStudentFromCode() {return queryResultStudentFromCode;}
 
     static public String translate(String scheduleCode){
-        String translation = scheduleCode.replace("MO","Monday ")
+        return scheduleCode.replace("MO","Monday ")
         .replace("TU","Tuesday ")
         .replace("WE","Wednesday ")
         .replace("TH","Thursday ")
         .replace("FR","Friday ")
         .replace("SA","Saturday ")
         .replace("SU","Sunday ");
-        return translation;
+    }
+
+    static public String encode(String scheduleString){
+        return scheduleString.replace("Monday ", "MO")
+                .replace("Tuesday ", "TU")
+                .replace("Wednesday ", "WE")
+                .replace("Thursday ", "TH")
+                .replace("Friday ", "FR")
+                .replace("Saturday ", "SA")
+                .replace("Sunday ", "SU");
     }
 
     //WRITING IN DB METHODS
