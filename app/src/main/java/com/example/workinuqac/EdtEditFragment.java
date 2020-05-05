@@ -151,6 +151,7 @@ public class EdtEditFragment extends Fragment {
                 if(coursSelected.equals("Ajouter"))
                 {
                     addIdCours();
+                    addHoursCours();
                 }
                 else
                 {
@@ -213,7 +214,7 @@ public class EdtEditFragment extends Fragment {
                 EditText hoursCourse=(EditText)getView().findViewById(R.id.hourCourseEditText);
                 hour=hoursCourse.getText().toString();
             }
-            tempCourses.add(new Course(id,"",hour.substring(0,2),hour.substring(2)));
+            tempCourses.add(new Course(id,"",MyBDD.translate(MyBDD.untranslate(hour).substring(0,2)),MyBDD.untranslate(hour).substring(2)));
             reloadCourses(false);
 
         }

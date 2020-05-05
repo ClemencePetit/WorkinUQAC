@@ -63,6 +63,17 @@ public class MyBDD {
         return translation;
     }
 
+    static public String untranslate(String scheduleCode){
+        String translation = scheduleCode.replace("Monday ","MO")
+                .replace("Tuesday ","TU")
+                .replace("Wednesday ","WE")
+                .replace("Thursday ","TH")
+                .replace("Friday ","FR")
+                .replace("Saturday ","SA")
+                .replace("Sunday ","SU");
+        return translation;
+    }
+
     //WRITING IN DB METHODS
 
     //USERS
