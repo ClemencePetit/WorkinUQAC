@@ -24,7 +24,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -73,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         defaultProfileImage= decodeSampledBitmapFromResource(getApplicationContext().getResources(),R.drawable.profile_picture_default, 250, 250);
+        if(currentUser == null) {
+            currentUser = new User(idUser);
+        }
 
         if(savedInstanceState==null) {
             // Define previous fragment(s)
