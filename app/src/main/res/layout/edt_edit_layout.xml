@@ -49,6 +49,12 @@
             android:text="@string/addClassButton" />
 
         <LinearLayout
+            android:id="@+id/adding_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"></LinearLayout>
+
+        <LinearLayout
             android:id="@+id/buttonsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

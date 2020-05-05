@@ -1,11 +1,15 @@
 package com.example.workinuqac;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -17,6 +21,9 @@ import java.util.Arrays;
 public class EdtEditFragment extends Fragment {
 
     private ArrayList<Course> tempCourses;
+    private ArrayList<String> coursesBDD;
+    private ArrayList<String> idCoursesBDD;
+    private ArrayList<String> hoursCoursesBDD;
 
     public static EdtEditFragment newInstance() {
         EdtEditFragment EEF = new EdtEditFragment();
@@ -101,6 +108,47 @@ public class EdtEditFragment extends Fragment {
 
     private void addClass(){
         // TODO ajout d'un ViewPager2 vide au LinearLayout
+        LayoutInflater inflater=(LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+
+        LinearLayout addingLayout=getView().findViewById(R.id.adding_layout);
+        View addView = inflater.inflate(R.layout.edt_edit_add_layout,null);
+        addView.setTag("adding_layout");
+        Button validateButton = addView.findViewById(R.id.validateEditButton);
+        validateButton.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+
+                coursesAdded(v,true);
+            }
+        });
+
+        Button cancelButton = addView.findViewById(R.id.cancelEditButton);
+        cancelButton.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+
+                coursesAdded(v,false);
+            }
+        });
+
+        Spinner idSpinner = addView.findViewById(R.id.idCourseSpinner);
+        ArrayAdapter<String> idCoursesAdapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item, new ArrayList<String>());
+        idSpinner.setAdapter(idCoursesAdapter);
+
+        Spinner hoursSpinner = addView.findViewById(R.id.hourCourseSpinner);
+        ArrayAdapter<String> hoursCoursesAdapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item, new ArrayList<String>());
+        hoursSpinner.setAdapter(hoursCoursesAdapter);
+
+        addingLayout.addView(addView);
+
+        reloadSpinnerIdCourses();
+    }
+
+    private void coursesAdded(View v,boolean validated){
+        LinearLayout p=getView().findViewById(R.id.adding_layout);
+        p.removeAllViews();
+
     }
 
     private void validate(){
@@ -130,6 +178,36 @@ public class EdtEditFragment extends Fragment {
         pager.setAdapter(new EdtEditAdapter(this, tempCourses) {
         });
         Toast.makeText(getContext(), "creation faite", Toast.LENGTH_SHORT).show();
+    }
+
+    public void reloadSpinnerIdCourses(){
+        MyBDD.updateCoursesLists(new MyBDD.OnDataReadEventListener() {
+            @Override
+            public void onEvent() {
+                coursesBDD=MyBDD.getAllCoursesCodeWithSchedule();
+                updateSpinnerId();
+            }
+        });
+    }
+
+    public void updateSpinnerId(){
+        Spinner idSpinner = getView().findViewById(R.id.idCourseSpinner);
+        ArrayAdapter<String> idCoursesAdapter = (ArrayAdapter<String>)idSpinner.getAdapter();
+        idCoursesAdapter.clear();
+        //idCoursesAdapter.add(" ");
+        Spinner hoursSpinner = getView().findViewById(R.id.hourCourseSpinner);
+        ArrayAdapter<String> hoursCoursesAdapter = (ArrayAdapter<String>)hoursSpinner.getAdapter();
+        idCoursesBDD=new ArrayList<String>();
+        hoursCoursesBDD=new ArrayList<String>();
+        for (String course : coursesBDD) {
+            String temp=course.substring(0,7);
+            if(!idCoursesBDD.contains(temp)) {
+                idCoursesAdapter.add(course.substring(0, 7));
+            }
+            idCoursesBDD.add(temp);
+            hoursCoursesBDD.add(course.substring(8));
+        }
+        idCoursesAdapter.add("Ajouter");
     }
 
 }
