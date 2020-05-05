@@ -53,15 +53,15 @@ public class User {
     }
 
     public String getIdentifiant(){
-        return identifiant;
+        return identifiant != null ? identifiant : "";
     }
 
     public String getName(){
-        return name;
+        return name != null ? name : "";
     }
 
     public String getEmail(){
-        return email;
+        return email != null ? email : "";
     }
 
     public Bitmap getPhoto(){
@@ -163,4 +163,7 @@ public class User {
         return BitmapFactory.decodeResource(res, resId, options);
     }
 
+    public boolean isDefined() {
+        return name != null && !name.isEmpty();
+    }
 }

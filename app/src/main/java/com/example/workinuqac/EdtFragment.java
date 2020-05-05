@@ -70,7 +70,7 @@ public class EdtFragment extends Fragment {
         private void accessClassStudents(){
             Toast.makeText(getContext(), "Liste des eleves du cours",Toast.LENGTH_LONG).show();
 
-            ClassSearchFragment.currentQuery = getArguments().getString(KEY_CODE,"");
+            ClassSearchFragment.currentClass = getArguments().getString(KEY_CODE,"");
             ((MainActivity) getActivity()).changeFragment(MainActivity.FRAGMENT.CLASS_SEARCH);
         }
 }

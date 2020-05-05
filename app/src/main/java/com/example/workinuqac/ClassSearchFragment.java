@@ -1,7 +1,6 @@
 package com.example.workinuqac;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +19,8 @@ import java.util.ArrayList;
 public class ClassSearchFragment extends Fragment {
 
     private ListView resultsView;
-    static String currentQuery = "";
-    private ArrayList<User> results = new ArrayList<>();
+    static String currentClass = "", currentSchedule = "";
+    private ArrayList<String> results = new ArrayList<>();
 
     static ClassSearchFragment newInstance() {
         return new ClassSearchFragment();
@@ -40,12 +39,12 @@ public class ClassSearchFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         final SearchView searchBar = view.findViewById(R.id.searchView);
-        searchBar.setQuery(currentQuery, false);
+        searchBar.setQuery(currentClass, false);
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // reload search
-                searchUsersForClassroom(currentQuery = query);
+                searchUsersForClassroom(currentClass = query, currentSchedule = "");
                 hideKeyboard(getActivity());
                 searchBar.clearFocus();
                 return true;
@@ -61,46 +60,38 @@ public class ClassSearchFragment extends Fragment {
         resultsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Display student TODO
-                ((MainActivity) getActivity()).searchedUser = results.get(position);
-                ((MainActivity) getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
+                // Display student
+                MyBDD.queryStudentFromCode(results.get(position), new MyBDD.OnDataReadEventListener() {
+                    @Override
+                    public void onEvent() {
+                        ProfileFragment.CURRENT_USER = MyBDD.getQueryResultStudentFromCode();
+                        ((MainActivity) getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
+                    }
+                });
             }
         });
 
-        searchUsersForClassroom(currentQuery);
+        searchUsersForClassroom(currentClass, currentSchedule);
     }
 
-    private void searchUsersForClassroom(final String classCode) {
-        ArrayList<String> stringResults = new ArrayList<>();
-        results.clear();
-
-
+    private void searchUsersForClassroom(final String classCode, final String schedule) {
         if (!classCode.isEmpty()) {
+            results.clear();
 
-            //***** todo remplacer avec la bonne requete BDD
-            // - attribuer results
-            // - remplir stringResults
-            results.add(new User("PETC25629800", "Clémence",""));
-            results.add(new User("BOUL26619706","Laura",""));
-            results.add(new User("2","Louis",""));
-            results.add(new User("TEST","Yoann",""));
-            results.add(new User("5","Clément Second",""));
-            results.add(new User("8","Laure Rattu",""));
-            results.add(new User("13","Lou Ysianne",""));
-            results.add(new User("16","Yohan Malaicri",""));
-            results.add(new User("21","Philippe Etchebest",""));
-            results.add(new User("22","Justin Bridou",""));
-            results.add(new User("23","Valérie Damidot",""));
-            results.add(new User("25","Cyril Féraud",""));
-            for (User user : results) stringResults.add(user.getName());
+            MyBDD.querryStudentsFromCourse(classCode, schedule, new MyBDD.OnDataReadEventListener() {
+                @Override
+                public void onEvent() {
+                    results = MyBDD.getQueryResultStudentsFromCourseWithSchedule();
+
+                    if (results.isEmpty()) { // unlikely to happen
+                        Toast.makeText(getContext(), "Aucun résultat correspondant", Toast.LENGTH_SHORT).show();
+                    }
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, results);
+                    resultsView.setAdapter(adapter);
+                }
+            });
         }
-
-        if (results.isEmpty()) { // unlikely to happen
-            Toast.makeText(getContext(), "Aucun résultat correspondant", Toast.LENGTH_SHORT).show();
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, stringResults);
-        resultsView.setAdapter(adapter);
     }
 
     static void hideKeyboard(Activity activity) {

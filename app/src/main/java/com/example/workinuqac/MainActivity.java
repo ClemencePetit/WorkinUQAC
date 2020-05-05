@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_CODE = 1000;
     public String idUser = ""; // ID de l'utilisateur dans la base de données - vide = pas connecté
     public User currentUser;
-    public User searchedUser;
     private FRAGMENT currentFragment = FRAGMENT.LOGIN;
     private FirebaseAuth mAuth;
     private static final int RC_SIGN_IN = 1000;

@@ -361,7 +361,7 @@ public class MyBDD {
 
                 queryResultStudentFromCode = new User(codePermanent,name,email);
                 queryResultStudentFromCode.setName(dataSnapshot.child("name").getValue(String.class));
-                queryResultStudentFromCode.setName(dataSnapshot.child("email").getValue(String.class));
+                queryResultStudentFromCode.setEmail(dataSnapshot.child("email").getValue(String.class));
                 oc.onEvent();
             }
 
