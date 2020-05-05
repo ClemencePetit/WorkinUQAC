@@ -12,12 +12,16 @@ import android.Manifest;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
+
+import static com.example.workinuqac.User.decodeSampledBitmapFromResource;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks{
 
@@ -46,8 +50,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private static final int PERMISSION_CODE = 1000;
     public String idUser = ""; // ID de l'utilisateur dans la base de données - vide = pas connecté
     public User currentUser;
+    public User searchedUser;
     private FRAGMENT currentFragment = FRAGMENT.LOGIN;
     public FirebaseAuth mAuth;
+
+    public Bitmap defaultProfileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +66,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             setContentView(R.layout.activity_main_land);
 
         loadPreferences();
+
         mAuth = FirebaseAuth.getInstance();
+
+        defaultProfileImage= decodeSampledBitmapFromResource(getApplicationContext().getResources(),R.drawable.profile_picture_default, 250, 250);
+
+
 
         //on était déjà identifié quand on a fermé l'appli
         if(!idUser.isEmpty()){
@@ -77,8 +89,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 case CLASS_SEARCH:
                     changeFragment(FRAGMENT.CONNECTED_PROFILE);
                     break;
+
                 case USER_PROFILE:
+					changeFragment(FRAGMENT.CONNECTED_PROFILE);
                     changeFragment(FRAGMENT.CLASS_SEARCH);
+					break;
+                
             }
             changeFragment(fragmentToLoad);
         }
@@ -138,11 +154,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     public void connection(){
         currentUser=new User(idUser,getApplicationContext());
-        MyBDD.readUserEmail(idUser, new MyBDD.OnDataReadEventListener() {
+       /* MyBDD.readUserEmail(idUser, new MyBDD.OnDataReadEventListener() {
             @Override
             public void onEvent() {
                 currentUser.setEmail(MyBDD.getCurrentEmail());
-                reloadInterface();
+
             }
         });
 
@@ -150,11 +166,21 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             @Override
             public void onEvent() {
                 currentUser.setName( MyBDD.getCurrentUsername());
-                reloadInterface();
+
             }
         });
+        MyBDD.readUserCourses(idUser, new MyBDD.OnDataReadEventListener() {
+            @Override
+            public void onEvent() {
+                currentUser.setCourses( MyBDD.getCurrentCoursesList());
+
+            }
+        });*/
+        //TODO recupérer photo
 
     }
+
+
 
     public void reloadInterface(){
         Toast.makeText(this, "info recuperee", Toast.LENGTH_SHORT).show();

@@ -21,6 +21,18 @@ public class ClassSearchFragment extends Fragment {
 
     private ListView resultsView;
 
+
+    private static class Student {
+        private final String id;
+        private final String name;
+
+        Student(String id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+    }
+
+
     static String currentQuery = "";
     private ArrayList<User> results = new ArrayList<>();
 
@@ -75,22 +87,31 @@ public class ClassSearchFragment extends Fragment {
         ArrayList<String> stringResults = new ArrayList<>();
         results.clear();
 
+
         if (!classCode.isEmpty()) {
 
-            //***** todo requete des étudiants dans un cours donné
-            Context c = getContext();
-            results.add(new User("0", "Clémence", "", c));
-            results.add(new User("1","Laura", "", c));
-            results.add(new User("2","Louis", "", c));
-            results.add(new User("3","Yoann", "yoyo@mail.net", c));
-            results.add(new User("5","Clément Second", "", c));
-            results.add(new User("8","Laure Rattu", "", c));
-            results.add(new User("13","Lou Ysianne", "", c));
-            results.add(new User("16","Yohan Malaicri", "", c));
-            results.add(new User("21","Philippe Etchebest", "", c));
-            results.add(new User("22","Justin Bridou", "", c));
-            results.add(new User("23","Valérie Damidot", "", c));
-            results.add(new User("25","Cyril Féraud", "", c));
+            //***** todo remplacer avec la bonne requete BDD
+            // - attribuer results
+            // - remplir stringResults
+            results.add(new Student("PETC25629800", "Clémence"));
+            results.add(new Student("BOUL26619706","Laura"));
+            results.add(new Student("2","Louis"));
+            results.add(new Student("TEST","Yoann"));
+            results.add(new Student("5","Clément Second"));
+            results.add(new Student("8","Laure Rattu"));
+            results.add(new Student("13","Lou Ysianne"));
+            results.add(new Student("16","Yohan Malaicri"));
+            results.add(new Student("21","Philippe Etchebest"));
+            results.add(new Student("22","Justin Bridou"));
+            results.add(new Student("23","Valérie Damidot"));
+            results.add(new Student("25","Cyril Féraud"));
+            for (int i = results.size() - 1; i >= 0; --i) {
+                if (!results.get(i).name.contains(query))
+                    results.remove(i);
+                else
+                    stringResults.add(0, results.get(i).name);
+            }
+
             //**********************************************
 
             for (User user : results) stringResults.add(user.getName());

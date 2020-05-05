@@ -6,14 +6,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class ProfileFragment extends Fragment {
-    static User CURRENT_USER = null;
+
+    static String CURRENT_STUDENT_ID = "";
+    //private User searchedUser;
+
 
     static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -31,15 +40,40 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        if(CURRENT_USER == null)
-            return;
 
-        //TODO chercher les infos dans la BDD et mettre à jour à partir de CURRENT_USER
-        TextView name = view.findViewById(R.id.textName);
-        name.setText(CURRENT_USER.getName());
-        TextView email = view.findViewById(R.id.textEmail);
-        email.setText(CURRENT_USER.getEmail());
-        email.setOnClickListener(new View.OnClickListener() {
+        if(((MainActivity)getActivity()).searchedUser==null){
+            ((MainActivity)getActivity()).searchedUser=new User(CURRENT_STUDENT_ID,getContext());
+        }
+        else
+        {
+            ((MainActivity)getActivity()).searchedUser.clear(CURRENT_STUDENT_ID,getContext());
+        }
+
+        MyBDD.readUserEmail(CURRENT_STUDENT_ID, new MyBDD.OnDataReadEventListener() {
+            @Override
+            public void onEvent() {
+                ((MainActivity)getActivity()).searchedUser.setEmail(MyBDD.getCurrentEmail());
+                reloadMail();
+            }
+        });
+
+        MyBDD.readUserName(CURRENT_STUDENT_ID, new MyBDD.OnDataReadEventListener() {
+            @Override
+            public void onEvent() {
+                ((MainActivity)getActivity()).searchedUser.setName( MyBDD.getCurrentUsername());
+                reloadName();
+            }
+        });
+
+        //TODO chercher la photo comme les infos précédentes
+
+        //TODO chercher les infos dans la BDD et mettre à jour à partir de CURRENT_STUDENT_ID
+        TextView nameTxt=view.findViewById(R.id.textName);
+        nameTxt.setText(((MainActivity)getActivity()).searchedUser.getName());
+
+        TextView mailTxt=view.findViewById(R.id.textContact);
+        mailTxt.setText(((MainActivity)getActivity()).searchedUser.getEmail());
+		mailTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // LOL ça marche pas ça me saoule j'ai d'autres choses à faire
@@ -49,11 +83,66 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        ImageView photo=view.findViewById(R.id.profileImage);
+        photo.setImageBitmap(((MainActivity)getActivity()).defaultProfileImage);
+
+
+
         ViewPager2 pager = (ViewPager2)view.findViewById(R.id.edtViewPager);
         //TODO parametres : tableaux des Cours du user
-        pager.setAdapter(new EdtAdapter(getActivity(), null) {
+        pager.setAdapter(new EdtAdapter(getActivity(), new ArrayList<String>(Arrays.asList("Loading"))) {
         });
 
         Toast.makeText(getContext(), "Etudiant #" + CURRENT_USER.getIdentifiant(), Toast.LENGTH_SHORT).show();
     }
+
+    public void reloadName(){
+        if(getView()!=null) {
+            TextView nameTxt = getView().findViewById(R.id.textName);
+            nameTxt.setText(((MainActivity) getActivity()).searchedUser.getName());
+        }
+
+    }
+
+    public void reloadMail(){
+        if(getView()!=null) {
+            TextView mailTxt = getView().findViewById(R.id.textContact);
+            mailTxt.setText(((MainActivity) getActivity()).searchedUser.getEmail());
+        }
+    }
+
+    public void reloadPhoto(){
+        if (getView() != null && ((MainActivity) getActivity()).searchedUser.getPhoto()!=null){
+            ImageView photo = getView().findViewById(R.id.profileImage);
+            photo.setImageBitmap(((MainActivity) getActivity()).searchedUser.getPhoto());
+        }
+    }
+
+    public void reloadCourses(){
+        if(getView()!=null) {
+            ViewPager2 pager = (ViewPager2) getView().findViewById(R.id.edtViewPager);
+            //TODO parametres : tableaux des Cours du user
+            pager.setAdapter(new EdtAdapter(getActivity(), new ArrayList<String>(Arrays.asList("Mon vrai cours 1",
+                    "Mon vrai cours 2",
+                    "Mon vrai cours 3",
+                    "Mon vrai cours 4",
+                    "Mon vrai cours 5",
+                    "Mon vrai cours 6",
+                    "Mon vrai cours 7",
+                    "Mon vrai cours 8",
+                    "Mon vrai cours 9",
+                    "Mon vrai cours 10",
+                    "Mon vrai cours 11",
+                    "Mon vrai cours 12",
+                    "Mon vrai cours 13",
+                    "Mon vrai cours 14",
+                    "Mon vrai cours 15",
+                    "Mon vrai cours 16",
+                    "Mon vrai cours 17",
+                    "Mon vrai cours 18"))) {
+            });
+        }
+    }
+
+
 }
