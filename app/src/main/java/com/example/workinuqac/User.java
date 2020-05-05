@@ -16,7 +16,6 @@ public class User {
     private String name;
     private String email;
     private Bitmap photo;
-    //TODO changer pour le bon format
     private ArrayList<Course> courses;
 
     public User(){
@@ -88,7 +87,7 @@ public class User {
         this.courses=new ArrayList<Course>();
         for (Map.Entry<String, String> entry : courses.entrySet()) {
             String temp=entry.getValue();
-            this.courses.add(new Course(entry.getKey(),"NaN",MyBDD.translate(temp.substring(0,2)),temp.substring(2)));
+            this.courses.add(new Course(entry.getKey(),"",MyBDD.translate(temp.substring(0,2)),temp.substring(2)));
         }
         //this.courses=(ArrayList<String>) courses.clone();
     }

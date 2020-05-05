@@ -149,6 +149,7 @@ public class EditFragment extends Fragment {
         ImageView photoView=getView().findViewById(R.id.pictureEditImage);
 
         if(((MainActivity)getActivity()).currentUser.getPhoto()==null){
+            //TODO adapter avec la photo
             /*MyBDD.readUserName(((MainActivity)getActivity()).currentUser.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
                 @Override
                 public void onEvent() {
@@ -173,7 +174,6 @@ public class EditFragment extends Fragment {
     }
 
     //récupération de la nouvelle image + affichage
-    // TODO Enlever l'affichage de l'image ?
     @Override
     public void onActivityResult(int reqCode, int resultCode,Intent data){
         super.onActivityResult(reqCode,resultCode,data);
@@ -375,15 +375,19 @@ public class EditFragment extends Fragment {
 
     //QUITTER LA PAGE EDIT = SAVE LES DATAS DANS LA BDD
     private void validateEdit(){
-        //TODO ajouter enregistrement des modifications dans la BDD
+        //TODO update photo
+
+        String oldmail = ((MainActivity)getActivity()).currentUser.getEmail();
         ((MainActivity)getActivity()).currentUser=tempUser.clone();
+        MyBDD.updateUserName(((MainActivity)getActivity()).currentUser.getIdentifiant(),((MainActivity)getActivity()).currentUser.getName());
+        MyBDD.updateUserEmail(((MainActivity)getActivity()).currentUser.getIdentifiant(),((MainActivity)getActivity()).currentUser.getEmail(),oldmail);
         ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.CONNECTED_PROFILE);
     }
     private void cancelEdit(){
         ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.CONNECTED_PROFILE);
     }
 
-    //TODO chercher le bon layout puis la ligne d'info
+
     public void reloadName(){
         View v = getView().findViewById(R.id.nameLayout);
         if(v!=null) {

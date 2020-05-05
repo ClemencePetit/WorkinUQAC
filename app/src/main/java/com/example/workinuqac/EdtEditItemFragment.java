@@ -76,7 +76,6 @@ public class EdtEditItemFragment extends Fragment {
     }
 
     private void removeCourse(){
-        Toast.makeText(getContext(), "Remove ce cours",Toast.LENGTH_LONG).show();
         ((EdtEditFragment)getParentFragment()).removeCourse(muPosition);
     }
 

@@ -28,6 +28,8 @@ import java.util.stream.IntStream;
 public class EdtEditFragment extends Fragment {
 
     private ArrayList<Course> tempCourses;
+    private ArrayList<Course> addedCourses;
+    private ArrayList<Course> removedCourses;
     private ArrayList<String> coursesBDD;
     private ArrayList<String> idCoursesBDD;
     private ArrayList<String> hoursCoursesBDD;
@@ -53,6 +55,9 @@ public class EdtEditFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
+        addedCourses=new ArrayList<Course>();
+        removedCourses = new ArrayList<Course>();
 
         if(((MainActivity)getActivity()).currentUser==null) {
             ((MainActivity)getActivity()).currentUser=new User(((MainActivity)getActivity()).idUser);
@@ -93,16 +98,9 @@ public class EdtEditFragment extends Fragment {
 
 
         LinearLayout listOfCourses = view.findViewById(R.id.edtItemsContainer);
-        // TODO faire requete des cours
-        // TODO pour chaque cours, créer un ViewPager2 comme le suivant, à ajou
-        /*
-        ViewPager2 pager; // il faut l'init
-        pager.setAdapter(new EdtItemEditAdapter(getActivity(), LE_COURS) {
-        });
-        listOfCourses.addView(pager);
-        */
+
         ViewPager2 pager = (ViewPager2)view.findViewById(R.id.edtViewPager);
-        //TODO parametres : tableaux des Cours du user
+
         if(tempCourses!=null)
         {
             pager.setAdapter(new EdtEditAdapter(this, tempCourses) {
@@ -116,7 +114,7 @@ public class EdtEditFragment extends Fragment {
     }
 
     private void addClass(){
-        // TODO ajout d'un ViewPager2 vide au LinearLayout
+
         LayoutInflater inflater=(LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 
@@ -161,9 +159,8 @@ public class EdtEditFragment extends Fragment {
                 }
             }
             @Override
-
             public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
+
             }
 
         });
@@ -215,6 +212,7 @@ public class EdtEditFragment extends Fragment {
                 hour=hoursCourse.getText().toString();
             }
             tempCourses.add(new Course(id,"",MyBDD.translate(MyBDD.untranslate(hour).substring(0,2)),MyBDD.untranslate(hour).substring(2)));
+            addedCourses.add(new Course(id,"",(MyBDD.untranslate(hour).substring(0,2)),MyBDD.untranslate(hour).substring(2)));
             reloadCourses(false);
 
         }
@@ -224,8 +222,19 @@ public class EdtEditFragment extends Fragment {
     }
 
     private void validate(){
-        // TODO valider les changements
+        for(Course c : addedCourses){
+            MyBDD.addUserCourse(((MainActivity)getActivity()).currentUser.getIdentifiant(),c.getId(),c.getDay()+c.getHours());
+        }
+        for(Course c : removedCourses){
+            MyBDD.removeUserCourse(((MainActivity)getActivity()).currentUser.getIdentifiant(),c.getId(),new MyBDD.OnDataReadEventListener() {
+                @Override
+                public void onEvent() {
+                }
+            });
+        }
+
         ((MainActivity)getActivity()).currentUser.setCourses(tempCourses);
+
         ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.CONNECTED_PROFILE);
     }
 
@@ -247,11 +256,12 @@ public class EdtEditFragment extends Fragment {
     }
 
     public void removeCourse(int position){
+        removedCourses.add(tempCourses.get(position).duplicate());
+        removedCourses.get(removedCourses.size()-1).setDay(MyBDD.encode(removedCourses.get(removedCourses.size()-1).getDay()));
         tempCourses.remove(position);
         ViewPager2 pager = (ViewPager2) getView().findViewById(R.id.edtViewPager);
         pager.setAdapter(new EdtEditAdapter(this, tempCourses) {
         });
-        Toast.makeText(getContext(), "creation faite", Toast.LENGTH_SHORT).show();
     }
 
     public void reloadSpinnerIdCourses(){
@@ -298,7 +308,7 @@ public class EdtEditFragment extends Fragment {
                         .filter(i -> idCoursesBDD.get(i).equals(coursSelected))
                         .collect(Collectors.toList());
         for(Integer i:allIndexes){
-            hoursCoursesAdapter.add(MyBDD.translate(hoursCoursesBDD.get(i).substring(0,2))+" "+hoursCoursesBDD.get(i).substring(2));
+            hoursCoursesAdapter.add(MyBDD.translate(hoursCoursesBDD.get(i).substring(0,2))+hoursCoursesBDD.get(i).substring(2));
         }
         hoursCoursesAdapter.add("Ajouter");
     }

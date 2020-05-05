@@ -127,17 +127,21 @@ public class MyBDD {
         Log.d("BDD","User updated");
     }
 
-    /*
-    deprecated
-    static public void updateUserEmail(String codePermanent, String Email){
+
+    static public void updateUserEmail(String codePermanent, String Email, String oldMail){
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("users");
+        DatabaseReference emailRef = database.getReference("emailUsers");
         //on rajoute ou update le nom associé au code permanent
         myRef.child(codePermanent).child("email").setValue(Email);
+        emailRef.child(Email.replace(".",",")).setValue(codePermanent);
+        if(!Email.equals(oldMail)) {
+            emailRef.child(oldMail.replace(".", ",")).removeValue();
+        }
 
         Log.d("BDD","User updated");
-    }*/
+    }
 
     static public void updateUserCourses(String codePermanent, HashMap<String,String> coursSchedule){
 

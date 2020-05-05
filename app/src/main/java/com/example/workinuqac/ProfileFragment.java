@@ -42,7 +42,6 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         //TODO chercher la photo comme les infos précédentes
 
-        //TODO chercher les infos dans la BDD et mettre à jour à partir de CURRENT_STUDENT_ID
         TextView nameTxt=view.findViewById(R.id.textName);
         if(CURRENT_USER.getName().isEmpty())
         {
@@ -89,8 +88,6 @@ public class ProfileFragment extends Fragment {
 
 
         ViewPager2 pager = (ViewPager2)view.findViewById(R.id.edtViewPager);
-        //TODO parametres : tableaux des Cours du user
-		//merge potentielle foireux if(CURRENT_USER.getCourses()!=null)
         if(!CURRENT_USER.coursesIsNull())
         {
             pager.setAdapter(new EdtAdapter(getActivity(), CURRENT_USER.getCourses()) {
@@ -108,9 +105,6 @@ public class ProfileFragment extends Fragment {
                 }
             });
         }
-
-
-        Toast.makeText(getContext(), "Etudiant #" + CURRENT_USER.getIdentifiant(), Toast.LENGTH_SHORT).show();
     }
 
     public void reloadName(){
@@ -139,7 +133,6 @@ public class ProfileFragment extends Fragment {
 		//merge foireux if(getView()!=null&&CURRENT_USER.getCourses()!=null) {
         if(getView()!=null&&!CURRENT_USER.coursesIsNull()) {
             ViewPager2 pager = (ViewPager2) getView().findViewById(R.id.edtViewPager);
-            //TODO parametres : tableaux des Cours du user
             pager.setAdapter(new EdtAdapter(getActivity(), CURRENT_USER.getCourses()) {
             });
         }
