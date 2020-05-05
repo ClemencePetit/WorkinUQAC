@@ -9,6 +9,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 public class EdtEditItemFragment extends Fragment {
 
@@ -17,13 +19,16 @@ public class EdtEditItemFragment extends Fragment {
     private static final String KEY_NAME="name";
     private static final String KEY_DAY="day";
     private static final String KEY_HOUR="hour";
+    private static final String KEY_POSITION="position";
+
+    private int muPosition;
 
 
     public EdtEditItemFragment() { }
 
 
     // 2 - Method that will create a new instance of PageFragment, and add data to its bundle.
-    static EdtEditItemFragment newInstance(String code, String name, String day, String hour) {
+    static EdtEditItemFragment newInstance(String code, String name, String day, String hour, int position) {
 
         // 2.1 Create new fragment
         EdtEditItemFragment EF = new EdtEditItemFragment();
@@ -34,6 +39,7 @@ public class EdtEditItemFragment extends Fragment {
         args.putString(KEY_NAME, name);
         args.putString(KEY_DAY, day);
         args.putString(KEY_HOUR, hour);
+        args.putInt(KEY_POSITION,position);
         EF.setArguments(args);
 
         return(EF);
@@ -53,6 +59,8 @@ public class EdtEditItemFragment extends Fragment {
         String day = getArguments().getString(KEY_DAY,"");
         String hours = getArguments().getString(KEY_HOUR,"");
 
+        muPosition=getArguments().getInt(KEY_POSITION,0);
+
         className.setText(codeName);
         classDay.setText(day);
         classHours.setText(hours);
@@ -69,6 +77,7 @@ public class EdtEditItemFragment extends Fragment {
 
     private void removeCourse(){
         Toast.makeText(getContext(), "Remove ce cours",Toast.LENGTH_LONG).show();
+        ((EdtEditFragment)getParentFragment()).removeCourse(muPosition);
     }
 
 }
