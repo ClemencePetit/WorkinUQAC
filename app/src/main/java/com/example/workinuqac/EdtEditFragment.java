@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
@@ -88,12 +89,12 @@ public class EdtEditFragment extends Fragment {
         //TODO parametres : tableaux des Cours du user
         if(tempCourses!=null)
         {
-            pager.setAdapter(new EdtEditAdapter(getActivity(), tempCourses) {
+            pager.setAdapter(new EdtEditAdapter(this, tempCourses) {
             });
         }
         else
         {
-            pager.setAdapter(new EdtEditAdapter(getActivity(), new ArrayList<Course>(Arrays.asList(new Course()))) {
+            pager.setAdapter(new EdtEditAdapter(this, new ArrayList<Course>(Arrays.asList(new Course()))) {
             });
         }
     }
@@ -117,11 +118,18 @@ public class EdtEditFragment extends Fragment {
             ViewPager2 pager = (ViewPager2) getView().findViewById(R.id.edtViewPager);
             tempCourses=((MainActivity) getActivity()).currentUser.getCourses();
             //TODO parametres : tableaux des Cours du user
-            pager.setAdapter(new EdtEditAdapter(getActivity(), tempCourses) {
+            pager.setAdapter(new EdtEditAdapter(this, tempCourses) {
             });
-            tempCourses=((MainActivity) getActivity()).currentUser.getCourses();
-            tempCourses.remove(0);
+
         }
+    }
+
+    public void removeCourse(int position){
+        tempCourses.remove(position);
+        ViewPager2 pager = (ViewPager2) getView().findViewById(R.id.edtViewPager);
+        pager.setAdapter(new EdtEditAdapter(this, tempCourses) {
+        });
+        Toast.makeText(getContext(), "creation faite", Toast.LENGTH_SHORT).show();
     }
 
 }
