@@ -11,10 +11,10 @@ import java.util.ArrayList;
 public class EdtAdapter extends FragmentStateAdapter {
 
     //TODO creer classe Cours contenant toutes les infos a afficher d'un cours + remplacer par un tableau de Cours
-    private ArrayList<String> cours;
+    private ArrayList<Course> cours;
 
     // 2 - Default Constructor
-    public EdtAdapter(FragmentActivity mgr, ArrayList<String> cours) {
+    public EdtAdapter(FragmentActivity mgr, ArrayList<Course> cours) {
         super(mgr);
         this.cours = cours;
     }
@@ -29,7 +29,7 @@ public class EdtAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         //TODO envoyer le cours present a la position donne du tableau cours de Cours
 
-        return(EdtFragment.newInstance("8INF123", "nom du cours","jour du cours","horaires du cours"));
+        return(EdtFragment.newInstance(cours.get(position).getId(), cours.get(position).getName(),cours.get(position).getDay(),cours.get(position).getHours()));
 
     }
 }

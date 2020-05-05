@@ -116,12 +116,12 @@ public class ConnectedFragment extends Fragment {
         }
         else
         {
-            pager.setAdapter(new EdtAdapter(getActivity(), new ArrayList<String>(Arrays.asList("Loading"))) {
+            pager.setAdapter(new EdtAdapter(getActivity(), new ArrayList<Course>(Arrays.asList(new Course()))) {
             });
             MyBDD.readUserCourses(((MainActivity)getActivity()).currentUser.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
                 @Override
                 public void onEvent() {
-                    //TODO fixer ((MainActivity)getActivity()).currentUser.setCourses( MyBDD.getCurrentCoursesList());
+                    ((MainActivity)getActivity()).currentUser.setCourses(MyBDD.getCurrentUserCoursesList());
                     reloadCourses();
                 }
             });

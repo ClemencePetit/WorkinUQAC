@@ -7,6 +7,9 @@ import android.graphics.BitmapFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class User {
     private String identifiant;
@@ -14,7 +17,7 @@ public class User {
     private String email;
     private Bitmap photo;
     //TODO changer pour le bon format
-    private ArrayList<String> courses;
+    private ArrayList<Course> courses;
 
     public User(){
 
@@ -33,7 +36,7 @@ public class User {
         this.photo= null;
     }
 
-    public User(String identifiant, String name, String email, Bitmap photo, ArrayList<String> courses){
+    public User(String identifiant, String name, String email, Bitmap photo, ArrayList<Course> courses){
         this.identifiant=identifiant;
         this.name=name;
         this.email=email;
@@ -42,7 +45,10 @@ public class User {
             this.courses=null;
         }
         else {
-            this.courses = (ArrayList<String>) courses.clone();
+            this.courses=new ArrayList<Course>();
+            for (int counter = 0; counter < courses.size(); counter++) {
+                this.courses.add((courses.get(counter).duplicate()));
+            }
         }
     }
 
@@ -78,11 +84,16 @@ public class User {
         this.photo = photo;
     }
 
-    public void setCourses(ArrayList<String> courses){
-        this.courses=(ArrayList<String>) courses.clone();
+    public void setCourses(HashMap<String,String> courses){
+        this.courses=new ArrayList<Course>();
+        for (Map.Entry<String, String> entry : courses.entrySet()) {
+            String temp=entry.getValue();
+            this.courses.add(new Course(entry.getKey(),"NaN",MyBDD.translate(temp.substring(0,2)),temp.substring(2)));
+        }
+        //this.courses=(ArrayList<String>) courses.clone();
     }
 
-    public ArrayList<String> getCourses() {
+    public ArrayList<Course> getCourses() {
         return courses;
     }
 
