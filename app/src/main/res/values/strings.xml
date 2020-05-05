@@ -36,6 +36,7 @@
 
     <string name="dialogName">Entre ton code permanent</string>
     <string name="dialogMdp">Entre ton mot de passe</string>
-    <string name="Validate">Validate</string>
+    <string name="Validate">Valider</string>
+    <string name="Cancel">Annuler</string>
     <string name="CodePermanent">Entrez votre code permanent</string>
 </resources>
