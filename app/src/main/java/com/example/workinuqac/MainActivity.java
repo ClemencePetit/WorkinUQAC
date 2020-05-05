@@ -154,42 +154,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     public void connection(){
         currentUser=new User(idUser);
-       /* MyBDD.readUserEmail(idUser, new MyBDD.OnDataReadEventListener() {
-            @Override
-            public void onEvent() {
-                currentUser.setEmail(MyBDD.getCurrentEmail());
-
-            }
-        });
-
-        MyBDD.readUserName(idUser, new MyBDD.OnDataReadEventListener() {
-            @Override
-            public void onEvent() {
-                currentUser.setName( MyBDD.getCurrentUsername());
-
-            }
-        });
-        MyBDD.readUserCourses(idUser, new MyBDD.OnDataReadEventListener() {
-            @Override
-            public void onEvent() {
-                currentUser.setCourses( MyBDD.getCurrentCoursesList());
-
-            }
-        });*/
-        //TODO recupérer photo
-
-    }
-
-
-
-    public void reloadInterface(){
-        Toast.makeText(this, "info recuperee", Toast.LENGTH_SHORT).show();
-        Fragment frg = null;
-        frg = getSupportFragmentManager().findFragmentByTag(currentFragment.name());
-        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.detach(frg);
-        ft.attach(frg);
-        ft.commit();
     }
 
     public void changeFragment(FRAGMENT fragment) {

@@ -141,15 +141,17 @@ public class ConnectedFragment extends Fragment {
                 }
 
         */
+        ClassSearchFragment.currentQuery = codePermanent;
+        ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.CLASS_SEARCH);
+        Toast.makeText(getContext(), "Search User", Toast.LENGTH_SHORT).show();
     }
 
     private void editEdt(){
         Toast.makeText(getContext(), "Edit EDT", Toast.LENGTH_SHORT).show();
-
     }
+
     private void editProfile(){
         ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.PROFILE_EDIT);
-
     }
 
     private void signOut(){
@@ -157,16 +159,13 @@ public class ConnectedFragment extends Fragment {
     }
 
     public void reloadName(){
-        //TODO tester si la view n'est pas nulle
         if(getView()!=null) {
             TextView nameTxt = getView().findViewById(R.id.textName);
             nameTxt.setText(((MainActivity) getActivity()).currentUser.getName());
         }
-
     }
 
     public void reloadPhoto(){
-        //TODO tester si la view n'est pas nulle
         if(getView()!=null && ((MainActivity) getActivity()).currentUser.getPhoto()!=null) {
             ImageView photo = getView().findViewById(R.id.profileImage);
             photo.setImageBitmap(((MainActivity) getActivity()).currentUser.getPhoto());
@@ -174,7 +173,6 @@ public class ConnectedFragment extends Fragment {
     }
 
     public void reloadCourses(){
-        //TODO tester si la view n'est pas nulle
         if(getView()!=null&&((MainActivity) getActivity()).currentUser.getCourses()!=null) {
             ViewPager2 pager = (ViewPager2) getView().findViewById(R.id.edtViewPager);
             //TODO parametres : tableaux des Cours du user

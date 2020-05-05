@@ -20,19 +20,6 @@ import java.util.ArrayList;
 public class ClassSearchFragment extends Fragment {
 
     private ListView resultsView;
-
-
-    private static class Student {
-        private final String id;
-        private final String name;
-
-        Student(String id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-    }
-
-
     static String currentQuery = "";
     private ArrayList<User> results = new ArrayList<>();
 
@@ -105,15 +92,6 @@ public class ClassSearchFragment extends Fragment {
             results.add(new User("22","Justin Bridou",""));
             results.add(new User("23","Valérie Damidot",""));
             results.add(new User("25","Cyril Féraud",""));
-            for (int i = results.size() - 1; i >= 0; --i) {
-                if (!results.get(i).getName().contains(classCode))
-                    results.remove(i);
-                else
-                    stringResults.add(0, results.get(i).getName());
-            }
-
-            //**********************************************
-
             for (User user : results) stringResults.add(user.getName());
         }
 

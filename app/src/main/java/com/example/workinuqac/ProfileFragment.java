@@ -46,33 +46,46 @@ public class ProfileFragment extends Fragment {
         }
         else
         {
-            ((MainActivity)getActivity()).searchedUser.clear(CURRENT_STUDENT_ID,getContext());
+            CURRENT_STUDENT_ID= ((MainActivity)getActivity()).searchedUser.getIdentifiant();
         }
 
-        MyBDD.readUserEmail(CURRENT_STUDENT_ID, new MyBDD.OnDataReadEventListener() {
-            @Override
-            public void onEvent() {
-                ((MainActivity)getActivity()).searchedUser.setEmail(MyBDD.getCurrentEmail());
-                reloadMail();
-            }
-        });
 
-        MyBDD.readUserName(CURRENT_STUDENT_ID, new MyBDD.OnDataReadEventListener() {
-            @Override
-            public void onEvent() {
-                ((MainActivity)getActivity()).searchedUser.setName( MyBDD.getCurrentUsername());
-                reloadName();
-            }
-        });
+
+
 
         //TODO chercher la photo comme les infos précédentes
 
         //TODO chercher les infos dans la BDD et mettre à jour à partir de CURRENT_STUDENT_ID
         TextView nameTxt=view.findViewById(R.id.textName);
-        nameTxt.setText(((MainActivity)getActivity()).searchedUser.getName());
+        if(((MainActivity)getActivity()).searchedUser.getName().isEmpty())
+        {
+            MyBDD.readUserName(CURRENT_STUDENT_ID, new MyBDD.OnDataReadEventListener() {
+                @Override
+                public void onEvent() {
+                    ((MainActivity)getActivity()).searchedUser.setName( MyBDD.getCurrentUsername());
+                    reloadName();
+                }
+            });
+            nameTxt.setText("Loading...");
+        }
+        else {
+            nameTxt.setText(((MainActivity) getActivity()).searchedUser.getName());
+        }
 
-        TextView mailTxt=view.findViewById(R.id.textContact);
-        mailTxt.setText(((MainActivity)getActivity()).searchedUser.getEmail());
+        TextView mailTxt=view.findViewById(R.id.textEmail);
+        if(((MainActivity)getActivity()).searchedUser.getEmail().isEmpty()){
+            MyBDD.readUserEmail(CURRENT_STUDENT_ID, new MyBDD.OnDataReadEventListener() {
+                @Override
+                public void onEvent() {
+                    ((MainActivity)getActivity()).searchedUser.setEmail(MyBDD.getCurrentEmail());
+                    reloadMail();
+                }
+            });
+            mailTxt.setText("Loading...");
+        }
+        else {
+            mailTxt.setText(((MainActivity) getActivity()).searchedUser.getEmail());
+        }
 		mailTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,7 +119,7 @@ public class ProfileFragment extends Fragment {
 
     public void reloadMail(){
         if(getView()!=null) {
-            TextView mailTxt = getView().findViewById(R.id.textContact);
+            TextView mailTxt = getView().findViewById(R.id.textEmail);
             mailTxt.setText(((MainActivity) getActivity()).searchedUser.getEmail());
         }
     }

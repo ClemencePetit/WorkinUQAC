@@ -90,7 +90,7 @@ public class User {
         return new User(identifiant,name,email,photo,courses);
     }
 
-    public void clear(String identifiant, Context ctx){
+    public void clear(String identifiant){
         this.identifiant=identifiant;
         name="";
         email="";
