@@ -121,7 +121,7 @@ public class ConnectedFragment extends Fragment {
             MyBDD.readUserCourses(((MainActivity)getActivity()).currentUser.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
                 @Override
                 public void onEvent() {
-                    ((MainActivity)getActivity()).currentUser.setCourses( MyBDD.getCurrentCoursesList());
+                    //TODO fixer ((MainActivity)getActivity()).currentUser.setCourses( MyBDD.getCurrentCoursesList());
                     reloadCourses();
                 }
             });
@@ -175,7 +175,7 @@ public class ConnectedFragment extends Fragment {
 
     public void reloadCourses(){
         //TODO tester si la view n'est pas nulle
-        if(getView()!=null) {
+        if(getView()!=null&&((MainActivity) getActivity()).currentUser.getCourses()!=null) {
             ViewPager2 pager = (ViewPager2) getView().findViewById(R.id.edtViewPager);
             //TODO parametres : tableaux des Cours du user
             pager.setAdapter(new EdtAdapter(getActivity(), ((MainActivity) getActivity()).currentUser.getCourses()) {

@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     public void connection(){
-        currentUser=new User(idUser,getApplicationContext());
+        currentUser=new User(idUser);
        /* MyBDD.readUserEmail(idUser, new MyBDD.OnDataReadEventListener() {
             @Override
             public void onEvent() {

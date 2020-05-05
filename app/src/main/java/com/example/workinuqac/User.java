@@ -19,14 +19,14 @@ public class User {
     public User(){
 
     }
-    public User(String identifiant, Context ctx){
+    public User(String identifiant){
         this.identifiant=identifiant;
         this.photo= null;
         this.name="";
         this.email="";
     }
 
-    public User(String identifiant, String name, String email, Context ctx){
+    public User(String identifiant, String name, String email){
         this.identifiant=identifiant;
         this.name=name;
         this.email=email;

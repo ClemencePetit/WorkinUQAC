@@ -42,7 +42,7 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
         if(((MainActivity)getActivity()).searchedUser==null){
-            ((MainActivity)getActivity()).searchedUser=new User(CURRENT_STUDENT_ID,getContext());
+            ((MainActivity)getActivity()).searchedUser=new User(CURRENT_STUDENT_ID);
         }
         else
         {
@@ -79,7 +79,7 @@ public class ProfileFragment extends Fragment {
                 // LOL ça marche pas ça me saoule j'ai d'autres choses à faire
                 // Toast.makeText(getContext(), "LOL", Toast.LENGTH_SHORT);
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-                emailIntent.setData(Uri.parse("mailto:" + CURRENT_USER.getEmail()));
+                emailIntent.setData(Uri.parse("mailto:" + ((MainActivity) getActivity()).searchedUser.getEmail()));
             }
         });
 
@@ -93,7 +93,7 @@ public class ProfileFragment extends Fragment {
         pager.setAdapter(new EdtAdapter(getActivity(), new ArrayList<String>(Arrays.asList("Loading"))) {
         });
 
-        Toast.makeText(getContext(), "Etudiant #" + CURRENT_USER.getIdentifiant(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Etudiant #" + ((MainActivity) getActivity()).searchedUser.getIdentifiant(), Toast.LENGTH_SHORT).show();
     }
 
     public void reloadName(){

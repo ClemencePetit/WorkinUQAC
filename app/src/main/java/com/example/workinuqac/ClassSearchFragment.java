@@ -75,7 +75,7 @@ public class ClassSearchFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Display student TODO
-                ProfileFragment.CURRENT_USER = results.get(position);
+                ((MainActivity) getActivity()).searchedUser = results.get(position);
                 ((MainActivity) getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
             }
         });
@@ -93,23 +93,23 @@ public class ClassSearchFragment extends Fragment {
             //***** todo remplacer avec la bonne requete BDD
             // - attribuer results
             // - remplir stringResults
-            results.add(new Student("PETC25629800", "Clémence"));
-            results.add(new Student("BOUL26619706","Laura"));
-            results.add(new Student("2","Louis"));
-            results.add(new Student("TEST","Yoann"));
-            results.add(new Student("5","Clément Second"));
-            results.add(new Student("8","Laure Rattu"));
-            results.add(new Student("13","Lou Ysianne"));
-            results.add(new Student("16","Yohan Malaicri"));
-            results.add(new Student("21","Philippe Etchebest"));
-            results.add(new Student("22","Justin Bridou"));
-            results.add(new Student("23","Valérie Damidot"));
-            results.add(new Student("25","Cyril Féraud"));
+            results.add(new User("PETC25629800", "Clémence",""));
+            results.add(new User("BOUL26619706","Laura",""));
+            results.add(new User("2","Louis",""));
+            results.add(new User("TEST","Yoann",""));
+            results.add(new User("5","Clément Second",""));
+            results.add(new User("8","Laure Rattu",""));
+            results.add(new User("13","Lou Ysianne",""));
+            results.add(new User("16","Yohan Malaicri",""));
+            results.add(new User("21","Philippe Etchebest",""));
+            results.add(new User("22","Justin Bridou",""));
+            results.add(new User("23","Valérie Damidot",""));
+            results.add(new User("25","Cyril Féraud",""));
             for (int i = results.size() - 1; i >= 0; --i) {
-                if (!results.get(i).name.contains(query))
+                if (!results.get(i).getName().contains(classCode))
                     results.remove(i);
                 else
-                    stringResults.add(0, results.get(i).name);
+                    stringResults.add(0, results.get(i).getName());
             }
 
             //**********************************************

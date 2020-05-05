@@ -45,7 +45,7 @@ public class EditFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         if(((MainActivity)getActivity()).currentUser==null) {
-            ((MainActivity)getActivity()).currentUser=new User(((MainActivity)getActivity()).idUser,getContext());
+            ((MainActivity)getActivity()).currentUser=new User(((MainActivity)getActivity()).idUser);
         }
         tempUser = ((MainActivity) getActivity()).currentUser.clone();
 
