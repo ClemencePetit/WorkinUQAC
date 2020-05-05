@@ -103,8 +103,24 @@ public class ProfileFragment extends Fragment {
 
         ViewPager2 pager = (ViewPager2)view.findViewById(R.id.edtViewPager);
         //TODO parametres : tableaux des Cours du user
-        pager.setAdapter(new EdtAdapter(getActivity(), new ArrayList<Course>(Arrays.asList(new Course()))) {
-        });
+        if(((MainActivity)getActivity()).searchedUser.getCourses()!=null)
+        {
+            pager.setAdapter(new EdtAdapter(getActivity(), ((MainActivity)getActivity()).searchedUser.getCourses()) {
+            });
+        }
+        else
+        {
+            pager.setAdapter(new EdtAdapter(getActivity(), new ArrayList<Course>(Arrays.asList(new Course()))) {
+            });
+            MyBDD.readUserCourses(((MainActivity)getActivity()).searchedUser.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
+                @Override
+                public void onEvent() {
+                    ((MainActivity)getActivity()).searchedUser.setCourses(MyBDD.getCurrentUserCoursesList());
+                    reloadCourses();
+                }
+            });
+        }
+
 
         Toast.makeText(getContext(), "Etudiant #" + ((MainActivity) getActivity()).searchedUser.getIdentifiant(), Toast.LENGTH_SHORT).show();
     }
@@ -132,10 +148,10 @@ public class ProfileFragment extends Fragment {
     }
 
     public void reloadCourses(){
-        if(getView()!=null) {
+        if(getView()!=null&&((MainActivity) getActivity()).searchedUser.getCourses()!=null) {
             ViewPager2 pager = (ViewPager2) getView().findViewById(R.id.edtViewPager);
             //TODO parametres : tableaux des Cours du user
-            pager.setAdapter(new EdtAdapter(getActivity(), new ArrayList<Course>(Arrays.asList(new Course()))) {
+            pager.setAdapter(new EdtAdapter(getActivity(), ((MainActivity) getActivity()).searchedUser.getCourses()) {
             });
         }
     }
