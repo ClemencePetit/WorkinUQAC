@@ -93,6 +93,13 @@ public class User {
         //this.courses=(ArrayList<String>) courses.clone();
     }
 
+    public void setCourses(ArrayList<Course> courses){
+        this.courses=new ArrayList<Course>();
+        for(Course c: courses){
+            this.courses.add(c.duplicate());
+        }
+    }
+
     public ArrayList<Course> getCourses() {
         ArrayList<Course> temp=new ArrayList<Course>();
         for (int counter = 0; counter < this.courses.size(); counter++) {

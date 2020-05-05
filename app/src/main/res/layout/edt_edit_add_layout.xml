@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:enabled="false"
-        android:inputType="none" />
+        android:inputType="none"
+        android:singleLine="true" />
 
     <Spinner
         android:id="@+id/hourCourseSpinner"
@@ -28,7 +29,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:enabled="false"
-        android:inputType="none" />
+        android:inputType="none"
+        android:singleLine="true" />
 
     <LinearLayout
         android:id="@+id/buttonsLayout"
