@@ -176,7 +176,6 @@ public class ConnectedFragment extends Fragment {
     public void reloadCourses(){
         if(getView()!=null&&((MainActivity) getActivity()).currentUser.getCourses()!=null) {
             ViewPager2 pager = (ViewPager2) getView().findViewById(R.id.edtViewPager);
-            //TODO parametres : tableaux des Cours du user
             pager.setAdapter(new EdtAdapter(getActivity(), ((MainActivity) getActivity()).currentUser.getCourses()) {
             });
         }
