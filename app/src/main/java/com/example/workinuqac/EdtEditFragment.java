@@ -1,10 +1,12 @@
 package com.example.workinuqac;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -12,11 +14,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class EdtEditFragment extends Fragment {
 
@@ -134,11 +140,44 @@ public class EdtEditFragment extends Fragment {
         ArrayAdapter<String> idCoursesAdapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_spinner_item, new ArrayList<String>());
         idSpinner.setAdapter(idCoursesAdapter);
+        idSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                String coursSelected=(String)parentView.getItemAtPosition(position);
+                if(coursSelected.equals("Ajouter"))
+                {
+
+                }
+                else
+                {
+                    updateSpinnerHours(coursSelected);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
 
         Spinner hoursSpinner = addView.findViewById(R.id.hourCourseSpinner);
         ArrayAdapter<String> hoursCoursesAdapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_spinner_item, new ArrayList<String>());
         hoursSpinner.setAdapter(hoursCoursesAdapter);
+        hoursSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // your code here
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
 
         addingLayout.addView(addView);
 
@@ -194,11 +233,15 @@ public class EdtEditFragment extends Fragment {
         Spinner idSpinner = getView().findViewById(R.id.idCourseSpinner);
         ArrayAdapter<String> idCoursesAdapter = (ArrayAdapter<String>)idSpinner.getAdapter();
         idCoursesAdapter.clear();
-        //idCoursesAdapter.add(" ");
-        Spinner hoursSpinner = getView().findViewById(R.id.hourCourseSpinner);
-        ArrayAdapter<String> hoursCoursesAdapter = (ArrayAdapter<String>)hoursSpinner.getAdapter();
-        idCoursesBDD=new ArrayList<String>();
-        hoursCoursesBDD=new ArrayList<String>();
+        if(idCoursesBDD==null) {
+            idCoursesBDD = new ArrayList<String>();
+            hoursCoursesBDD = new ArrayList<String>();
+        }
+        else
+        {
+            idCoursesBDD.clear();
+            hoursCoursesBDD.clear();
+        }
         for (String course : coursesBDD) {
             String temp=course.substring(0,7);
             if(!idCoursesBDD.contains(temp)) {
@@ -208,6 +251,21 @@ public class EdtEditFragment extends Fragment {
             hoursCoursesBDD.add(course.substring(8));
         }
         idCoursesAdapter.add("Ajouter");
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void updateSpinnerHours(String coursSelected){
+        Spinner hoursSpinner = getView().findViewById(R.id.hourCourseSpinner);
+        ArrayAdapter<String> hoursCoursesAdapter = (ArrayAdapter<String>)hoursSpinner.getAdapter();
+        hoursCoursesAdapter.clear();
+        List<Integer> allIndexes =
+                IntStream.range(0, idCoursesBDD.size()).boxed()
+                        .filter(i -> idCoursesBDD.get(i).equals(coursSelected))
+                        .collect(Collectors.toList());
+        for(Integer i:allIndexes){
+            hoursCoursesAdapter.add(MyBDD.translate(hoursCoursesBDD.get(i).substring(0,2))+" "+hoursCoursesBDD.get(i).substring(2));
+        }
+        hoursCoursesAdapter.add("Ajouter");
     }
 
 }
