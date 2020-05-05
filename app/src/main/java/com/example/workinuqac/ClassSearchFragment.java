@@ -20,7 +20,6 @@ import java.util.ArrayList;
 public class ClassSearchFragment extends Fragment {
 
     private ListView resultsView;
-
     static String currentQuery = "";
     private ArrayList<User> results = new ArrayList<>();
 
@@ -63,7 +62,7 @@ public class ClassSearchFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Display student TODO
-                ProfileFragment.CURRENT_USER = results.get(position);
+                ((MainActivity) getActivity()).searchedUser = results.get(position);
                 ((MainActivity) getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
             }
         });
@@ -75,24 +74,24 @@ public class ClassSearchFragment extends Fragment {
         ArrayList<String> stringResults = new ArrayList<>();
         results.clear();
 
+
         if (!classCode.isEmpty()) {
 
-            //***** todo requete des étudiants dans un cours donné
-            Context c = getContext();
-            results.add(new User("0", "Clémence", "", c));
-            results.add(new User("1","Laura", "", c));
-            results.add(new User("2","Louis", "", c));
-            results.add(new User("3","Yoann", "yoyo@mail.net", c));
-            results.add(new User("5","Clément Second", "", c));
-            results.add(new User("8","Laure Rattu", "", c));
-            results.add(new User("13","Lou Ysianne", "", c));
-            results.add(new User("16","Yohan Malaicri", "", c));
-            results.add(new User("21","Philippe Etchebest", "", c));
-            results.add(new User("22","Justin Bridou", "", c));
-            results.add(new User("23","Valérie Damidot", "", c));
-            results.add(new User("25","Cyril Féraud", "", c));
-            //**********************************************
-
+            //***** todo remplacer avec la bonne requete BDD
+            // - attribuer results
+            // - remplir stringResults
+            results.add(new User("PETC25629800", "Clémence",""));
+            results.add(new User("BOUL26619706","Laura",""));
+            results.add(new User("2","Louis",""));
+            results.add(new User("TEST","Yoann",""));
+            results.add(new User("5","Clément Second",""));
+            results.add(new User("8","Laure Rattu",""));
+            results.add(new User("13","Lou Ysianne",""));
+            results.add(new User("16","Yohan Malaicri",""));
+            results.add(new User("21","Philippe Etchebest",""));
+            results.add(new User("22","Justin Bridou",""));
+            results.add(new User("23","Valérie Damidot",""));
+            results.add(new User("25","Cyril Féraud",""));
             for (User user : results) stringResults.add(user.getName());
         }
 

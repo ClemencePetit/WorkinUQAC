@@ -49,11 +49,13 @@
                 android:textStyle="bold"
                 android:verticalScrollbarPosition="defaultPosition" />
 
+
             <Button
                 android:id="@+id/pictureButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@android:drawable/ic_menu_edit" />
+
 
         </LinearLayout>
 

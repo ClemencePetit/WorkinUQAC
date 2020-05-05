@@ -44,8 +44,10 @@ public class EditFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
-        tempUser=((MainActivity)getActivity()).currentUser.clone();
+        if(((MainActivity)getActivity()).currentUser==null) {
+            ((MainActivity)getActivity()).currentUser=new User(((MainActivity)getActivity()).idUser);
+        }
+        tempUser = ((MainActivity) getActivity()).currentUser.clone();
 
         //Boutons pour quitter la page d'édition en validant/annulant les modifications
         Button buttonValidate = (Button) view.findViewById(R.id.validateEditButton);
@@ -76,7 +78,22 @@ public class EditFragment extends Fragment {
             }
         });
         TextView infoText = nameView.findViewById(R.id.informationText);
-        infoText.setText(((MainActivity)getActivity()).currentUser.getName());
+
+        if(((MainActivity)getActivity()).currentUser.getName().isEmpty()){
+            MyBDD.readUserName(((MainActivity)getActivity()).currentUser.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
+                @Override
+                public void onEvent() {
+                    ((MainActivity)getActivity()).currentUser.setName( MyBDD.getCurrentUsername());
+                    reloadName();
+                }
+            });
+            infoText.setText("Loading...");
+        }
+        else
+        {
+            infoText.setText(((MainActivity)getActivity()).currentUser.getName());
+        }
+
         nameLayout.addView(nameView);
 
 
@@ -92,7 +109,22 @@ public class EditFragment extends Fragment {
             }
         });
         infoText = mailView.findViewById(R.id.informationText);
-        infoText.setText(((MainActivity)getActivity()).currentUser.getEmail());
+
+        if(((MainActivity)getActivity()).currentUser.getEmail().isEmpty()){
+            MyBDD.readUserEmail(((MainActivity)getActivity()).currentUser.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
+                @Override
+                public void onEvent() {
+                    ((MainActivity)getActivity()).currentUser.setEmail( MyBDD.getCurrentEmail());
+                    reloadMail();
+                }
+            });
+            infoText.setText("Loading...");
+        }
+        else
+        {
+            infoText.setText(((MainActivity)getActivity()).currentUser.getEmail());
+        }
+
         mailLayout.addView(mailView);
 
         //mdp
@@ -115,7 +147,21 @@ public class EditFragment extends Fragment {
             }
         });
         ImageView photoView=getView().findViewById(R.id.pictureEditImage);
-        photoView.setImageBitmap(((MainActivity)getActivity()).currentUser.getPhoto());
+
+        if(((MainActivity)getActivity()).currentUser.getPhoto()==null){
+            /*MyBDD.readUserName(((MainActivity)getActivity()).currentUser.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
+                @Override
+                public void onEvent() {
+                    ((MainActivity)getActivity()).currentUser.setName( MyBDD.getCurrentUsername());
+                    reloadPhoto();
+                }
+            });*/
+            photoView.setImageBitmap(((MainActivity)getActivity()).defaultProfileImage);
+        }
+        else
+        {
+            photoView.setImageBitmap(((MainActivity)getActivity()).currentUser.getPhoto());
+        }
 
     }
 
@@ -164,7 +210,7 @@ public class EditFragment extends Fragment {
         View rowView = inflater.inflate(R.layout.editing_edit_profile_layout,null);
         rowView.setTag(parentTag);
 
-        EditText editInfo = rowView.findViewById(R.id.informationEditText);
+        EditText editInfo = rowView.findViewById(R.id.informationText);
         editInfo.setText(info);
 
         Button validateButton = rowView.findViewById(R.id.editingvalidateButton);
@@ -224,7 +270,7 @@ public class EditFragment extends Fragment {
         String parentTag=((View)v.getParent()).getTag().toString();
         LinearLayout parentLayout=getView().findViewWithTag(parentTag);
 
-        EditText editInfo = ((View)v.getParent()).findViewById(R.id.informationEditText);
+        EditText editInfo = ((View)v.getParent()).findViewById(R.id.informationText);
         String info = editInfo.getText().toString();
         if(validateInfo){
             switch (parentTag){
@@ -335,6 +381,34 @@ public class EditFragment extends Fragment {
     }
     private void cancelEdit(){
         ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.CONNECTED_PROFILE);
+    }
+
+    //TODO chercher le bon layout puis la ligne d'info
+    public void reloadName(){
+        View v = getView().findViewById(R.id.nameLayout);
+        if(v!=null) {
+            TextView nameTxt = v.findViewById(R.id.informationText);
+            nameTxt.setText(((MainActivity) getActivity()).currentUser.getName());
+        }
+        tempUser.setName(((MainActivity)getActivity()).currentUser.getName());
+
+    }
+
+    public void reloadMail(){
+        View v = getView().findViewById(R.id.mailLayout);
+        if(v!=null) {
+            TextView mailTxt = v.findViewById(R.id.informationText);
+            mailTxt.setText(((MainActivity) getActivity()).currentUser.getEmail());
+        }
+        tempUser.setEmail(((MainActivity)getActivity()).currentUser.getEmail());
+    }
+
+    public void reloadPhoto(){
+        if(getView()!=null && ((MainActivity) getActivity()).currentUser.getPhoto()!=null) {
+            ImageView photo = getView().findViewById(R.id.pictureEditImage);
+            photo.setImageBitmap(((MainActivity) getActivity()).currentUser.getPhoto());
+            tempUser.setPhoto(((MainActivity) getActivity()).currentUser.getPhoto());
+        }
     }
 
 }

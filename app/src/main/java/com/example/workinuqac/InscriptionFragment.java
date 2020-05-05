@@ -53,7 +53,7 @@ public class InscriptionFragment extends Fragment {
                         if (!mdpConfirmTxt.getText().toString().isEmpty()) {
                             if (mdpTxt.getText().toString().equals(mdpConfirmTxt.getText().toString())) {
                                 Toast.makeText(getContext(), "Profil créé", Toast.LENGTH_SHORT).show();
-                                ((MainActivity) getActivity()).currentUser = new User(codeTxt.getText().toString(), nameTxt.getText().toString(), mailTxt.getText().toString(), getContext());
+                                ((MainActivity) getActivity()).currentUser = new User(codeTxt.getText().toString(), nameTxt.getText().toString(), mailTxt.getText().toString());
                                 ((MainActivity) getActivity()).idUser = ((MainActivity) getActivity()).currentUser.getIdentifiant();
                                 ((MainActivity) getActivity()).createProfileBDD();
                                 //TODO repasser les valeurs en privés + faire fonction pour les set/get

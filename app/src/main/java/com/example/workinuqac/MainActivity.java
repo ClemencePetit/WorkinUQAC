@@ -9,27 +9,30 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks{
+import static com.example.workinuqac.User.decodeSampledBitmapFromResource;
 
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
+public class MainActivity extends AppCompatActivity {
 
     enum FRAGMENT {
         CONNECTED_PROFILE,
@@ -38,13 +41,22 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         INSCRIPTION,
         PROFILE_EDIT,
         CLASS_SEARCH,
-        USER_PROFILE
+        USER_PROFILE,
+        CODE
     }
 
     private static final int PERMISSION_CODE = 1000;
     public String idUser = ""; // ID de l'utilisateur dans la base de données - vide = pas connecté
     public User currentUser;
+    public User searchedUser;
     private FRAGMENT currentFragment = FRAGMENT.LOGIN;
+    private FirebaseAuth mAuth;
+    private static final int RC_SIGN_IN = 1000;
+    private GoogleApiClient mGoogleApiClient;
+    private GoogleSignInClient mGoogleSignIn;
+    private boolean googleConnexion = false;
+
+    public Bitmap defaultProfileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +69,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         loadPreferences();
 
-        //on était déjà identifié quand on a fermé l'appli
-        if(!idUser.isEmpty()){
-            connection();
+        mAuth = FirebaseAuth.getInstance();
+
+        defaultProfileImage= decodeSampledBitmapFromResource(getApplicationContext().getResources(),R.drawable.profile_picture_default, 250, 250);
+        if(currentUser == null) {
+            currentUser = new User(idUser);
         }
 
         if(savedInstanceState==null) {
@@ -73,8 +87,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 case CLASS_SEARCH:
                     changeFragment(FRAGMENT.CONNECTED_PROFILE);
                     break;
+
                 case USER_PROFILE:
+					changeFragment(FRAGMENT.CONNECTED_PROFILE);
                     changeFragment(FRAGMENT.CLASS_SEARCH);
+					break;
+                
             }
             changeFragment(fragmentToLoad);
         }
@@ -104,6 +122,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         } else {
             //Old OS
         }
+        //on était déjà identifié quand on a fermé l'appli
+        if(!idUser.isEmpty()){
+            connection();
+        }
+
+        //Sign In with Google
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleSignIn = GoogleSignIn.getClient(this,gso);
     }
 
     public void savePreferences() {
@@ -118,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
         idUser = sharedPreferences.getString("idUser", "");
         currentFragment = FRAGMENT.valueOf(sharedPreferences.getString("fragment", FRAGMENT.LOGIN.name()));
+        Log.e("Id User", idUser);
     }
 
     @Override
@@ -128,33 +158,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     public void connection(){
-        currentUser=new User(idUser,getApplicationContext());
-        MyBDD.readUserEmail(idUser, new MyBDD.OnDataReadEventListener() {
-            @Override
-            public void onEvent() {
-                currentUser.setEmail(MyBDD.getCurrentEmail());
-                reloadInterface();
-            }
-        });
-
-        MyBDD.readUserName(idUser, new MyBDD.OnDataReadEventListener() {
-            @Override
-            public void onEvent() {
-                currentUser.setName( MyBDD.getCurrentUsername());
-                reloadInterface();
-            }
-        });
-
-    }
-
-    public void reloadInterface(){
-        Toast.makeText(this, "info recuperee", Toast.LENGTH_SHORT).show();
-        Fragment frg = null;
-        frg = getSupportFragmentManager().findFragmentByTag(currentFragment.name());
-        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.detach(frg);
-        ft.attach(frg);
-        ft.commit();
+        currentUser=new User(idUser);
     }
 
     public void changeFragment(FRAGMENT fragment) {
@@ -206,6 +210,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 DialogFragment dialogFragment = new DialogFragmentAuthentification();
                 dialogFragment.show(ft, "dialog");
                 break;
+
+            case CODE:
+                ft
+                        .addToBackStack(null);
+                DialogFragment dialogFragmentCode = new DialogFragmentCodePermanent();
+                dialogFragmentCode.show(ft, "dialog");
+                break;
             default:
                 break;
         }
@@ -213,10 +224,46 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         currentFragment = fragment;
     }
 
+    public void googleSignIn() {
+        googleConnexion = true;
+        Intent signInIntent = mGoogleSignIn.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
+            changeFragment(MainActivity.FRAGMENT.CODE);
+        }
+        catch (ApiException e) {
+            Log.w("Google Sign in", "Sign in result failed : error code= " + e.getStatusCode());
+        }
+    }
+
     public void signOut() {
         idUser = "";
         currentUser=null;
         changeFragment(FRAGMENT.LOGIN);
+        if (googleConnexion) {
+            mGoogleSignIn.signOut().addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    Log.e("Google", "Sign out");
+                }
+            });
+            googleConnexion = false;
+        }
+        mAuth.signOut();
     }
 
     @Override
