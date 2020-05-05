@@ -1,10 +1,14 @@
 package com.example.workinuqac;
 
+import android.graphics.Bitmap;
 import android.media.browse.MediaBrowser;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -12,7 +16,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +36,7 @@ public class MyBDD {
     static private ArrayList<String> allCoursesCode;
     static private ArrayList<String> queryResultStudentsFromCourse;
     static private ArrayList<String> queryResultStudentsFromCourseWithSchedule;
+    static private User queryResultStudentFromCode;
 
     //GETTERS
     static public String getCurrentEmail(){
@@ -55,6 +64,8 @@ public class MyBDD {
     static public ArrayList<String> getQueryResultStudentsFromCourse(){return queryResultStudentsFromCourse;}
 
     static public ArrayList<String> getQueryResultStudentsFromCourseWithSchedule() {return queryResultStudentsFromCourseWithSchedule;}
+
+    static public User getQueryResultStudentFromCode() {return queryResultStudentFromCode;}
 
     static public String translate(String scheduleCode){
         String translation = scheduleCode.replace("MO","Monday ")
@@ -157,9 +168,29 @@ public class MyBDD {
         userRef.addListenerForSingleValueEvent(nameListener);
     }
 
+    static public void storeImage(String codePermanent, Bitmap bitmap, OnFailureListener OFL, OnSuccessListener OSL){
+        //Getting references
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference imgRef = storage.getReference();
+        StorageReference codeRef = imgRef.child(codePermanent+".jpg");
+
+        //storing image
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = codeRef.putBytes(data);
+        uploadTask.addOnFailureListener(OFL).addOnSuccessListener(OSL);
+    }
+
     //READING DB METHODS
     public interface OnDataReadEventListener{
         public void onEvent();
+    }
+
+    static public void readImage(String codePermanent){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference imgRef = storage.getReference().child(codePermanent+".jpg");
     }
 
     //read the username of the user with codePermanent. Result stored in currentUsername;Execute oc when data loaded
@@ -317,6 +348,29 @@ public class MyBDD {
             }
         };
         codesRef.addListenerForSingleValueEvent(listener);
+    }
+
+    static public void queryStudentFromCode(final String codePermanent, final OnDataReadEventListener oc){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference nameRef = database.getReference("users/"+codePermanent);
+        ValueEventListener nameListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String name = "";
+                String email = "";
+
+                queryResultStudentFromCode = new User(codePermanent,name,email);
+                queryResultStudentFromCode.setName(dataSnapshot.child("name").getValue(String.class));
+                queryResultStudentFromCode.setName(dataSnapshot.child("email").getValue(String.class));
+                oc.onEvent();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("BDD", "loadName:onCancelled",databaseError.toException());
+            }
+        };
+        nameRef.addListenerForSingleValueEvent(nameListener);
     }
 
     //TODO
