@@ -94,11 +94,19 @@ public class User {
     }
 
     public ArrayList<Course> getCourses() {
-        return courses;
+        ArrayList<Course> temp=new ArrayList<Course>();
+        for (int counter = 0; counter < this.courses.size(); counter++) {
+            temp.add((courses.get(counter).duplicate()));
+        }
+        return temp;
+    }
+
+    public boolean coursesIsNull(){
+        return courses==null;
     }
 
     public User clone() {
-        return new User(identifiant,name,email,photo,courses);
+        return new User(identifiant,name,email,photo,getCourses());
     }
 
     public void clear(String identifiant){

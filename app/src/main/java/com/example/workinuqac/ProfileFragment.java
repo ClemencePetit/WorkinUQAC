@@ -103,7 +103,7 @@ public class ProfileFragment extends Fragment {
 
         ViewPager2 pager = (ViewPager2)view.findViewById(R.id.edtViewPager);
         //TODO parametres : tableaux des Cours du user
-        if(((MainActivity)getActivity()).searchedUser.getCourses()!=null)
+        if(!((MainActivity)getActivity()).searchedUser.coursesIsNull())
         {
             pager.setAdapter(new EdtAdapter(getActivity(), ((MainActivity)getActivity()).searchedUser.getCourses()) {
             });
@@ -148,7 +148,7 @@ public class ProfileFragment extends Fragment {
     }
 
     public void reloadCourses(){
-        if(getView()!=null&&((MainActivity) getActivity()).searchedUser.getCourses()!=null) {
+        if(getView()!=null&&!((MainActivity) getActivity()).searchedUser.coursesIsNull()) {
             ViewPager2 pager = (ViewPager2) getView().findViewById(R.id.edtViewPager);
             //TODO parametres : tableaux des Cours du user
             pager.setAdapter(new EdtAdapter(getActivity(), ((MainActivity) getActivity()).searchedUser.getCourses()) {

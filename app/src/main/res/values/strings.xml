@@ -38,4 +38,9 @@
     <string name="dialogMdp">Entre ton mot de passe</string>
     <string name="Validate">Validate</string>
     <string name="CodePermanent">Entrez votre code permanent</string>
+
+
+    <string name="edt_remove_button">Supprimer cours</string>
+    <string name="addClassButton">Ajouter un cours</string>
+
 </resources>

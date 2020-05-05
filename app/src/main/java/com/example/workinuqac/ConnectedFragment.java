@@ -109,7 +109,7 @@ public class ConnectedFragment extends Fragment {
 
         ViewPager2 pager = (ViewPager2)view.findViewById(R.id.edtViewPager);
         //TODO parametres : tableaux des Cours du user
-        if(((MainActivity)getActivity()).currentUser.getCourses()!=null)
+        if(!((MainActivity)getActivity()).currentUser.coursesIsNull())
         {
             pager.setAdapter(new EdtAdapter(getActivity(), ((MainActivity)getActivity()).currentUser.getCourses()) {
             });
@@ -147,7 +147,7 @@ public class ConnectedFragment extends Fragment {
     }
 
     private void editEdt(){
-        Toast.makeText(getContext(), "Edit EDT", Toast.LENGTH_SHORT).show();
+        ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.EDT_EDIT);
     }
 
     private void editProfile(){
