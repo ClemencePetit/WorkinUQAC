@@ -29,6 +29,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import static com.example.workinuqac.User.decodeSampledBitmapFromResource;
 
+
+/*Membres d'équipe : PETIT Clémence, BOUZEREAU Laura, HAFFNER Yohann et CESARO Louis */
 public class MainActivity extends AppCompatActivity {
 
     enum FRAGMENT {
