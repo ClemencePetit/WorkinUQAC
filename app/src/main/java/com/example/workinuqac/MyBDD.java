@@ -1,8 +1,10 @@
 package com.example.workinuqac;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.browse.MediaBrowser;
 import android.util.Log;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
@@ -37,6 +39,7 @@ public class MyBDD {
     static private ArrayList<String> queryResultStudentsFromCourse;
     static private ArrayList<String> queryResultStudentsFromCourseWithSchedule;
     static private User queryResultStudentFromCode;
+    static private Bitmap queryResultImage;
 
     //GETTERS
     static public String getCurrentEmail(){
@@ -66,6 +69,8 @@ public class MyBDD {
     static public ArrayList<String> getQueryResultStudentsFromCourseWithSchedule() {return queryResultStudentsFromCourseWithSchedule;}
 
     static public User getQueryResultStudentFromCode() {return queryResultStudentFromCode;}
+
+    static public Bitmap getQueryResultImage() {return queryResultImage;}
 
     static public String translate(String scheduleCode){
         return scheduleCode.replace("MO","Monday ")
@@ -196,11 +201,11 @@ public class MyBDD {
         //Getting references
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference imgRef = storage.getReference();
-        StorageReference codeRef = imgRef.child(codePermanent+".jpg");
+        StorageReference codeRef = imgRef.child(codePermanent+".png");
 
         //storing image
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);
+        bitmap.compress(Bitmap.CompressFormat.PNG,100,baos);
         byte[] data = baos.toByteArray();
 
         UploadTask uploadTask = codeRef.putBytes(data);
@@ -212,9 +217,26 @@ public class MyBDD {
         public void onEvent();
     }
 
-    static public void readImage(String codePermanent){
+    static public void readImage(String codePermanent, final OnDataReadEventListener oc){
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference imgRef = storage.getReference().child(codePermanent+".jpg");
+        StorageReference storageRef = storage.getReference();
+        StorageReference imageRef = storageRef.child(codePermanent + ".png");
+        final long ONE_MEGABYTE = 1024 * 1024 * 1024;
+
+        imageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                // Data for "images/island.jpg" is returns, use this as needed
+                queryResultImage = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                oc.onEvent();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+                Log.d("BDD", "error download : " + exception.getMessage());
+            }
+        });
     }
 
     //read the username of the user with codePermanent. Result stored in currentUsername;Execute oc when data loaded
