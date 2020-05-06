@@ -20,7 +20,7 @@ import java.util.Arrays;
 
 public class ProfileFragment extends Fragment {
 
-    static String CURRENT_STUDENT_ID = "";
+    static User CURRENT_USER = null;
     //private User searchedUser;
 
 
@@ -40,51 +40,37 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
-        if(((MainActivity)getActivity()).searchedUser==null){
-            ((MainActivity)getActivity()).searchedUser=new User(CURRENT_STUDENT_ID);
-        }
-        else
-        {
-            CURRENT_STUDENT_ID= ((MainActivity)getActivity()).searchedUser.getIdentifiant();
-        }
-
-
-
-
-
         //TODO chercher la photo comme les infos précédentes
 
-        //TODO chercher les infos dans la BDD et mettre à jour à partir de CURRENT_STUDENT_ID
         TextView nameTxt=view.findViewById(R.id.textName);
-        if(((MainActivity)getActivity()).searchedUser.getName().isEmpty())
+        if(CURRENT_USER.getName().isEmpty())
         {
-            MyBDD.readUserName(CURRENT_STUDENT_ID, new MyBDD.OnDataReadEventListener() {
+            MyBDD.readUserName(CURRENT_USER.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
                 @Override
                 public void onEvent() {
-                    ((MainActivity)getActivity()).searchedUser.setName( MyBDD.getCurrentUsername());
+                    CURRENT_USER.setName( MyBDD.getCurrentUsername());
                     reloadName();
                 }
             });
             nameTxt.setText("Loading...");
         }
         else {
-            nameTxt.setText(((MainActivity) getActivity()).searchedUser.getName());
+            nameTxt.setText(CURRENT_USER.getName());
         }
 
         TextView mailTxt=view.findViewById(R.id.textEmail);
-        if(((MainActivity)getActivity()).searchedUser.getEmail().isEmpty()){
-            MyBDD.readUserEmail(CURRENT_STUDENT_ID, new MyBDD.OnDataReadEventListener() {
+        if(CURRENT_USER.getEmail().isEmpty()){
+            MyBDD.readUserEmail(CURRENT_USER.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
                 @Override
                 public void onEvent() {
-                    ((MainActivity)getActivity()).searchedUser.setEmail(MyBDD.getCurrentEmail());
+                    CURRENT_USER.setEmail(MyBDD.getCurrentEmail());
                     reloadMail();
                 }
             });
             mailTxt.setText("Loading...");
         }
         else {
-            mailTxt.setText(((MainActivity) getActivity()).searchedUser.getEmail());
+            mailTxt.setText(CURRENT_USER.getEmail());
         }
 		mailTxt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +78,7 @@ public class ProfileFragment extends Fragment {
                 // LOL ça marche pas ça me saoule j'ai d'autres choses à faire
                 // Toast.makeText(getContext(), "LOL", Toast.LENGTH_SHORT);
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-                emailIntent.setData(Uri.parse("mailto:" + ((MainActivity) getActivity()).searchedUser.getEmail()));
+                emailIntent.setData(Uri.parse("mailto:" + CURRENT_USER.getEmail()));
             }
         });
 
@@ -102,33 +88,29 @@ public class ProfileFragment extends Fragment {
 
 
         ViewPager2 pager = (ViewPager2)view.findViewById(R.id.edtViewPager);
-        //TODO parametres : tableaux des Cours du user
-        if(((MainActivity)getActivity()).searchedUser.getCourses()!=null)
+        if(!CURRENT_USER.coursesIsNull())
         {
-            pager.setAdapter(new EdtAdapter(getActivity(), ((MainActivity)getActivity()).searchedUser.getCourses()) {
+            pager.setAdapter(new EdtAdapter(getActivity(), CURRENT_USER.getCourses()) {
             });
         }
         else
         {
             pager.setAdapter(new EdtAdapter(getActivity(), new ArrayList<Course>(Arrays.asList(new Course()))) {
             });
-            MyBDD.readUserCourses(((MainActivity)getActivity()).searchedUser.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
+            MyBDD.readUserCourses(CURRENT_USER.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
                 @Override
                 public void onEvent() {
-                    ((MainActivity)getActivity()).searchedUser.setCourses(MyBDD.getCurrentUserCoursesList());
+                    CURRENT_USER.setCourses(MyBDD.getCurrentUserCoursesList());
                     reloadCourses();
                 }
             });
         }
-
-
-        Toast.makeText(getContext(), "Etudiant #" + ((MainActivity) getActivity()).searchedUser.getIdentifiant(), Toast.LENGTH_SHORT).show();
     }
 
     public void reloadName(){
         if(getView()!=null) {
             TextView nameTxt = getView().findViewById(R.id.textName);
-            nameTxt.setText(((MainActivity) getActivity()).searchedUser.getName());
+            nameTxt.setText(CURRENT_USER.getName());
         }
 
     }
@@ -136,22 +118,22 @@ public class ProfileFragment extends Fragment {
     public void reloadMail(){
         if(getView()!=null) {
             TextView mailTxt = getView().findViewById(R.id.textEmail);
-            mailTxt.setText(((MainActivity) getActivity()).searchedUser.getEmail());
+            mailTxt.setText(CURRENT_USER.getEmail());
         }
     }
 
     public void reloadPhoto(){
-        if (getView() != null && ((MainActivity) getActivity()).searchedUser.getPhoto()!=null){
+        if (getView() != null && CURRENT_USER.getPhoto()!=null){
             ImageView photo = getView().findViewById(R.id.profileImage);
-            photo.setImageBitmap(((MainActivity) getActivity()).searchedUser.getPhoto());
+            photo.setImageBitmap(CURRENT_USER.getPhoto());
         }
     }
 
     public void reloadCourses(){
-        if(getView()!=null&&((MainActivity) getActivity()).searchedUser.getCourses()!=null) {
+		//merge foireux if(getView()!=null&&CURRENT_USER.getCourses()!=null) {
+        if(getView()!=null&&!CURRENT_USER.coursesIsNull()) {
             ViewPager2 pager = (ViewPager2) getView().findViewById(R.id.edtViewPager);
-            //TODO parametres : tableaux des Cours du user
-            pager.setAdapter(new EdtAdapter(getActivity(), ((MainActivity) getActivity()).searchedUser.getCourses()) {
+            pager.setAdapter(new EdtAdapter(getActivity(), CURRENT_USER.getCourses()) {
             });
         }
     }

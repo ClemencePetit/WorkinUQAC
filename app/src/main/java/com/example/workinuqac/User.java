@@ -16,7 +16,6 @@ public class User {
     private String name;
     private String email;
     private Bitmap photo;
-    //TODO changer pour le bon format
     private ArrayList<Course> courses;
 
     public User(){
@@ -53,15 +52,15 @@ public class User {
     }
 
     public String getIdentifiant(){
-        return identifiant;
+        return identifiant != null ? identifiant : "";
     }
 
     public String getName(){
-        return name;
+        return name != null ? name : "";
     }
 
     public String getEmail(){
-        return email;
+        return email != null ? email : "";
     }
 
     public Bitmap getPhoto(){
@@ -88,17 +87,32 @@ public class User {
         this.courses=new ArrayList<Course>();
         for (Map.Entry<String, String> entry : courses.entrySet()) {
             String temp=entry.getValue();
-            this.courses.add(new Course(entry.getKey(),"NaN",MyBDD.translate(temp.substring(0,2)),temp.substring(2)));
+            this.courses.add(new Course(entry.getKey(),"",MyBDD.translate(temp.substring(0,2)),temp.substring(2)));
         }
         //this.courses=(ArrayList<String>) courses.clone();
     }
 
+    public void setCourses(ArrayList<Course> courses){
+        this.courses=new ArrayList<Course>();
+        for(Course c: courses){
+            this.courses.add(c.duplicate());
+        }
+    }
+
     public ArrayList<Course> getCourses() {
-        return courses;
+        ArrayList<Course> temp=new ArrayList<Course>();
+        for (int counter = 0; counter < this.courses.size(); counter++) {
+            temp.add((courses.get(counter).duplicate()));
+        }
+        return temp;
+    }
+
+    public boolean coursesIsNull(){
+        return courses==null;
     }
 
     public User clone() {
-        return new User(identifiant,name,email,photo,courses);
+        return new User(identifiant,name,email,photo,getCourses());
     }
 
     public void clear(String identifiant){
@@ -163,4 +177,7 @@ public class User {
         return BitmapFactory.decodeResource(res, resId, options);
     }
 
+    public boolean isDefined() {
+        return name != null && !name.isEmpty();
+    }
 }

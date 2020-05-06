@@ -42,13 +42,13 @@ public class MainActivity extends AppCompatActivity {
         PROFILE_EDIT,
         CLASS_SEARCH,
         USER_PROFILE,
-        CODE
+        CODE,
+        EDT_EDIT
     }
 
     private static final int PERMISSION_CODE = 1000;
     public String idUser = ""; // ID de l'utilisateur dans la base de données - vide = pas connecté
     public User currentUser;
-    public User searchedUser;
     private FRAGMENT currentFragment = FRAGMENT.LOGIN;
     private FirebaseAuth mAuth;
     private static final int RC_SIGN_IN = 1000;
@@ -83,11 +83,12 @@ public class MainActivity extends AppCompatActivity {
                 case INSCRIPTION:
                     changeFragment(FRAGMENT.LOGIN);
                     break;
-                case PROFILE_EDIT:
                 case CLASS_SEARCH:
                     changeFragment(FRAGMENT.CONNECTED_PROFILE);
                     break;
-
+                case EDT_EDIT:
+                    changeFragment(FRAGMENT.CONNECTED_PROFILE);
+                    break;
                 case USER_PROFILE:
 					changeFragment(FRAGMENT.CONNECTED_PROFILE);
                     changeFragment(FRAGMENT.CLASS_SEARCH);
@@ -217,10 +218,17 @@ public class MainActivity extends AppCompatActivity {
                 DialogFragment dialogFragmentCode = new DialogFragmentCodePermanent();
                 dialogFragmentCode.show(ft, "dialog");
                 break;
+            case EDT_EDIT:
+                ft
+                        .addToBackStack(null)
+                        .replace(R.id.placeholder, EdtEditFragment.newInstance(), fragment.name())
+                        .commit();
             default:
                 break;
         }
 
+
+        fm.executePendingTransactions();
         currentFragment = fragment;
     }
 

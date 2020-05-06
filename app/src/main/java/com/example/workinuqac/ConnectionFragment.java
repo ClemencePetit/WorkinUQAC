@@ -57,13 +57,11 @@ public class ConnectionFragment extends Fragment{
     }
 
     private void createProfil(){
-        Toast.makeText(getContext(), "Creation profil", Toast.LENGTH_SHORT).show();
         ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.INSCRIPTION);
 
     }
 
     private void identifyProfil(){
-        Toast.makeText(getContext(), "Identification profil", Toast.LENGTH_SHORT).show();
         ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.AUTHENTICATION);
     }
 

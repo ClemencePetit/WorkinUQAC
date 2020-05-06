@@ -18,6 +18,8 @@ import java.util.Arrays;
 
 public class ConnectedFragment extends Fragment {
 
+    private SearchView userSearch;
+
     //id fragment : 0
     public static ConnectedFragment newInstance() {
         ConnectedFragment CF = new ConnectedFragment();
@@ -36,7 +38,6 @@ public class ConnectedFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        //TODO chercher les infos dans la BDD et mettre à jour
         Button buttonEdt = (Button) view.findViewById(R.id.edtButton);
         buttonEdt.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
@@ -91,7 +92,7 @@ public class ConnectedFragment extends Fragment {
         }
 
 
-        final SearchView userSearch = view.findViewById(R.id.searchView);
+        userSearch = view.findViewById(R.id.searchView);
         userSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -108,8 +109,7 @@ public class ConnectedFragment extends Fragment {
 
 
         ViewPager2 pager = (ViewPager2)view.findViewById(R.id.edtViewPager);
-        //TODO parametres : tableaux des Cours du user
-        if(((MainActivity)getActivity()).currentUser.getCourses()!=null)
+        if(!((MainActivity)getActivity()).currentUser.coursesIsNull())
         {
             pager.setAdapter(new EdtAdapter(getActivity(), ((MainActivity)getActivity()).currentUser.getCourses()) {
             });
@@ -130,24 +130,23 @@ public class ConnectedFragment extends Fragment {
     }
 
     private void searchUser(String codePermanent){
-        /* TODO requete de recherche user par code permanent. Au callback, executer:
-
-                if(resultat != null) {
+        MyBDD.queryStudentFromCode(codePermanent, new MyBDD.OnDataReadEventListener() {
+            @Override
+            public void onEvent() {
+                User result = MyBDD.getQueryResultStudentFromCode();
+                if(result.isDefined()) {
                     userSearch.setQuery("", false);
-                    ProfileFragment.CURRENT_USER = resultat;
+                    ProfileFragment.CURRENT_USER = result;
                     ((MainActivity) getActivity()).changeFragment(MainActivity.FRAGMENT.USER_PROFILE);
                 } else {
-                    Toast.makeText(getContext(), "Utilisateur introuvable", Toast.LENGTH_SHORT);
+                    Toast.makeText(getContext(), "Utilisateur introuvable", Toast.LENGTH_SHORT).show();
                 }
-
-        */
-        ClassSearchFragment.currentQuery = codePermanent;
-        ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.CLASS_SEARCH);
-        Toast.makeText(getContext(), "Search User", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void editEdt(){
-        Toast.makeText(getContext(), "Edit EDT", Toast.LENGTH_SHORT).show();
+        ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.EDT_EDIT);
     }
 
     private void editProfile(){
@@ -175,7 +174,6 @@ public class ConnectedFragment extends Fragment {
     public void reloadCourses(){
         if(getView()!=null&&((MainActivity) getActivity()).currentUser.getCourses()!=null) {
             ViewPager2 pager = (ViewPager2) getView().findViewById(R.id.edtViewPager);
-            //TODO parametres : tableaux des Cours du user
             pager.setAdapter(new EdtAdapter(getActivity(), ((MainActivity) getActivity()).currentUser.getCourses()) {
             });
         }

@@ -73,13 +73,33 @@ public class MyBDD {
     static public Bitmap getQueryResultImage() {return queryResultImage;}
 
     static public String translate(String scheduleCode){
-        String translation = scheduleCode.replace("MO","Monday ")
+        return scheduleCode.replace("MO","Monday ")
         .replace("TU","Tuesday ")
         .replace("WE","Wednesday ")
         .replace("TH","Thursday ")
         .replace("FR","Friday ")
         .replace("SA","Saturday ")
         .replace("SU","Sunday ");
+    }
+
+    static public String encode(String scheduleString){
+        return scheduleString.replace("Monday ", "MO")
+                .replace("Tuesday ", "TU")
+                .replace("Wednesday ", "WE")
+                .replace("Thursday ", "TH")
+                .replace("Friday ", "FR")
+                .replace("Saturday ", "SA")
+                .replace("Sunday ", "SU");
+    }
+
+    static public String untranslate(String scheduleCode){
+        String translation = scheduleCode.replace("Monday ","MO")
+                .replace("Tuesday ","TU")
+                .replace("Wednesday ","WE")
+                .replace("Thursday ","TH")
+                .replace("Friday ","FR")
+                .replace("Saturday ","SA")
+                .replace("Sunday ","SU");
         return translation;
     }
 
@@ -112,17 +132,21 @@ public class MyBDD {
         Log.d("BDD","User updated");
     }
 
-    /*
-    deprecated
-    static public void updateUserEmail(String codePermanent, String Email){
+
+    static public void updateUserEmail(String codePermanent, String Email, String oldMail){
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("users");
+        DatabaseReference emailRef = database.getReference("emailUsers");
         //on rajoute ou update le nom associé au code permanent
         myRef.child(codePermanent).child("email").setValue(Email);
+        emailRef.child(Email.replace(".",",")).setValue(codePermanent);
+        if(!Email.equals(oldMail)) {
+            emailRef.child(oldMail.replace(".", ",")).removeValue();
+        }
 
         Log.d("BDD","User updated");
-    }*/
+    }
 
     static public void updateUserCourses(String codePermanent, HashMap<String,String> coursSchedule){
 
@@ -383,7 +407,7 @@ public class MyBDD {
 
                 queryResultStudentFromCode = new User(codePermanent,name,email);
                 queryResultStudentFromCode.setName(dataSnapshot.child("name").getValue(String.class));
-                queryResultStudentFromCode.setName(dataSnapshot.child("email").getValue(String.class));
+                queryResultStudentFromCode.setEmail(dataSnapshot.child("email").getValue(String.class));
                 oc.onEvent();
             }
 
