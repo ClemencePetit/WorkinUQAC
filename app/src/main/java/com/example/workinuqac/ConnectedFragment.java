@@ -77,13 +77,13 @@ public class ConnectedFragment extends Fragment {
         ImageView photo=view.findViewById(R.id.profileImage);
         //TODO changer avec la photo
         if(((MainActivity)getActivity()).currentUser.getPhoto()==null){
-            /*MyBDD.readUserName(((MainActivity)getActivity()).currentUser.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
+            MyBDD.readImage(((MainActivity)getActivity()).currentUser.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
                 @Override
                 public void onEvent() {
-                    ((MainActivity)getActivity()).currentUser.setName( MyBDD.getCurrentUsername());
+                    ((MainActivity)getActivity()).currentUser.setPhoto( MyBDD.getQueryResultImage());
                     reloadPhoto();
                 }
-            });*/
+            });
             photo.setImageBitmap(((MainActivity)getActivity()).defaultProfileImage);
         }
         else

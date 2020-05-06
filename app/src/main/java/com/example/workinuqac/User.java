@@ -100,11 +100,17 @@ public class User {
     }
 
     public ArrayList<Course> getCourses() {
-        ArrayList<Course> temp=new ArrayList<Course>();
-        for (int counter = 0; counter < this.courses.size(); counter++) {
-            temp.add((courses.get(counter).duplicate()));
+        if(!this.coursesIsNull()) {
+            ArrayList<Course> temp = new ArrayList<Course>();
+            for (int counter = 0; counter < this.courses.size(); counter++) {
+                temp.add((courses.get(counter).duplicate()));
+            }
+            return temp;
         }
-        return temp;
+        else
+        {
+            return null;
+        }
     }
 
     public boolean coursesIsNull(){

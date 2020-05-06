@@ -83,7 +83,24 @@ public class ProfileFragment extends Fragment {
         });
 
         ImageView photo=view.findViewById(R.id.profileImage);
-        photo.setImageBitmap(((MainActivity)getActivity()).defaultProfileImage);
+
+
+        if(CURRENT_USER.getPhoto()==null){
+            MyBDD.readImage(CURRENT_USER.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
+                @Override
+                public void onEvent() {
+                    CURRENT_USER.setPhoto( MyBDD.getQueryResultImage());
+                    reloadPhoto();
+                }
+            });
+            photo.setImageBitmap(((MainActivity)getActivity()).defaultProfileImage);
+        }
+        else
+        {
+            photo.setImageBitmap(CURRENT_USER.getPhoto());
+        }
+
+
 
 
 

@@ -17,7 +17,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -150,13 +155,13 @@ public class EditFragment extends Fragment {
 
         if(((MainActivity)getActivity()).currentUser.getPhoto()==null){
             //TODO adapter avec la photo
-            /*MyBDD.readUserName(((MainActivity)getActivity()).currentUser.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
+            MyBDD.readImage(((MainActivity)getActivity()).currentUser.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
                 @Override
                 public void onEvent() {
-                    ((MainActivity)getActivity()).currentUser.setName( MyBDD.getCurrentUsername());
+                    ((MainActivity)getActivity()).currentUser.setPhoto( MyBDD.getQueryResultImage());
                     reloadPhoto();
                 }
-            });*/
+            });
             photoView.setImageBitmap(((MainActivity)getActivity()).defaultProfileImage);
         }
         else
@@ -381,6 +386,17 @@ public class EditFragment extends Fragment {
         ((MainActivity)getActivity()).currentUser=tempUser.clone();
         MyBDD.updateUserName(((MainActivity)getActivity()).currentUser.getIdentifiant(),((MainActivity)getActivity()).currentUser.getName());
         MyBDD.updateUserEmail(((MainActivity)getActivity()).currentUser.getIdentifiant(),((MainActivity)getActivity()).currentUser.getEmail(),oldmail);
+        if(((MainActivity)getActivity()).currentUser.getPhoto()!=null) {
+            MyBDD.storeImage(((MainActivity) getActivity()).currentUser.getIdentifiant(), ((MainActivity) getActivity()).currentUser.getPhoto(), new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                            }
+                        }, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            }
+                        });
+        }
         ((MainActivity)getActivity()).changeFragment(MainActivity.FRAGMENT.CONNECTED_PROFILE);
     }
     private void cancelEdit(){
