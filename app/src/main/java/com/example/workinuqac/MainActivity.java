@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             //Old OS
         }
         //on était déjà identifié quand on a fermé l'appli
-        if(!idUser.isEmpty()){
+        if(!idUser.isEmpty() && !currentUser.isDefined()){
             connection();
         }
 
