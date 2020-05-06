@@ -32,7 +32,6 @@ public class EditFragment extends Fragment {
     private int RESULT_LOAD_IMG = 1;
     private User tempUser;
 
-    //id fragment : 3
     public static EditFragment newInstance() {
         return new EditFragment();
     }
@@ -54,7 +53,6 @@ public class EditFragment extends Fragment {
         }
         tempUser = ((MainActivity) getActivity()).currentUser.clone();
 
-        //Boutons pour quitter la page d'édition en validant/annulant les modifications
         Button buttonValidate = (Button) view.findViewById(R.id.validateEditButton);
         buttonValidate.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
@@ -154,7 +152,6 @@ public class EditFragment extends Fragment {
         ImageView photoView=getView().findViewById(R.id.pictureEditImage);
 
         if(((MainActivity)getActivity()).currentUser.getPhoto()==null){
-            //TODO adapter avec la photo
             MyBDD.readImage(((MainActivity)getActivity()).currentUser.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
                 @Override
                 public void onEvent() {
@@ -380,7 +377,6 @@ public class EditFragment extends Fragment {
 
     //QUITTER LA PAGE EDIT = SAVE LES DATAS DANS LA BDD
     private void validateEdit(){
-        //TODO update photo
 
         String oldmail = ((MainActivity)getActivity()).currentUser.getEmail();
         ((MainActivity)getActivity()).currentUser=tempUser.clone();

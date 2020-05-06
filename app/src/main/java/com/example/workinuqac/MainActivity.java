@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -14,11 +13,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -170,14 +167,12 @@ public class MainActivity extends AppCompatActivity {
         switch (fragment) {
             case CONNECTED_PROFILE:
                 ft
-                        //.addToBackStack(null)
                         .replace(R.id.placeholder, ConnectedFragment.newInstance(), fragment.name())
                         .commit();
 
                 break;
             case LOGIN:
                 ft
-                        //.addToBackStack(null)
                         .replace(R.id.placeholder, ConnectionFragment.newInstance(), fragment.name())
                         .commit();
                 break;
@@ -254,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
             changeFragment(MainActivity.FRAGMENT.CODE);
         }
         catch (ApiException e) {
-            Log.w("Google Sign in", "Sign in result failed : error code= " + e.getStatusCode());
+            Log.e("Google Sign in", "Sign in result failed : error code= " + e.getStatusCode());
         }
     }
 
@@ -290,9 +285,9 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case PERMISSION_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //Toast.makeText(this, "Permission Granted...", Toast.LENGTH_SHORT).show();
+
                 } else {
-                    //Toast.makeText(this, "Permission Denied...", Toast.LENGTH_SHORT).show();
+
                 }
         }
     }

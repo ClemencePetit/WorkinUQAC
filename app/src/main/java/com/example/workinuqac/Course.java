@@ -1,7 +1,5 @@
 package com.example.workinuqac;
 
-import androidx.annotation.NonNull;
-
 public class Course {
     private String id;
     private String name;

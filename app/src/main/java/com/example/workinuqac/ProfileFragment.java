@@ -9,10 +9,8 @@ import android.view.ViewGroup;
 
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.ArrayList;
@@ -40,7 +38,6 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        //TODO chercher la photo comme les infos précédentes
 
         TextView nameTxt=view.findViewById(R.id.textName);
         if(CURRENT_USER.getName().isEmpty())
@@ -75,8 +72,6 @@ public class ProfileFragment extends Fragment {
 		mailTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // LOL ça marche pas ça me saoule j'ai d'autres choses à faire
-                // Toast.makeText(getContext(), "LOL", Toast.LENGTH_SHORT);
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
                 emailIntent.setData(Uri.parse("mailto:" + CURRENT_USER.getEmail()));
             }
@@ -147,7 +142,6 @@ public class ProfileFragment extends Fragment {
     }
 
     public void reloadCourses(){
-		//merge foireux if(getView()!=null&&CURRENT_USER.getCourses()!=null) {
         if(getView()!=null&&!CURRENT_USER.coursesIsNull()) {
             ViewPager2 pager = (ViewPager2) getView().findViewById(R.id.edtViewPager);
             pager.setAdapter(new EdtAdapter(getActivity(), CURRENT_USER.getCourses()) {

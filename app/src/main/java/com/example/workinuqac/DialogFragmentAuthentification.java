@@ -46,7 +46,6 @@ public class DialogFragmentAuthentification extends DialogFragment {
         ValidateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Todo : Comparer le mot de passe dans la BDD par rapport au nom entré
                 EditText codeTxt=((View)((View)view.getParent()).getParent()).findViewById(R.id.DialogName);
                 String code=codeTxt.getText().toString();
                 ((MainActivity)getActivity()).idUser=code;

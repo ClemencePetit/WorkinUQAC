@@ -1,12 +1,10 @@
 package com.example.workinuqac;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,7 +87,6 @@ public class User {
             String temp=entry.getValue();
             this.courses.add(new Course(entry.getKey(),"",MyBDD.translate(temp.substring(0,2)),temp.substring(2)));
         }
-        //this.courses=(ArrayList<String>) courses.clone();
     }
 
     public void setCourses(ArrayList<Course> courses){

@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 
 public class InscriptionFragment extends Fragment {
 
-    //id fragment : 2
     public static InscriptionFragment newInstance() {
         InscriptionFragment IF = new InscriptionFragment();
         return IF;

@@ -20,7 +20,6 @@ public class ConnectedFragment extends Fragment {
 
     private SearchView userSearch;
 
-    //id fragment : 0
     public static ConnectedFragment newInstance() {
         ConnectedFragment CF = new ConnectedFragment();
         return CF;
@@ -44,8 +43,8 @@ public class ConnectedFragment extends Fragment {
                 editEdt();
             }
         });
-        Button buttonpicture = (Button) view.findViewById(R.id.pictureButton);
-        buttonpicture.setOnClickListener(new Button.OnClickListener() {
+        Button buttonPicture = (Button) view.findViewById(R.id.pictureButton);
+        buttonPicture.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 editProfile();
             }
@@ -75,7 +74,6 @@ public class ConnectedFragment extends Fragment {
         }
 
         ImageView photo=view.findViewById(R.id.profileImage);
-        //TODO changer avec la photo
         if(((MainActivity)getActivity()).currentUser.getPhoto()==null){
             MyBDD.readImage(((MainActivity)getActivity()).currentUser.getIdentifiant(), new MyBDD.OnDataReadEventListener() {
                 @Override
@@ -126,7 +124,6 @@ public class ConnectedFragment extends Fragment {
                 }
             });
         }
-        //Toast.makeText(getContext(), "creation faite", Toast.LENGTH_SHORT).show();
     }
 
     private void searchUser(String codePermanent){
