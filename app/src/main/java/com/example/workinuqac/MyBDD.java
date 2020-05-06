@@ -235,6 +235,7 @@ public class MyBDD {
             public void onFailure(@NonNull Exception exception) {
                 // Handle any errors
                 Log.d("BDD", "error download : " + exception.getMessage());
+                queryResultImage = null;
             }
         });
     }
